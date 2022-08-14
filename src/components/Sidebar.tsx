@@ -2,8 +2,14 @@ import Logo from "../../public/icons/Logo.png"
 import Image from "next/image"
 import Link from "next/link"
 import navigation from "../data/navigation"
+import { useRouter } from "next/router"
 
 const Sidebar: React.FC = () => {
+  const router = useRouter()
+
+  const path = router.pathname
+  console.log(path)
+
   return (
     <div className="fixed top-0 bg-primary-dark-blue h-screen w-60 shadow-lg text-white text-center flex flex-col items-center py-5">
       {/*Logo*/}
@@ -14,9 +20,13 @@ const Sidebar: React.FC = () => {
         {navigation.map((n, i) => (
           <li
             key={i}
-            className="text-white text-2xl font-bold cursor-pointer transition-all hover:text-blue-700 px-10"
+            className={`text-white text-2xl font-bold cursor-pointer transition-all  px-10 ${
+              router.pathname === n.path
+                ? "text-primary-light-blue border-r-2 border-primary-light-blue"
+                : "hover:text-blue-700"
+            }`}
           >
-            <Link href={n.href}>{n.name}</Link>
+            <Link href={n.path}>{n.name}</Link>
           </li>
         ))}
       </ul>

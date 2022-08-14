@@ -2,11 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .gradient-border {
+    border-width: 3px;
+    border-style: solid;
+    border-image: linear-gradient(to top, white, rgba(0, 0, 0, 0)) 1 100%;
+  }
+  .hexagon {
+    clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+    box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.25) inset;
+    box-shadow: 8px 8px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+}
+
 body {
   background: linear-gradient(
     65.72deg,
     #130e4d 18.75%,
     rgba(141, 7, 104, 1) 129.52%
   );
+  background-attachment: fixed;
   min-height: 100vh;
 }

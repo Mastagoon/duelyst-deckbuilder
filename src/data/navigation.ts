@@ -1,5 +1,5 @@
 export default [
-  { name: "Cards", href: "/cards" },
-  { name: "Decks", href: "/decks" },
-  { name: "Deck Builder", href: "/deck-builder" },
+  { name: "Cards", path: "/cards" },
+  { name: "Decks", path: "/decks" },
+  { name: "Deck Builder", path: "/deck-builder" },
 ]
