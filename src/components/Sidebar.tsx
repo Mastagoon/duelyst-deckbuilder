@@ -23,7 +23,7 @@ const Sidebar: React.FC = () => {
             className={`text-white text-2xl font-bold cursor-pointer transition-all  px-10 ${
               router.pathname === n.path
                 ? "text-primary-light-blue border-r-2 border-primary-light-blue"
-                : "hover:text-blue-700"
+                : "hover:text-primary-light-blue hover:border-l-2 border-primary-light-blue"
             }`}
           >
             <Link href={n.path}>{n.name}</Link>
