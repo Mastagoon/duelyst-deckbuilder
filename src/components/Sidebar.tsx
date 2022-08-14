@@ -1,5 +1,7 @@
 import Logo from "../../public/icons/Logo.png"
 import Image from "next/image"
+import Link from "next/link"
+import navigation from "../data/navigation"
 
 const Sidebar: React.FC = () => {
   return (
@@ -9,15 +11,14 @@ const Sidebar: React.FC = () => {
       <hr className="w-full p-2 my-3" />
       {/*Menu*/}
       <ul className="text-start flex flex-col gap-5 w-full">
-        <li className="text-white text-2xl font-bold cursor-pointer transition-all hover:text-blue-700 px-10">
-          Cards
-        </li>
-        <li className="text-white text-2xl font-bold cursor-pointer transition-all hover:text-blue-700 px-10">
-          Decks
-        </li>
-        <li className="text-white text-2xl font-bold cursor-pointer transition-all hover:text-blue-700 px-10">
-          Deck Builder
-        </li>
+        {navigation.map((n, i) => (
+          <li
+            key={i}
+            className="text-white text-2xl font-bold cursor-pointer transition-all hover:text-blue-700 px-10"
+          >
+            <Link href={n.href}>{n.name}</Link>
+          </li>
+        ))}
       </ul>
     </div>
   )
