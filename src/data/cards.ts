@@ -1,13 +1,23 @@
 import cards from "./cards.json"
 
-export type Faction =
-  | "lyonar"
-  | "songhai"
-  | "vetruvian"
-  | "abyssian"
-  | "magmar"
-  | "vanar"
-  | "neutral"
+export enum Faction {
+  "lyonar",
+  "songhai",
+  "vetruvian",
+  "abyssian",
+  "magmar",
+  "vanar",
+  "neutral",
+}
+
+// export type Faction =
+// | "lyonar"
+// | "songhai"
+// | "vetruvian"
+// | "abyssian"
+// | "magmar"
+// | "vanar"
+// | "neutral"
 export type CardType = "GENERAL" | "MINION" | "SPELL" | "ARTIFACT"
 export type Rarity = "basic" | "common" | "rare" | "epic" | "legendary"
 
@@ -28,7 +38,7 @@ export interface CardData {
     castLoop?: string
     cast?: string
   }
-  faction: number
+  faction: Faction
   cardType: CardType
   description: string
   mana: number
@@ -38,9 +48,39 @@ export interface CardData {
   spriteName?: string | null
 }
 
-export const cardData: CardData[] = cards as CardData[]
+export const lyonarCards = cards.filter(
+  (card) => card.faction === Faction.lyonar
+) as CardData[]
+export const songhaiCards = cards.filter(
+  (card) => card.faction === Faction.songhai
+) as CardData[]
+export const vetruvianCards = cards.filter(
+  (card) => card.faction === Faction.vetruvian
+) as CardData[]
+export const abyssianCards = cards.filter(
+  (card) => card.faction === Faction.abyssian
+) as CardData[]
+export const magmarCards = cards.filter(
+  (card) => card.faction === Faction.magmar
+) as CardData[]
+export const vanarCards = cards.filter(
+  (card) => card.faction === Faction.vanar
+) as CardData[]
+export const neutralCards = cards.filter(
+  (card) => card.faction === Faction.neutral
+) as CardData[]
 
-export const cardDataById = cardData.reduce(
+export const allCards: CardData[] = [
+  ...lyonarCards,
+  ...songhaiCards,
+  ...vetruvianCards,
+  ...abyssianCards,
+  ...magmarCards,
+  ...vanarCards,
+  ...neutralCards,
+]
+
+export const cardDataById = allCards.reduce(
   (acc, cardData) => ({
     ...acc,
     [cardData.id]: cardData,
