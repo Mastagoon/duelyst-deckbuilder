@@ -83,3 +83,14 @@ export const neutral = (
   rarity: Rarity,
   spriteName?: string
 ): CardData => card("neutral", id, title, cost, type, rarity, spriteName)
+
+export const Keywords = [
+  "airdrop",
+  "celerity",
+  "provoke",
+  "zeal",
+  "rush",
+  "ranged",
+  "flying",
+  "opening gambit",
+]
