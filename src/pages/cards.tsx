@@ -1,29 +1,11 @@
 import { NextPage } from "next"
-import CardDisplay from "../components/Card/CardDisplay"
-import FilterOptions from "../components/FilterOptions"
+import CardList from "../components/CardList"
 import PageLayout from "../components/PageLayout"
-import { useFilterContext } from "../context/filterContext"
 
 const CardsPage: NextPage = () => {
-  const { filteredCards } = useFilterContext()
-
   return (
     <PageLayout>
-      <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen ">
-        <div className="col-span-12">
-          <h1 className="col-span-12 text-4xl font-bold">All Cards</h1>
-          <div className="col-span-12">
-            <FilterOptions />
-          </div>
-        </div>
-        <div className="col-span-12 text-center grid grid-cols-12 gap-y-5 gradient-border overflow-y-scroll h-full py-3">
-          {filteredCards.map((card, i) => (
-            <div className="col-span-3 mx-5" key={i}>
-              <CardDisplay card={card} />
-            </div>
-          ))}
-        </div>
-      </div>
+      <CardList />
     </PageLayout>
   )
 }
