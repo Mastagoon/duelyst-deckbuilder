@@ -1,14 +1,18 @@
-import { Faction } from "../data/cards"
+import { CardData, Faction } from "../data/cards"
 import { $enum } from "ts-enum-util"
 import { FaSearch } from "react-icons/fa"
 import { useFilterContext } from "../context/filterContext"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 let debounceTimeout: any
 
-const FilterOptions: React.FC = () => {
+const FilterOptions: React.FC<{ cardPool?: CardData[] }> = ({ cardPool }) => {
   const [query, setQuery] = useState("")
-  const { updateFilterText, filterFaction, updateFilterFaction } =
-    useFilterContext()
+  const {
+    updateFilterText,
+    setInitialCards,
+    filterFactions,
+    updateFilterFaction,
+  } = useFilterContext()
 
   const handleChange = (e: any) => {
     // #TODO why am I debouncing this manually?
@@ -20,10 +24,14 @@ const FilterOptions: React.FC = () => {
     // updateFilterText(deferredQuery)
   }
 
+  useEffect(() => {
+    if (cardPool?.length) setInitialCards(cardPool)
+  }, [cardPool])
+
   const handleChangeFaction = (f: Faction) => {
-    console.log(f, filterFaction)
-    if (f === filterFaction) updateFilterFaction(undefined)
-    else updateFilterFaction(f)
+    if (filterFactions?.includes(f))
+      updateFilterFaction(filterFactions.filter((fa) => fa !== f))
+    else updateFilterFaction([...(filterFactions || []), f])
   }
 
   return (
@@ -38,7 +46,7 @@ const FilterOptions: React.FC = () => {
                 onClick={() => handleChangeFaction(Faction[faction])}
                 key={i}
                 className={`text-white capitalize cursor-pointer rounded-md px-2 py-1 ${
-                  filterFaction === Faction[faction]
+                  filterFactions?.includes(Faction[faction])
                     ? "bg-primary-dark text-fading-white"
                     : ""
                 }`}

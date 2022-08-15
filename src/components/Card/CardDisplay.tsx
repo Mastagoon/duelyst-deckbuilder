@@ -27,14 +27,17 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
         </div>
         <div>
           <Image
-            className=""
+            className="pixelated"
             src={`https://alpha.duelyst2.com/${card.resource.idle}`}
             layout="intrinsic"
             height={120}
             width={120}
           />
         </div>
-        <span className="tracking-wide mb-3"> {card.name.toUpperCase()}</span>
+        <span className="tracking-wide"> {card.name.toUpperCase()}</span>
+        <span className="tracking-wide mb-3 text-primary-cyan text-sm">
+          {card.cardType.toUpperCase()}
+        </span>
         {card.tribes.length > 0 && (
           <span className="text-primary-cyan text-sm tracking-widest">
             {card.tribes.join(",").toUpperCase()}

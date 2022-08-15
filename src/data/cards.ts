@@ -84,7 +84,7 @@ export const allCards: CardData[] = [
 ]
 
 export const generalCards: CardData[] = allCards.filter(
-  (card) => card.cardType === "GENERAL"
+  (card) => card.cardType.toUpperCase() === "GENERAL"
 )
 
 export const cardDataById = allCards.reduce(
@@ -98,9 +98,10 @@ export const cardDataById = allCards.reduce(
 export const queryFromCards = (
   cards: CardData[],
   text = "",
-  faction?: Faction
+  factions?: Faction[]
 ) => {
-  if (faction) cards = cards.filter((card) => card.faction === faction)
+  if (factions && factions.length > 0)
+    cards = cards.filter((card) => factions.includes(card.faction))
   return text === ""
     ? cards
     : cards.filter(

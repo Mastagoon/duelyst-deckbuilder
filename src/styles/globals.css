@@ -31,6 +31,10 @@
   .custom-scrollbar {
     width: 10px;
   }
+  .pixelated {
+    image-rendering: pixelated;
+    transform-style: preserve-3d;
+  }
 }
 
 body {

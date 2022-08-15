@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { useState } from "react"
-import { allCards, CardData } from "../data/cards"
+import { allCards, CardData, Faction, generalCards } from "../data/cards"
 import constants from "../data/constants"
 
 export type DeckCardEntry = CardData & {
@@ -41,19 +41,43 @@ export const useNewDeckContext = () => {
 export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
   children,
 }) => {
-  const [general, setGeneral] = useState()
+  const [general, setGeneral] = useState<CardData>()
   const [cards, setCards] = useState<DeckCardEntry[]>([])
-  const [allowedCards, setAllowedCards] = useState<CardData[]>(allCards)
+  const [allowedCards, setAllowedCards] = useState<CardData[]>(generalCards)
 
-  const updateGeneral = (cardId: number) => {}
+  const updateGeneral = (c: CardData) => {
+    // check if we have a general
+    if (c.cardType.toUpperCase() !== "GENERAL") return
+    // if the new general is from a different faction, remove all the faction cards with it
+    console.log(c.faction)
+    console.log(Faction.neutral)
+    console.log(Faction.lyonar)
+    if (c.faction !== general?.faction) {
+      setAllowedCards(
+        allCards.filter((card) => {
+          console.log(card.faction, c.faction)
+          return card.faction === c.faction || card.faction === Faction.neutral
+        })
+      )
+      // remove cards from the old faction
+      setCards(
+        cards.filter(
+          (card) =>
+            card.faction === c.faction || card.faction === Faction.neutral
+        )
+      )
+    }
+    // finally, replace old general with new one
+    setGeneral(c)
+  }
 
   const addCardToDeck = (cardId: number) => {
     // check if a general is set
-    if (!general) return updateGeneral(cardId)
     // check if the card is legal
     const card = allowedCards.find((c) => c.id === cardId)
     if (!card) return
-    if (card.cardType === "GENERAL") return updateGeneral(cardId)
+    if (card.cardType.toUpperCase() === "GENERAL") return updateGeneral(card)
+    if (!general) return
     // check if the maximum number of copies of the card is already in the deck
     const cardInDeck = cards.find((c) => c.id === cardId)
     if (cardInDeck) {

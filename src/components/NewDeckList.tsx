@@ -1,4 +1,11 @@
+import { useNewDeckContext } from "../context/newDeckContext"
+import Image from "next/image"
+import constants from "../data/constants"
+import ManaGem from "./Card/ManaGem"
+
 const NewDeckList: React.FC = () => {
+  const { general, cards } = useNewDeckContext()
+
   const deckList = []
 
   return (
@@ -17,11 +24,27 @@ const NewDeckList: React.FC = () => {
       <hr />
       <div
         className={`reverse-gradient-border flex flex-col text-center overflow-y-scroll h-full px-1 ${
-          deckList.length < 1 && "items-center justify-center"
+          !general && "items-center justify-center"
         }`}
       >
-        {deckList.length ? (
-          "DECK LIST"
+        {general ? (
+          <>
+            <div className="flex bg-red-500 flex-col">
+              <div className="flex flex-row relative">
+                <ManaGem className="w-5 h-5" cost={0} />
+                <span className="text-sm font-bold">{general.name}</span>
+                <div className="relative bg-yellow-500">
+                  <Image
+                    className="bg-green-500 absolute right-0 top-0"
+                    src={`${constants.imageUrl}/${general.resource.idle}`}
+                    layout="intrinsic"
+                    height={120}
+                    width={120}
+                  />
+                </div>
+              </div>
+            </div>
+          </>
         ) : (
           <div className="self-center">
             Choose a general to construct a deck
