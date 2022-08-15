@@ -5,12 +5,15 @@ import type { AppType } from "next/dist/shared/lib/utils"
 import superjson from "superjson"
 import "../styles/globals.css"
 import { FilterProvider } from "../context/filterContext"
+import { NewDeckProvider } from "../context/newDeckContext"
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <FilterProvider>
-      <Component {...pageProps} />
-    </FilterProvider>
+    <NewDeckProvider>
+      <FilterProvider>
+        <Component {...pageProps} />
+      </FilterProvider>
+    </NewDeckProvider>
   )
 }
 

@@ -1,10 +1,17 @@
+import { useEffect } from "react"
 import { useFilterContext } from "../context/filterContext"
 import { CardData } from "../data/cards"
 import CardDisplay from "./Card/CardDisplay"
 import FilterOptions from "./FilterOptions"
 
-const CardList: React.FC<{ compact?: boolean }> = ({ compact }) => {
-  const { filteredCards } = useFilterContext()
+const CardList: React.FC<{ compact?: boolean; cardList?: CardData[] }> = ({
+  compact,
+  cardList,
+}) => {
+  const { filteredCards, setInitialCards } = useFilterContext()
+  useEffect(() => {
+    if (cardList) setInitialCards(cardList)
+  }, [cardList])
 
   return (
     <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen ">

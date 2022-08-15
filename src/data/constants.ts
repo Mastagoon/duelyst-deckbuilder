@@ -17,4 +17,5 @@ export default {
     epic: "#bf20e1",
     legendary: "#e39f28",
   },
+  MAX_COPIES_IN_DECK: 3,
 }

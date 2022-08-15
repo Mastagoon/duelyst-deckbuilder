@@ -1,0 +1,1 @@
+import { CardData } from "./cards"

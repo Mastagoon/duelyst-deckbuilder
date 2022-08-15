@@ -4,6 +4,7 @@ import { allCards, CardData, Faction, queryFromCards } from "../data/cards"
 
 export interface FilterContexttype {
   cards: CardData[]
+  setInitialCards: (cards: CardData[]) => void
   filteredCards: CardData[]
   filterText: string
   updateFilterText: (text: string) => void
@@ -26,7 +27,7 @@ export const useFilterContext = () => {
 }
 
 export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
-  const [cards, setCards] = useState<CardData[]>([])
+  const [cards, setCards] = useState<CardData[]>(allCards)
   const [filteredCards, setFilteredCards] = useState<CardData[]>(allCards)
   const [filterText, setFilterText] = useState<string>("")
   const [filterFaction, setFilterFaction] = useState<Faction>()
@@ -34,15 +35,12 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
   const deferredFilterText = useDeferredValue(filterText)
 
   useEffect(() => {
-    setFilteredCards(
-      queryFromCards(allCards, deferredFilterText, filterFaction)
-    )
+    setFilteredCards(queryFromCards(cards, deferredFilterText, filterFaction))
   }, [deferredFilterText])
 
-  // const updateFilterFaction = (f?: Faction) => {
-  // if(!f)
-  //
-  // }
+  const setInitialCards = (c: CardData[]) => {
+    setCards(c)
+  }
 
   const updateFilterText = (text: string) => {
     setFilterText(text)
@@ -50,16 +48,17 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
 
   const updateFilterFaction = (f?: Faction) => {
     setFilterFaction(f)
-    setFilteredCards(queryFromCards(allCards, filterText, f))
+    setFilteredCards(queryFromCards(cards, filterText, f))
   }
 
   useEffect(() => {
-    setCards(allCards)
+    setCards(cards)
   }, [])
 
   return (
     <FilterContext.Provider
       value={{
+        setInitialCards,
         cards,
         filterFaction,
         updateFilterFaction,

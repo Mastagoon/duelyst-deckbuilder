@@ -3,8 +3,13 @@
 @tailwind utilities;
 
 @layer utilities {
+  .reverse-gradient-border {
+    border-width: 1px;
+    border-style: solid;
+    border-image: linear-gradient(to bottom, white, rgba(0, 0, 0, 0)) 1 100%;
+  }
   .gradient-border {
-    border-width: 3px;
+    border-width: 1px;
     border-style: solid;
     border-image: linear-gradient(to top, white, rgba(0, 0, 0, 0)) 1 100%;
   }

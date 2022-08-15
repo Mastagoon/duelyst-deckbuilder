@@ -83,6 +83,10 @@ export const allCards: CardData[] = [
   ...neutralCards,
 ]
 
+export const generalCards: CardData[] = allCards.filter(
+  (card) => card.cardType === "GENERAL"
+)
+
 export const cardDataById = allCards.reduce(
   (acc, cardData) => ({
     ...acc,
