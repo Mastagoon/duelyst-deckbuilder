@@ -1,13 +1,15 @@
 import cards from "./cards.json"
 
+export type EnumType = { [s: number]: string }
+
 export enum Faction {
-  "lyonar",
+  "lyonar" = 1,
   "songhai",
   "vetruvian",
   "abyssian",
   "magmar",
   "vanar",
-  "neutral",
+  "neutral" = 100,
 }
 
 // export type Faction =
@@ -37,6 +39,7 @@ export interface CardData {
     castEnd?: string
     castLoop?: string
     cast?: string
+    blurPlaceholder?: string
   }
   faction: Faction
   cardType: CardType
@@ -87,3 +90,21 @@ export const cardDataById = allCards.reduce(
   }),
   {} as Record<number, CardData>
 )
+
+export const queryFromCards = (
+  cards: CardData[],
+  text = "",
+  faction?: Faction
+) => {
+  if (faction) cards = cards.filter((card) => card.faction === faction)
+  return text === ""
+    ? cards
+    : cards.filter(
+        (card) =>
+          card.name.toLowerCase().includes(text.toLowerCase()) ||
+          card.description?.toLowerCase().includes(text.toLowerCase()) ||
+          card.tribes.some((tribe) =>
+            tribe.toLowerCase().includes(text.toLowerCase())
+          )
+      )
+}

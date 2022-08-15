@@ -23,6 +23,9 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+  .custom-scrollbar {
+    width: 10px;
+  }
 }
 
 body {
@@ -33,4 +36,23 @@ body {
   );
   background-attachment: fixed;
   min-height: 100vh;
+  overflow: overlay;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(160, 175, 182, 0.7);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(160, 175, 182, 0.5);
 }

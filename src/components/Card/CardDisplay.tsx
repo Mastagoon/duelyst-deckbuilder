@@ -21,7 +21,7 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
         {/* Rarity */}
         <div className="absolute top-5 right-2">
           <Image
-            src={`/icons/rarity/${card.rarity}.svg`}
+            src={`/icons/rarity/${card.rarity.toUpperCase()}.svg`}
             height={30}
             width={30}
           />

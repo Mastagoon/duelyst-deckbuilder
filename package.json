@@ -15,11 +15,16 @@
     "@trpc/next": "^9.27.0",
     "@trpc/react": "^9.27.0",
     "@trpc/server": "^9.27.0",
+    "lodash": "^4.17.21",
     "next": "12.2.3",
+    "plaiceholder": "^2.4.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.4.0",
     "react-query": "3.39.2",
+    "sharp": "^0.30.7",
     "superjson": "^1.9.1",
+    "ts-enum-util": "^4.0.2",
     "zod": "^3.17.3"
   },
   "devDependencies": {

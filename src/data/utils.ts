@@ -85,6 +85,7 @@ const normalizeSpriteName = (name: string | undefined | null): string | null =>
 // ): CardData => card("neutral", id, title, cost, type, rarity, spriteName)
 
 export const Keywords = [
+  "shadow creep",
   "airdrop",
   "celerity",
   "provoke",

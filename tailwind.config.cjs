@@ -17,6 +17,8 @@ module.exports = {
         "primary-cyan": "rgba(140, 174, 188, 1)",
         "secondary-cyan": "rgba(160, 175, 182, 1)",
         "secondary-cyan-bold": "rgba(179, 196, 203, 1)",
+        "fading-white": "rgba(255, 255, 255, 0.7)",
+        "primary-dark": "rgba(30, 30, 30, 1)",
       },
     },
   },
