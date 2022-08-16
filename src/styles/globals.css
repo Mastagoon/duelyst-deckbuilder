@@ -36,7 +36,7 @@
     transform-style: preserve-3d;
   }
   .cursor-pointer {
-    cursor: url(/cursor/select.png), auto;
+    cursor: url(/cursor/select.png), pointer;
   }
 }
 
@@ -45,7 +45,7 @@
 }
 
 body {
-  cursor: url(/cursor/default.png), auto;
+  cursor: url(/cursor/default.png), pointer;
   background: linear-gradient(
     65.72deg,
     #130e4d 18.75%,
@@ -54,6 +54,11 @@ body {
   background-attachment: fixed;
   min-height: 100vh;
   overflow: overlay;
+}
+
+a {
+	    cursor: url(/cursor/select.png), pointer;
+
 }
 
 ::-webkit-scrollbar {

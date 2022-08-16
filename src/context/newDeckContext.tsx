@@ -1,6 +1,12 @@
-import React, { useContext } from "react"
+import React, { useContext, useDeferredValue, useEffect } from "react"
 import { useState } from "react"
-import { CardData, Faction, generalCards, nonTokens } from "../data/cards"
+import {
+  CardData,
+  Faction,
+  generalCards,
+  nonTokens,
+  queryFromCards,
+} from "../data/cards"
 import constants from "../data/constants"
 import orderCards from "../utils/orderCards"
 
@@ -19,13 +25,14 @@ export interface NewDeckContextType {
   cards: DeckCardEntry[]
   addCardToDeck: (cardId: number) => void
   removeCardFromDeck: (cardId: number) => void
-  allowedCards: CardData[]
-  updateAllowedCards: (cards: CardData[]) => void
+  filteredCards: CardData[]
   saveDeck: () => void
   generateDeckCode: () => void
   minionCount: number
   spellCount: number
   artifactCount: number
+  filterText: string
+  updateFilterText: (query: string) => void
   reset: () => void
 }
 
@@ -46,13 +53,17 @@ export const useNewDeckContext = () => {
 export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
   children,
 }) => {
+  const [filterText, setFilterText] = useState("")
   const [general, setGeneral] = useState<CardData>()
   const [cards, setCards] = useState<DeckCardEntry[]>([])
   const [allowedCards, setAllowedCards] = useState<CardData[]>(generalCards)
+  const [filteredCards, setFilteredCards] = useState<CardData[]>(generalCards)
   const [minionCount, setMinionCount] = useState(0)
   const [spellCount, setSpellCount] = useState(0)
   const [artifactCount, setArtifactCount] = useState(0)
   const [deckTotal, setDeckTotal] = useState(0)
+
+  const deferredQuery = useDeferredValue(filterText)
 
   const reset = () => {
     setGeneral(undefined)
@@ -63,6 +74,12 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
     setArtifactCount(0)
     setDeckTotal(0)
   }
+
+  useEffect(() => {
+    console.log("DEFFERED VALUE UPDATED")
+    console.log(deferredQuery)
+    setFilteredCards(queryFromCards(allowedCards, deferredQuery))
+  }, [deferredQuery])
 
   const updateGeneral = (c: CardData) => {
     // check if we have a general
@@ -120,8 +137,8 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
       }
       // no cards in the deck have a higher mana cost than the card, so add it to the end
       setCards([...cards, { ...card, count: 1 }])
-      changeDeckCount(card.cardType, 1)
     }
+    changeDeckCount(card.cardType, 1)
   }
 
   const removeCardFromDeck = (cardId: number) => {
@@ -156,12 +173,19 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
     setAllowedCards(cardList)
   }
 
+  const updateFilterText = (text: string) => {
+    console.log("HIT")
+    setFilterText(text)
+  }
+
   const saveDeck = () => {}
   const generateDeckCode = () => {}
 
   return (
     <NewDeckContext.Provider
       value={{
+        filterText,
+        updateFilterText,
         minionCount,
         spellCount,
         artifactCount,
@@ -169,8 +193,7 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
         cards,
         addCardToDeck,
         removeCardFromDeck,
-        allowedCards,
-        updateAllowedCards,
+        filteredCards,
         saveDeck,
         generateDeckCode,
         reset,

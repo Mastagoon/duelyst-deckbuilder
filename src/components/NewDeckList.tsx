@@ -3,6 +3,7 @@ import constants from "../data/constants"
 import ManaGem from "./Card/ManaGem"
 import getFactionColor from "../utils/getFactionColor"
 import { useState } from "react"
+import { FaClipboard, FaShare } from "react-icons/fa"
 
 const NewDeckList: React.FC = () => {
   const [resetCounter, setResetCounter] = useState(0)
@@ -22,6 +23,8 @@ const NewDeckList: React.FC = () => {
     removeCardFromDeck(id)
   }
 
+  const handleSaveDeck = () => {}
+
   const handleReset = () => {
     if (resetCounter < 1) {
       alert("Click again to reset your deck")
@@ -33,13 +36,13 @@ const NewDeckList: React.FC = () => {
   }
 
   return (
-    <div className="bg-secondary-dark-blue flex flex-col justify-between text-white h-screen w-full px-2">
+    <div className="bg-secondary-dark-blue flex flex-col justify-between text-white h-screen w-full px-2 select-none">
       <div className="flex flex-col">
         <div className="flex flex-row justify-between items-center">
           <div className="flex flex-col">
-            <span>M: {minionCount}</span>
-            <span>S: {spellCount}</span>
-            <span>A: {artifactCount}</span>
+            <span>Minions: {minionCount}</span>
+            <span>Spells: {spellCount}</span>
+            <span>Artifacts: {artifactCount}</span>
           </div>
           <span className="tracking-wide">
             <span
@@ -54,7 +57,7 @@ const NewDeckList: React.FC = () => {
             /40 Total
           </span>
         </div>
-        <div>Mana Curve</div>
+        <div>Mana Curve placeholder</div>
       </div>
       <hr />
       <div
@@ -64,16 +67,14 @@ const NewDeckList: React.FC = () => {
       >
         {general ? (
           <>
-            <div
-              onClick={handleReset}
-              className="flex flex-col overflow-x-hidden cursor-pointer"
-            >
+            <div className="flex flex-col overflow-x-hidden cursor-pointer">
               <div
+                onClick={handleReset}
                 style={{
                   backgroundImage: `url(${constants.imageUrl}/${general.resource.idle})`,
                   backgroundSize: "40px 150%",
                   backgroundRepeat: "no-repeat",
-                  backgroundPosition: "100% 100%",
+                  backgroundPosition: "100% 50%",
                   border: `1px solid ${getFactionColor(general.faction)}`,
                 }}
                 className="flex flex-row px-1 py-2 my-1 rounded-md gap-2 bg-primary-dark-blue cursor-pointer hover:scale-110 transition-all
@@ -98,7 +99,7 @@ const NewDeckList: React.FC = () => {
                       backgroundImage: `url(${constants.imageUrl}/${c.resource.idle})`,
                       backgroundSize: "40px 150%",
                       backgroundRepeat: "no-repeat",
-                      backgroundPosition: "100% 100%",
+                      backgroundPosition: "100% 50%",
                       border: `1px solid `,
                       borderLeft: `1px solid ${getFactionColor(c.faction)}`,
                       borderBottom: `1px solid ${getFactionColor(c.faction)}`,
@@ -120,7 +121,22 @@ const NewDeckList: React.FC = () => {
           </div>
         )}
       </div>
-      <div>Save / Share</div>
+      <div className="flex flex-row justify-between my-3 px-1 items-center">
+        <div className="flex flex-row justify-between gap-5">
+          <div className={`border-2 rounded-sm p-1 border-white opacity-60`}>
+            <FaClipboard />
+          </div>
+          <div className={`border-2 rounded-sm p-1 border-white opacity-60`}>
+            <FaShare />
+          </div>
+        </div>
+        <button
+          onClick={handleSaveDeck}
+          className="bg-primary-light-purple rounded-sm px-2 hover:opacity-80 cursor-pointer"
+        >
+          Save
+        </button>
+      </div>
     </div>
   )
 }

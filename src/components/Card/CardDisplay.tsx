@@ -18,7 +18,7 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
         style={{
           border: `1px solid ${getFactionColor(card.faction)}`,
         }}
-        className="card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1"
+        className="card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1 select-none"
       >
         <ManaGem
           cost={card.mana}

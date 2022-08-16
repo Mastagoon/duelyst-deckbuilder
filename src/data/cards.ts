@@ -1,5 +1,7 @@
 import cards from "./cards.json"
 
+const bannedCards = [20424]
+
 export type EnumType = { [s: number]: string }
 
 export const Keywords = [

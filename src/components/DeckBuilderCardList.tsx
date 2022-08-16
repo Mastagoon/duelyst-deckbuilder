@@ -7,9 +7,23 @@ import CardAttack from "./Card/CardAttack"
 import CardHealth from "./Card/CardHealth"
 import ManaGem from "./Card/ManaGem"
 import constants from "../data/constants"
+import { FaSearch } from "react-icons/fa"
+import { useState } from "react"
+
+let debounceTimeout: any
 
 const DeckBuilderCardList: React.FC = ({}) => {
-  const { addCardToDeck, cards, allowedCards } = useNewDeckContext()
+  const [query, setQuery] = useState("")
+  const { addCardToDeck, general, cards, filteredCards, updateFilterText } =
+    useNewDeckContext()
+
+  const handleQueryStringChange = (e: any) => {
+    clearTimeout(debounceTimeout)
+    setQuery(e.target.value)
+    debounceTimeout = setTimeout(() => {
+      updateFilterText(e.target.value)
+    }, 300)
+  }
 
   const handleCardClick = (id: number) => {
     addCardToDeck(id)
@@ -18,16 +32,29 @@ const DeckBuilderCardList: React.FC = ({}) => {
   return (
     <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen ">
       <div className="col-span-12">
-        <h1 className="col-span-12 text-4xl font-bold">Deck Builder</h1>
-        {/*
-			#TODO fix filters in deck builder
-				<div className="col-span-12">
-				<FilterOptions cardPool={allowedCards} />
-			</div>
-				*/}
+        {general ? (
+          <h1 className="col-span-12 text-4xl font-bold">Deck Builder</h1>
+        ) : (
+          <h1 className="col-span-12 text-4xl font-bold capitalize">
+            Choose your general
+          </h1>
+        )}
+        <div className="col-span-12 ">
+          <div className="flex flex-row justify-center">
+            <div className="relative outline-none focus:outline-none mx-5 my-2">
+              <FaSearch className="absolute left-1 top-0 translate-y-1/2 text-[rgba(255,255,255,0.3)] p-0 m-0" />
+              <input
+                value={query}
+                onChange={handleQueryStringChange}
+                placeholder="Search..."
+                className="bg-[rgba(255,255,255,0.3)] rounded-md text-white border-white border-2 pl-5 min-h-full self-center"
+              />
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="col-span-12 text-center grid grid-cols-12 gap-y-5 gradient-border overflow-y-scroll h-full py-3">
-        {allowedCards.map((card: CardData, i: number) => (
+      <div className="col-span-12 text-center grid grid-cols-12 gap-y-5 gradient-border overflow-y-scroll h-full py-3 select-none">
+        {filteredCards.map((card: CardData, i: number) => (
           <div
             onClick={() => handleCardClick(card.id)}
             className={`mx-5 col-span-4`}
