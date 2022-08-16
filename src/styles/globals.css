@@ -35,9 +35,9 @@
     image-rendering: pixelated;
     transform-style: preserve-3d;
   }
-}
-
-.card-border {
+  .cursor-pointer {
+    cursor: url(/cursor/select.png), auto;
+  }
 }
 
 .card-border:hover {
@@ -45,6 +45,7 @@
 }
 
 body {
+  cursor: url(/cursor/default.png), auto;
   background: linear-gradient(
     65.72deg,
     #130e4d 18.75%,
