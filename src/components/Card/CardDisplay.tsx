@@ -27,7 +27,7 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
           />
         </div>
         <div
-          className="grow pixelated"
+          className="flex-1 pixelated"
           style={{
             backgroundImage: `url(${constants.imageUrl}/${card.resource.idle})`,
             backgroundPosition: `${

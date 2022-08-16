@@ -97,7 +97,7 @@ export const allCards: CardData[] = [
 ]
 
 export const nonTokens = allCards.filter(
-  (c) => c.cardType.toUpperCase() !== "TOKEN"
+  (c) => c.rarity.toUpperCase() !== "TOKEN"
 )
 
 export const generalCards: CardData[] = allCards.filter(

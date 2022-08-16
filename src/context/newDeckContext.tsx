@@ -1,7 +1,8 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext } from "react"
 import { useState } from "react"
-import { allCards, CardData, Faction, generalCards } from "../data/cards"
+import { CardData, Faction, generalCards, nonTokens } from "../data/cards"
 import constants from "../data/constants"
+import orderCards from "../utils/orderCards"
 
 export type DeckCardEntry = CardData & {
   count: number
@@ -58,10 +59,13 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
     // if the new general is from a different faction, remove all the faction cards with it
     if (c.faction !== general?.faction) {
       setAllowedCards(
-        allCards.filter((card) => {
-          console.log(card.faction, c.faction)
-          return card.faction === c.faction || card.faction === Faction.neutral
-        })
+        orderCards(
+          nonTokens.filter((card) => {
+            return (
+              card.faction === c.faction || card.faction === Faction.neutral
+            )
+          })
+        )
       )
       // remove cards from the old faction
       setCards(
