@@ -22,11 +22,13 @@ export type DeckData = {
 
 export interface NewDeckContextType {
   general?: CardData
+  deckName: string
+  updateDeckName: (name: string) => void
   cards: DeckCardEntry[]
   addCardToDeck: (cardId: number) => void
   removeCardFromDeck: (cardId: number) => void
   filteredCards: CardData[]
-  saveDeck: () => void
+  saveDeck: () => Promise<void>
   generateDeckCode: () => void
   minionCount: number
   spellCount: number
@@ -55,6 +57,7 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
 }) => {
   const [filterText, setFilterText] = useState("")
   const [general, setGeneral] = useState<CardData>()
+  const [deckName, setDeckName] = useState("New Deck")
   const [cards, setCards] = useState<DeckCardEntry[]>([])
   const [allowedCards, setAllowedCards] = useState<CardData[]>(generalCards)
   const [filteredCards, setFilteredCards] = useState<CardData[]>(generalCards)
@@ -141,6 +144,10 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
     changeDeckCount(card.cardType, 1)
   }
 
+  useEffect(() => {
+    setFilteredCards(allowedCards)
+  }, [allowedCards])
+
   const removeCardFromDeck = (cardId: number) => {
     const card = cards.find((c) => c.id === cardId)
     if (!card || card.cardType === "GENERAL") return
@@ -178,12 +185,20 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
     setFilterText(text)
   }
 
-  const saveDeck = () => {}
+  const saveDeck = async () => {
+    // #TODO
+    // 1: check the deck validity
+    // 2: create deck code
+    // 3: save deck to database
+  }
+
   const generateDeckCode = () => {}
 
   return (
     <NewDeckContext.Provider
       value={{
+        deckName,
+        updateDeckName: setDeckName,
         filterText,
         updateFilterText,
         minionCount,

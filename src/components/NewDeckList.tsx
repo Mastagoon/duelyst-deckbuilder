@@ -1,14 +1,19 @@
 import { useNewDeckContext } from "../context/newDeckContext"
+import Swal from "sweetalert2"
 import constants from "../data/constants"
 import ManaGem from "./Card/ManaGem"
 import getFactionColor from "../utils/getFactionColor"
+import { FaClipboard, FaEdit, FaShare } from "react-icons/fa"
 import { useState } from "react"
-import { FaClipboard, FaShare } from "react-icons/fa"
+
+let debounceTimeout: any
 
 const NewDeckList: React.FC = () => {
-  const [resetCounter, setResetCounter] = useState(0)
   const {
     general,
+    deckName,
+    saveDeck,
+    updateDeckName,
     removeCardFromDeck,
     cards,
     minionCount,
@@ -16,6 +21,7 @@ const NewDeckList: React.FC = () => {
     reset,
     artifactCount,
   } = useNewDeckContext()
+  const [localDeckName, setLocalDeckName] = useState(deckName)
 
   const deckTotal = minionCount + spellCount + artifactCount
 
@@ -23,16 +29,72 @@ const NewDeckList: React.FC = () => {
     removeCardFromDeck(id)
   }
 
-  const handleSaveDeck = () => {}
+  const handleUpdateDeckName = (newName: string) => {
+    setLocalDeckName(newName)
+    clearTimeout(debounceTimeout)
+    debounceTimeout = setTimeout(() => {
+      updateDeckName(newName)
+    }, 500)
+  }
 
-  const handleReset = () => {
-    if (resetCounter < 1) {
-      alert("Click again to reset your deck")
-      setResetCounter(1)
-      setTimeout(() => {
-        setResetCounter(0)
-      }, 1000)
-    } else reset()
+  const handleSaveDeck = async () => {
+    // check deck cards
+    const cardCount = minionCount + spellCount + artifactCount
+    if (cardCount !== 40) {
+      return Swal.fire({
+        customClass: {
+          popup: "alert-dialog",
+        },
+        title: "Invalid Deck",
+        text:
+          cardCount < 40
+            ? "You need at least 40 cards in your deck"
+            : "A deck cannot exceed 40 cards.",
+        timer: 2000,
+        position: "bottom-right",
+        showConfirmButton: false,
+      })
+    }
+    // check deck name
+    if (deckName.length > 20) {
+      return Swal.fire({
+        customClass: {
+          popup: "alert-dialog",
+        },
+        title: "Invalid Deck",
+        text: "Your deck name is too long",
+        timer: 2000,
+        position: "bottom-right",
+        showConfirmButton: false,
+      })
+    }
+    // passed all checks
+    await saveDeck()
+    const response = await Swal.fire({
+      customClass: {
+        popup: "alert-dialog",
+      },
+      title: `Deck ${deckName} has been Saved`,
+      text: "Your deck has been saved successfully",
+      confirmButtonText: "Copy Deck Code",
+    })
+    if (response.isConfirmed) {
+      navigator.clipboard.writeText(deckName)
+    }
+  }
+
+  const handleReset = async () => {
+    const response = await Swal.fire({
+      customClass: {
+        popup: "alert-dialog",
+      },
+      title: "Are you sure?",
+      text: "Do you want to reset your deck and start over?",
+      showCancelButton: true,
+      confirmButtonText: "Reset",
+    })
+    if (!response.isConfirmed) return
+    reset()
   }
 
   return (
@@ -58,6 +120,18 @@ const NewDeckList: React.FC = () => {
           </span>
         </div>
         <div>Mana Curve placeholder</div>
+        <div className="text-md font-bold flex items-center flex-row items-center py-2 gap-1 cursor-pointer">
+          <label htmlFor="deckName" className="cursor-pointer">
+            <FaEdit className="" />
+          </label>
+          <input
+            name="deckName"
+            maxLength={20}
+            className="bg-transparent cursor-pointer focus:border-none active:border-none outline-none w-full"
+            value={localDeckName}
+            onChange={(e) => handleUpdateDeckName(e.target.value)}
+          />
+        </div>
       </div>
       <hr />
       <div

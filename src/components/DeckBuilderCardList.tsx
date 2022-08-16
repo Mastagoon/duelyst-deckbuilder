@@ -1,4 +1,5 @@
 import { useNewDeckContext } from "../context/newDeckContext"
+import Swal from "sweetalert2"
 import Image from "next/image"
 import { CardData } from "../data/cards"
 import getFactionColor from "../utils/getFactionColor"
@@ -14,8 +15,16 @@ let debounceTimeout: any
 
 const DeckBuilderCardList: React.FC = ({}) => {
   const [query, setQuery] = useState("")
-  const { addCardToDeck, general, cards, filteredCards, updateFilterText } =
-    useNewDeckContext()
+  const {
+    addCardToDeck,
+    minionCount,
+    spellCount,
+    artifactCount,
+    general,
+    cards,
+    filteredCards,
+    updateFilterText,
+  } = useNewDeckContext()
 
   const handleQueryStringChange = (e: any) => {
     clearTimeout(debounceTimeout)
@@ -26,6 +35,16 @@ const DeckBuilderCardList: React.FC = ({}) => {
   }
 
   const handleCardClick = (id: number) => {
+    if (minionCount + spellCount + artifactCount === 40)
+      Swal.fire({
+        customClass: {
+          popup: "alert-dialog",
+        },
+        text: "You've reached the maximum number of cards in your deck.",
+        timer: 2000,
+        position: "bottom-right",
+        showConfirmButton: false,
+      })
     addCardToDeck(id)
   }
 
@@ -108,6 +127,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
                 </span>
               )}
               <CardDescription description={card.description} />
+              {/*@ts-ignore*/}
               {cards.find((c) => c.id === card.id)?.count > 0 ? (
                 <div className="z-2 bg-primary-cyan rounded-sm w-full">
                   Copies in deck:{" "}

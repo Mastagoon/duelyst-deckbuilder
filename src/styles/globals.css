@@ -56,9 +56,17 @@ body {
   overflow: overlay;
 }
 
-a {
-	    cursor: url(/cursor/select.png), pointer;
+.alert-dialog {
+  background-color: rgba(9, 5, 52, 1) !important;
+  color: white !important;
+}
 
+.alert-dialog .swal2-confirm {
+  background-color: rgba(89, 81, 188, 1) !important;
+}
+
+a {
+  cursor: url(/cursor/select.png), pointer;
 }
 
 ::-webkit-scrollbar {
