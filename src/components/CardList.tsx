@@ -10,7 +10,7 @@ const CardList: React.FC<{ compact?: boolean; cardList?: CardData[] }> = ({
 }) => {
   const { filteredCards, setInitialCards } = useFilterContext()
   useEffect(() => {
-    if (cardList) setInitialCards(cardList)
+    if (cardList?.length) setInitialCards(cardList)
   }, [cardList])
 
   return (

@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { useState } from "react"
 import { allCards, CardData, Faction, generalCards } from "../data/cards"
 import constants from "../data/constants"
@@ -22,6 +22,9 @@ export interface NewDeckContextType {
   updateAllowedCards: (cards: CardData[]) => void
   saveDeck: () => void
   generateDeckCode: () => void
+  minionCount: number
+  spellCount: number
+  artifactCount: number
 }
 
 const NewDeckContext = React.createContext<NewDeckContextType | null>(null)
@@ -44,14 +47,15 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
   const [general, setGeneral] = useState<CardData>()
   const [cards, setCards] = useState<DeckCardEntry[]>([])
   const [allowedCards, setAllowedCards] = useState<CardData[]>(generalCards)
+  const [minionCount, setMinionCount] = useState(0)
+  const [spellCount, setSpellCount] = useState(0)
+  const [artifactCount, setArtifactCount] = useState(0)
+  const [deckTotal, setDeckTotal] = useState(0)
 
   const updateGeneral = (c: CardData) => {
     // check if we have a general
     if (c.cardType.toUpperCase() !== "GENERAL") return
     // if the new general is from a different faction, remove all the faction cards with it
-    console.log(c.faction)
-    console.log(Faction.neutral)
-    console.log(Faction.lyonar)
     if (c.faction !== general?.faction) {
       setAllowedCards(
         allCards.filter((card) => {
@@ -90,6 +94,7 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
       // add the card to the deck
       setCards([...cards, { ...card, count: 1 }])
     }
+    changeDeckCount(card.cardType, 1)
   }
 
   const removeCardFromDeck = (cardId: number) => {
@@ -101,6 +106,22 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
       setCards(
         cards.map((c) => (c.id === cardId ? { ...c, count: c.count - 1 } : c))
       )
+    }
+    changeDeckCount(card.cardType, -1)
+  }
+
+  const changeDeckCount = (cardType: string, count: number) => {
+    switch (cardType.toUpperCase()) {
+      default:
+      case "MINION":
+        setMinionCount(minionCount + count)
+        break
+      case "SPELL":
+        setSpellCount(spellCount + count)
+        break
+      case "ARTIFACT":
+        setArtifactCount(artifactCount + count)
+        break
     }
   }
 
@@ -114,6 +135,9 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
   return (
     <NewDeckContext.Provider
       value={{
+        minionCount,
+        spellCount,
+        artifactCount,
         general,
         cards,
         addCardToDeck,

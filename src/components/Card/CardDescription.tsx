@@ -1,4 +1,4 @@
-import { Keywords } from "../../data/utils"
+import { Keywords } from "../../data/cards"
 
 const CardDescription: React.FC<{ description: string }> = ({
   description,

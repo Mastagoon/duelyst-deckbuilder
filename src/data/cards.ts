@@ -2,6 +2,19 @@ import cards from "./cards.json"
 
 export type EnumType = { [s: number]: string }
 
+export const Keywords = [
+  "shadow creep",
+  "airdrop",
+  "celerity",
+  "provoke",
+  "zeal",
+  "rush",
+  "ranged",
+  "flying",
+  "opening gambit",
+  "activate",
+]
+
 export enum Faction {
   "lyonar" = 1,
   "songhai",
@@ -82,6 +95,10 @@ export const allCards: CardData[] = [
   ...vanarCards,
   ...neutralCards,
 ]
+
+export const nonTokens = allCards.filter(
+  (c) => c.cardType.toUpperCase() !== "TOKEN"
+)
 
 export const generalCards: CardData[] = allCards.filter(
   (card) => card.cardType.toUpperCase() === "GENERAL"

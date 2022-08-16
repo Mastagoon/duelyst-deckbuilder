@@ -4,6 +4,7 @@ import CardHealth from "./CardHealth"
 import ManaGem from "./ManaGem"
 import Image from "next/image"
 import CardDescription from "./CardDescription"
+import constants from "../../data/constants"
 
 interface CardDisplayProps {
   card: CardData
@@ -25,18 +26,27 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
             width={30}
           />
         </div>
-        <div>
-          <Image
-            className="pixelated"
-            src={`https://alpha.duelyst2.com/${card.resource.idle}`}
-            layout="intrinsic"
-            height={120}
-            width={120}
-          />
-        </div>
+        <div
+          className="grow pixelated"
+          style={{
+            backgroundImage: `url(${constants.imageUrl}/${card.resource.idle})`,
+            backgroundPosition: `${
+              ["MINION", "GENERAL"].includes(card.cardType.toUpperCase())
+                ? "center 10%"
+                : "center"
+            }`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: `${
+              ["MINION", "GENERAL"].includes(card.cardType.toUpperCase())
+                ? "75%"
+                : "50%"
+            }`,
+          }}
+        ></div>
         <span className="tracking-wide"> {card.name.toUpperCase()}</span>
         <span className="tracking-wide mb-3 text-primary-cyan text-sm">
           {card.cardType.toUpperCase()}
+          {card.rarity.toUpperCase() === "TOKEN" && ",TOKEN"}
         </span>
         {card.tribes.length > 0 && (
           <span className="text-primary-cyan text-sm tracking-widest">
