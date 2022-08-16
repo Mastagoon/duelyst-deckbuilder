@@ -5,6 +5,7 @@ import ManaGem from "./ManaGem"
 import Image from "next/image"
 import CardDescription from "./CardDescription"
 import constants from "../../data/constants"
+import getFactionColor from "../../utils/getFactionColor"
 
 interface CardDisplayProps {
   card: CardData
@@ -13,7 +14,12 @@ interface CardDisplayProps {
 const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
   return (
     <>
-      <div className=" border-white border-2 hover:border-primary-light-purple cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1">
+      <div
+        style={{
+          border: `1px solid ${getFactionColor(card.faction)}`,
+        }}
+        className="card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1"
+      >
         <ManaGem
           cost={card.mana}
           className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-12 w-12"
