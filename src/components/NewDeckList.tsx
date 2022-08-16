@@ -1,9 +1,9 @@
-import { useNewDeckContext } from "../context/newDeckContext"
+import { useDeckContext } from "../context/newDeckContext"
 import Swal from "sweetalert2"
 import constants from "../data/constants"
 import ManaGem from "./Card/ManaGem"
 import getFactionColor from "../utils/getFactionColor"
-import { FaClipboard, FaEdit, FaShare } from "react-icons/fa"
+import { FaClipboard, FaEdit, FaShare, FaTrash } from "react-icons/fa"
 import { useState } from "react"
 
 let debounceTimeout: any
@@ -18,12 +18,39 @@ const NewDeckList: React.FC = () => {
     cards,
     minionCount,
     spellCount,
+    loadFromDeckCode,
     reset,
     artifactCount,
-  } = useNewDeckContext()
+  } = useDeckContext()
   const [localDeckName, setLocalDeckName] = useState(deckName)
+  const [deckCode, setDeckCode] = useState("")
 
   const deckTotal = minionCount + spellCount + artifactCount
+
+  const handleImportDeckCode = () => {
+    const result = loadFromDeckCode(deckCode)
+    if (!result)
+      return Swal.fire({
+        customClass: {
+          popup: "alert-dialog",
+        },
+        title: "Invalid Deck Code",
+        text: "The deck code you entered is invalid.",
+        confirmButtonText: "OK",
+      })
+    setLocalDeckName(deckName)
+    setDeckCode("")
+    return Swal.fire({
+      customClass: {
+        popup: "alert-dialog",
+      },
+      title: "Deck Code Imported",
+      text: "The deck code you entered has been imported.",
+      timer: 2000,
+      showConfirmButton: false,
+      position: "bottom-right",
+    })
+  }
 
   const handleDeckCardClick = (id: number) => {
     removeCardFromDeck(id)
@@ -40,7 +67,7 @@ const NewDeckList: React.FC = () => {
   const handleSaveDeck = async () => {
     // check deck cards
     const cardCount = minionCount + spellCount + artifactCount
-    if (cardCount !== 40) {
+    if (cardCount !== 39) {
       return Swal.fire({
         customClass: {
           popup: "alert-dialog",
@@ -69,7 +96,7 @@ const NewDeckList: React.FC = () => {
       })
     }
     // passed all checks
-    await saveDeck()
+    const code = await saveDeck()
     const response = await Swal.fire({
       customClass: {
         popup: "alert-dialog",
@@ -79,7 +106,7 @@ const NewDeckList: React.FC = () => {
       confirmButtonText: "Copy Deck Code",
     })
     if (response.isConfirmed) {
-      navigator.clipboard.writeText(deckName)
+      navigator.clipboard.writeText(code)
     }
   }
 
@@ -114,7 +141,7 @@ const NewDeckList: React.FC = () => {
                 }`,
               }}
             >
-              {deckTotal}
+              {deckTotal + (general ? 1 : 0)}
             </span>
             /40 Total
           </span>
@@ -190,8 +217,25 @@ const NewDeckList: React.FC = () => {
             </div>
           </>
         ) : (
-          <div className="self-center">
-            Choose a general to construct a deck
+          <div className="overflow-hidden">
+            <div className="self-center">
+              Choose a general to construct a deck
+            </div>
+            <div className="block font-bold tracking-widest">OR</div>
+            <input
+              className="bg-transparent text-center mx-auto border-b-2 border-secondary-light-cyan overflow-hidden w-full outline-none cursor-pointer"
+              placeholder="Enter Deck Code..."
+              value={deckCode}
+              onChange={(e) => setDeckCode(e.target.value)}
+            />
+
+            <button
+              onClick={handleImportDeckCode}
+              disabled={!deckCode}
+              className="bg-primary-light-purple rounded-sm px-2 hover:opacity-80 cursor-pointer my-2 disabled:opacity-50"
+            >
+              Import
+            </button>
           </div>
         )}
       </div>
@@ -200,8 +244,13 @@ const NewDeckList: React.FC = () => {
           <div className={`border-2 rounded-sm p-1 border-white opacity-60`}>
             <FaClipboard />
           </div>
-          <div className={`border-2 rounded-sm p-1 border-white opacity-60`}>
-            <FaShare />
+          <div
+            onClick={handleReset}
+            className={`border-2 hover:scale-110 hover:opacity-90 transition-all rounded-sm p-1 border-white ${
+              general ? "" : "opacity-60"
+            }`}
+          >
+            <FaTrash />
           </div>
         </div>
         <button

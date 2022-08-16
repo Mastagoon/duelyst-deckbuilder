@@ -1,4 +1,4 @@
-import { useNewDeckContext } from "../context/newDeckContext"
+import { useDeckContext } from "../context/newDeckContext"
 import Swal from "sweetalert2"
 import Image from "next/image"
 import { CardData } from "../data/cards"
@@ -24,7 +24,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
     cards,
     filteredCards,
     updateFilterText,
-  } = useNewDeckContext()
+  } = useDeckContext()
 
   const handleQueryStringChange = (e: any) => {
     clearTimeout(debounceTimeout)
@@ -35,7 +35,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
   }
 
   const handleCardClick = (id: number) => {
-    if (minionCount + spellCount + artifactCount === 40)
+    if (minionCount + spellCount + artifactCount === 39)
       Swal.fire({
         customClass: {
           popup: "alert-dialog",

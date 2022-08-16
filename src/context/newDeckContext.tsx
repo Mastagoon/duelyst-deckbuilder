@@ -1,6 +1,7 @@
 import React, { useContext, useDeferredValue, useEffect } from "react"
 import { useState } from "react"
 import {
+  allCards,
   CardData,
   Faction,
   generalCards,
@@ -8,6 +9,7 @@ import {
   queryFromCards,
 } from "../data/cards"
 import constants from "../data/constants"
+import { generateDeckCode, parseDeckCode } from "../utils/deckCode"
 import orderCards from "../utils/orderCards"
 
 export type DeckCardEntry = CardData & {
@@ -20,7 +22,7 @@ export type DeckData = {
   deckCode?: string
 }
 
-export interface NewDeckContextType {
+export interface DeckContextType {
   general?: CardData
   deckName: string
   updateDeckName: (name: string) => void
@@ -28,33 +30,31 @@ export interface NewDeckContextType {
   addCardToDeck: (cardId: number) => void
   removeCardFromDeck: (cardId: number) => void
   filteredCards: CardData[]
-  saveDeck: () => Promise<void>
-  generateDeckCode: () => void
+  saveDeck: () => Promise<string>
   minionCount: number
   spellCount: number
   artifactCount: number
   filterText: string
   updateFilterText: (query: string) => void
   reset: () => void
+  loadFromDeckCode: (code: string) => boolean
 }
 
-const NewDeckContext = React.createContext<NewDeckContextType | null>(null)
+const DeckContext = React.createContext<DeckContextType | null>(null)
 
-interface NewDeckContextProps {
+interface DeckContextProps {
   children: React.ReactNode
 }
 
-export const useNewDeckContext = () => {
-  const context = useContext(NewDeckContext)
+export const useDeckContext = () => {
+  const context = useContext(DeckContext)
   if (context === null) {
-    throw new Error("useNewDeckContext must be used within a NewDeckProvider")
+    throw new Error("useDeckContext must be used within a DeckProvider")
   }
   return context
 }
 
-export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
-  children,
-}) => {
+export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
   const [filterText, setFilterText] = useState("")
   const [general, setGeneral] = useState<CardData>()
   const [deckName, setDeckName] = useState("New Deck")
@@ -176,10 +176,6 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
     }
   }
 
-  const updateAllowedCards = (cardList: CardData[]) => {
-    setAllowedCards(cardList)
-  }
-
   const updateFilterText = (text: string) => {
     console.log("HIT")
     setFilterText(text)
@@ -188,14 +184,50 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
   const saveDeck = async () => {
     // #TODO
     // 1: check the deck validity
+    if (minionCount + spellCount + artifactCount !== 39 || !general) return ""
     // 2: create deck code
+    const code = generateDeckCode(general, cards, deckName)
+    return code ?? ""
     // 3: save deck to database
   }
 
-  const generateDeckCode = () => {}
+  const loadFromDeckCode = (code: string) => {
+    const deck = parseDeckCode(code)
+    if (!deck) return false
+    const general = generalCards.find((g) => g.id === deck.generalId)
+    if (!general) return false
+    updateGeneral(general)
+    const deckCards = deck.cardsData
+      .map((cd) => {
+        const card = allCards.find((c) => c.id === cd.id)!
+        return {
+          ...card,
+          count: cd.count,
+        }
+      })
+      .sort((a, b) => a.mana - b.mana)
+    setCards(deckCards)
+    setMinionCount(
+      deckCards
+        .filter((c) => c.cardType.toUpperCase() === "MINION")
+        .reduce((tot, cur) => tot + cur.count, 0)
+    )
+    setSpellCount(
+      deckCards
+        .filter((c) => c.cardType.toUpperCase() === "SPELL")
+        .reduce((tot, cur) => tot + cur.count, 0)
+    )
+    setArtifactCount(
+      deckCards
+        .filter((c) => c.cardType.toUpperCase() === "ARTIFACT")
+        .reduce((tot, cur) => tot + cur.count, 0)
+    )
+    setDeckName(deck.deckName ?? "New Deck")
+    return true
+  }
 
   return (
-    <NewDeckContext.Provider
+    <DeckContext.Provider
       value={{
         deckName,
         updateDeckName: setDeckName,
@@ -210,11 +242,11 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
         removeCardFromDeck,
         filteredCards,
         saveDeck,
-        generateDeckCode,
         reset,
+        loadFromDeckCode,
       }}
     >
       {children}
-    </NewDeckContext.Provider>
+    </DeckContext.Provider>
   )
 }
