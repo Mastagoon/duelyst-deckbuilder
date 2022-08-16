@@ -4,7 +4,7 @@ import PageLayout from "../components/PageLayout"
 import { nonTokens, CardData } from "../data/cards"
 import orderCards from "../utils/orderCards"
 
-export const getServersideProps = async () => {
+export const getStaticProps = async () => {
   const cards = nonTokens
   return {
     props: {

@@ -26,7 +26,7 @@ const FilterOptions: React.FC<{ cardPool?: CardData[] }> = ({ cardPool }) => {
 
   useEffect(() => {
     if (cardPool?.length) setInitialCards(cardPool)
-  }, [cardPool])
+  }, [cardPool, setInitialCards])
 
   const handleChangeFaction = (f: Faction) => {
     if (filterFactions?.includes(f))

@@ -94,6 +94,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
               {/* Rarity */}
               <div className="absolute top-5 right-2">
                 <Image
+                  alt="rarity"
                   src={`/icons/rarity/${card.rarity.toUpperCase()}.svg`}
                   height={30}
                   width={30}

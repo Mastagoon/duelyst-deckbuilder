@@ -1,7 +1,7 @@
 import { Faction } from "../data/cards"
 import constants from "../data/constants"
 
-export default (f: number) => {
+const getFactionColors = (f: number) => {
   switch (f) {
     case Faction.abyssian:
       return constants.colors.abyssian
@@ -19,3 +19,5 @@ export default (f: number) => {
       return constants.colors.vetruvian
   }
 }
+
+export default getFactionColors

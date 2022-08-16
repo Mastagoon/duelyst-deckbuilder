@@ -79,8 +79,6 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
   }
 
   useEffect(() => {
-    console.log("DEFFERED VALUE UPDATED")
-    console.log(deferredQuery)
     setFilteredCards(queryFromCards(allowedCards, deferredQuery))
   }, [deferredQuery])
 
@@ -177,7 +175,6 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
   }
 
   const updateFilterText = (text: string) => {
-    console.log("HIT")
     setFilterText(text)
   }
 

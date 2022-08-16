@@ -1,6 +1,6 @@
 import twcolors from "tailwindcss/colors"
 
-export default {
+const constants = {
   imageUrl: "https://alpha.duelyst2.com",
   colors: {
     lyonar: "#e5c56d",
@@ -19,3 +19,5 @@ export default {
   },
   MAX_COPIES_IN_DECK: 3,
 }
+
+export default constants

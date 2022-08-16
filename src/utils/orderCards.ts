@@ -1,6 +1,6 @@
 import { CardData, Faction } from "../data/cards"
 
-export default (cards: CardData[]) => {
+const orderCards = (cards: CardData[]) => {
   return cards.sort((a, b) => {
     if (a.cardType.toUpperCase() === "GENERAL") {
       //1st card is a general
@@ -21,3 +21,5 @@ export default (cards: CardData[]) => {
       : -1
   })
 }
+
+export default orderCards

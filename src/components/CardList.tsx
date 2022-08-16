@@ -11,7 +11,7 @@ const CardList: React.FC<{ compact?: boolean; cardList?: CardData[] }> = ({
   const { filteredCards, setInitialCards } = useFilterContext()
   useEffect(() => {
     if (cardList?.length) setInitialCards(cardList)
-  }, [cardList])
+  }, [cardList, setInitialCards])
 
   return (
     <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen ">
