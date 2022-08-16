@@ -26,6 +26,7 @@ export interface NewDeckContextType {
   minionCount: number
   spellCount: number
   artifactCount: number
+  reset: () => void
 }
 
 const NewDeckContext = React.createContext<NewDeckContextType | null>(null)
@@ -52,6 +53,16 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
   const [spellCount, setSpellCount] = useState(0)
   const [artifactCount, setArtifactCount] = useState(0)
   const [deckTotal, setDeckTotal] = useState(0)
+
+  const reset = () => {
+    setGeneral(undefined)
+    setCards([])
+    setAllowedCards(generalCards)
+    setMinionCount(0)
+    setSpellCount(0)
+    setArtifactCount(0)
+    setDeckTotal(0)
+  }
 
   const updateGeneral = (c: CardData) => {
     // check if we have a general
@@ -95,10 +106,22 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
         cards.map((c) => (c.id === cardId ? { ...c, count: c.count + 1 } : c))
       )
     } else {
-      // add the card to the deck
+      // add the card to the deck at the specified index based on mana cost
+      let i = 0
+      for (const c of cards) {
+        if (c.mana > card.mana) {
+          const tempArr = cards
+          tempArr.splice(i, 0, { ...card, count: 1 })
+          setCards(tempArr)
+          changeDeckCount(card.cardType, 1)
+          return
+        }
+        i++
+      }
+      // no cards in the deck have a higher mana cost than the card, so add it to the end
       setCards([...cards, { ...card, count: 1 }])
+      changeDeckCount(card.cardType, 1)
     }
-    changeDeckCount(card.cardType, 1)
   }
 
   const removeCardFromDeck = (cardId: number) => {
@@ -150,6 +173,7 @@ export const NewDeckProvider: React.FC<NewDeckContextProps> = ({
         updateAllowedCards,
         saveDeck,
         generateDeckCode,
+        reset,
       }}
     >
       {children}

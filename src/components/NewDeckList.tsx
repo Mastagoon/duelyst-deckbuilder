@@ -2,14 +2,17 @@ import { useNewDeckContext } from "../context/newDeckContext"
 import constants from "../data/constants"
 import ManaGem from "./Card/ManaGem"
 import getFactionColor from "../utils/getFactionColor"
+import { useState } from "react"
 
 const NewDeckList: React.FC = () => {
+  const [resetCounter, setResetCounter] = useState(0)
   const {
     general,
     removeCardFromDeck,
     cards,
     minionCount,
     spellCount,
+    reset,
     artifactCount,
   } = useNewDeckContext()
 
@@ -17,6 +20,16 @@ const NewDeckList: React.FC = () => {
 
   const handleDeckCardClick = (id: number) => {
     removeCardFromDeck(id)
+  }
+
+  const handleReset = () => {
+    if (resetCounter < 1) {
+      alert("Click again to reset your deck")
+      setResetCounter(1)
+      setTimeout(() => {
+        setResetCounter(0)
+      }, 1000)
+    } else reset()
   }
 
   return (
@@ -51,7 +64,10 @@ const NewDeckList: React.FC = () => {
       >
         {general ? (
           <>
-            <div className="flex flex-col overflow-x-hidden">
+            <div
+              onClick={handleReset}
+              className="flex flex-col overflow-x-hidden cursor-pointer"
+            >
               <div
                 style={{
                   backgroundImage: `url(${constants.imageUrl}/${general.resource.idle})`,
@@ -64,7 +80,9 @@ const NewDeckList: React.FC = () => {
 "
               >
                 <ManaGem className="w-5 h-5" cost={0} />
-                <span className="text-sm font-bold">{general.name}</span>
+                <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer">
+                  {general.name}
+                </span>
               </div>
               {cards.map((c, i) => (
                 <div
@@ -88,7 +106,9 @@ const NewDeckList: React.FC = () => {
                     className="flex flex-row px-1 py-2 my-1 rounded-md gap-2 bg-primary-dark-blue cursor-pointer hover:scale-110 transition-all"
                   >
                     <ManaGem className="w-5 h-5" cost={c.mana} />
-                    <span className="text-sm font-bold">{c.name}</span>
+                    <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer">
+                      {c.name}
+                    </span>
                   </div>
                 </div>
               ))}

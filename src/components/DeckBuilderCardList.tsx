@@ -39,7 +39,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
                 opacity:
                   cards.find((c) => c.id === card.id)?.count === 3 ? 0.5 : 1,
               }}
-              className="card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1"
+              className="card-border cursor-pointer transition-all duration-100 m-5 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1 active:scale-110"
             >
               <ManaGem
                 cost={card.mana}
