@@ -5,8 +5,19 @@ module.exports = {
     extend: {
       animation: {
         slideInFromTop: "slideInFromTop 0.5s ease-out",
+        slideInFromBottom: "slideInFromBottom 0.5s ease-out",
       },
       keyframes: {
+        slideInFromBottom: {
+          "0%": {
+            opacity: 0.3,
+            transform: "translateY(20px)",
+          },
+          "100%": {
+            opacity: 1,
+            transform: "translateY(0)",
+          },
+        },
         slideInFromTop: {
           "0%": {
             opacity: 0,

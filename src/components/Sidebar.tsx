@@ -16,7 +16,7 @@ const Sidebar: React.FC = () => {
   return (
     <>
       {/* Mobile sidebar */}
-      <div className="top-0 w-full bg-secondary-dark-blue flex flex-col md:hidden relative z-50">
+      <div className="top-0 w-full bg-secondary-dark-blue flex flex-col lg:hidden relative w-full">
         {/* Hamburger menu */}
         <div className="flex flex-row w-full items-center justify-between px-4 py-2">
           <button
@@ -45,7 +45,7 @@ const Sidebar: React.FC = () => {
 
         <div
           ref={mobileMenuRef}
-          className="hidden md:hidden mobile-menu left-0 py-3 animate-slideInFromTop w-screen bg-primary-dark-blue"
+          className="hidden lg:hidden mobile-menu left-0 py-3 animate-slideInFromTop w-screen bg-primary-dark-blue"
         >
           <ul className="text-start flex flex-col gap-5 w-full justify-around h-full">
             {navigation.map((n, i) => (
@@ -65,7 +65,7 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Normal sidebar */}
-      <div className="fixed top-0 bg-primary-dark-blue h-screen w-60 shadow-lg text-white text-center flex flex-col items-center py-5 hidden md:block">
+      <div className="fixed top-0 bg-primary-dark-blue h-screen w-60 shadow-lg text-white text-center flex flex-col items-center py-5 hidden lg:block">
         {/*Logo*/}
         <Image alt="Logo" src={Logo} />
         <hr className="w-full p-2 my-3" />
