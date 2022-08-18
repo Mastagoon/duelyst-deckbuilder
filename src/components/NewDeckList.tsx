@@ -5,6 +5,7 @@ import ManaGem from "./Card/ManaGem"
 import getFactionColor from "../utils/getFactionColor"
 import { FaClipboard, FaEdit, FaTrash } from "react-icons/fa"
 import { useState } from "react"
+import Loading from "./Loading"
 
 let debounceTimeout: any
 
@@ -24,13 +25,16 @@ const NewDeckList: React.FC = () => {
   } = useDeckContext()
   const [localDeckName, setLocalDeckName] = useState(deckName)
   const [deckCode, setDeckCode] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const deckTotal = minionCount + spellCount + artifactCount
 
   const handleImportDeckCode = () => {
+    setLoading(true)
     const result = loadFromDeckCode(deckCode)
-    if (!result)
-      return Swal.fire({
+    if (!result) {
+      setLoading(false)
+      Swal.fire({
         customClass: {
           popup: "alert-dialog",
         },
@@ -38,8 +42,11 @@ const NewDeckList: React.FC = () => {
         text: "The deck code you entered is invalid.",
         confirmButtonText: "OK",
       })
+      return
+    }
     setLocalDeckName(deckName)
     setDeckCode("")
+    setLoading(false)
     return Swal.fire({
       customClass: {
         popup: "alert-dialog",
@@ -126,6 +133,7 @@ const NewDeckList: React.FC = () => {
 
   return (
     <>
+      {loading && <Loading />}
       <div className="bg-secondary-dark-blue flex flex-col justify-between text-white h-screen w-full px-2 select-none">
         <div className="flex flex-col">
           <div className="flex flex-row justify-between items-center">
@@ -138,9 +146,9 @@ const NewDeckList: React.FC = () => {
               <span
                 style={{
                   color: `${
-                    deckTotal < 40
+                    deckTotal < 39
                       ? "white"
-                      : deckTotal > 40
+                      : deckTotal > 39
                       ? "red"
                       : "#0fd700"
                   }`,

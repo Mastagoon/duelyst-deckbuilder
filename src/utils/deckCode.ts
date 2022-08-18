@@ -21,9 +21,14 @@ export const parseDeckCode = (
   generalId: number
   cardsData: { count: number; id: number }[]
 } | null => {
-  const [codeStr1, codeStr2] = code.split("]")
-  const deckName = codeStr1?.split("[")[1] || ""
-  const codeStr3 = Buffer.from(codeStr2 ?? "", "base64").toString("utf8")
+  let deckName = ""
+  code = code.trim()
+  if (code.startsWith("[")) {
+    const [codeStr1, codeStr2] = code.split("]")
+    deckName = codeStr1?.split("[")[1] || ""
+    code = codeStr2 ?? ""
+  }
+  const codeStr3 = Buffer.from(code ?? "", "base64").toString("utf8")
   if (!codeStr3.length) return null
   const [...csvCards] = codeStr3.split(",")
   const [generalIdAmt, ...cardIds] = csvCards
