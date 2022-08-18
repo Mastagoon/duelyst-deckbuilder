@@ -1,4 +1,4 @@
-import { CardData } from "../../data/cards"
+import { CardData, Faction } from "../../data/cards"
 import CardAttack from "./CardAttack"
 import CardHealth from "./CardHealth"
 import ManaGem from "./ManaGem"
@@ -18,14 +18,23 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
         style={{
           border: `1px solid ${getFactionColor(card.faction)}`,
         }}
-        className="card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1 select-none"
+        className="card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1 select-none bg-no-repeat bg-cover"
       >
         <ManaGem
           cost={card.mana}
           className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-12 w-12"
         />
         {/* Rarity */}
-        <div className="absolute top-5 right-2">
+        <div className="absolute top-5 right-2 flex flex-col gap-2">
+          <div className="">
+            <Image
+              className="overflow-hidden"
+              alt="Faction"
+              src={`/icons/factions/${Faction[card.faction]} rune.png`}
+              height={30}
+              width={30}
+            />
+          </div>
           <Image
             alt="Icon rarity"
             src={`/icons/rarity/${card.rarity.toUpperCase()}.svg`}
