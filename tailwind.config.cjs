@@ -3,6 +3,21 @@ module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      animation: {
+        slideInFromTop: "slideInFromTop 0.5s ease-out",
+      },
+      keyframes: {
+        slideInFromTop: {
+          "0%": {
+            opacity: 0,
+            transform: "translateY(-20px)",
+          },
+          "100%": {
+            opacity: 1,
+            transform: "translateY(0)",
+          },
+        },
+      },
       colors: {
         "gradient-primary-from": "rgba(19, 14, 77, 1)",
         "gradient-primray-to": "rgba(141, 7, 104, 0)",

@@ -3,7 +3,7 @@ import Sidebar from "./Sidebar"
 const PageLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="grid grid-cols-12 h-full">
-      <div className="col-span-2">
+      <div className="col-span-12 md:col-span-2">
         <Sidebar />
       </div>
       <div className="col-span-10">{children}</div>
