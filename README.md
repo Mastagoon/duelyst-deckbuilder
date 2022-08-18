@@ -26,5 +26,6 @@ yarn dev
 - [ ] Tooltip hover for card information
 - [ ] Tooltip hover for related cards
 - [ ] Token cards in card browser
+- [ ] Loading state
 - [ ] Card rairity & faction assets
 - [ ] Page metadata
