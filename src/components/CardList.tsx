@@ -11,17 +11,17 @@ const CardList: React.FC<{ compact?: boolean; cardList?: CardData[] }> = ({
   const { filteredCards, setInitialCards } = useFilterContext()
   useEffect(() => {
     if (cardList?.length) setInitialCards(cardList)
-  }, [cardList, setInitialCards])
+  }, [])
 
   return (
-    <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen ">
+    <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen grid-rows-[max-content]">
       <div className="col-span-12">
         <h1 className="col-span-12 text-4xl font-bold">All Cards</h1>
         <div className="col-span-12">
           <FilterOptions />
         </div>
       </div>
-      <div className="col-span-12 text-center grid grid-cols-12 gap-y-5 gradient-border overflow-y-scroll h-full py-3">
+      <div className="col-span-12 text-center grid grid-cols-12 gap-y-5 gradient-border overflow-y-scroll h-full py-3 grid-rows-[max-content] ">
         {filteredCards.map((card: CardData, i: number) => (
           <div
             className={`mx-5 ${compact ? "col-span-4" : "col-span-3 "}`}

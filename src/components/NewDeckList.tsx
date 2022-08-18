@@ -3,7 +3,7 @@ import Swal from "sweetalert2"
 import constants from "../data/constants"
 import ManaGem from "./Card/ManaGem"
 import getFactionColor from "../utils/getFactionColor"
-import { FaBox, FaClipboard, FaEdit, FaSearch, FaTrash } from "react-icons/fa"
+import { FaClipboard, FaEdit, FaTrash } from "react-icons/fa"
 import { useState } from "react"
 
 let debounceTimeout: any

@@ -58,7 +58,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
   return (
     <>
       {/* mobile menu */}
-      <div className="fixed bottom-0 w-full bg-secondary-dark-blue flex flex-col justify-around py-3 z-50">
+      <div className="fixed bottom-0 w-full bg-secondary-dark-blue flex flex-col justify-around py-3 z-50 lg:hidden">
         <div className="flex flex-row w-full justify-around">
           <FaSearch
             className="text-secondary-cyan hover:opacity-80 transition-all"
@@ -83,7 +83,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen">
+      <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen grid-rows-[max-content]">
         <div className="col-span-12">
           {general ? (
             <h1 className="col-span-12 md:text-4xl text-2xl font-bold">
