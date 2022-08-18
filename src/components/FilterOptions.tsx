@@ -35,8 +35,8 @@ const FilterOptions: React.FC<{ cardPool?: CardData[] }> = ({ cardPool }) => {
   }
 
   return (
-    <div className="border-2 border-white py-5 rounded-md my-5 px-5 flex flex-row items-center justify-between">
-      <div className="flex flex-row justify-between grow">
+    <div className="border-2 border-white py-5 rounded-md my-5 px-5 flex flex-row flex-wrap items-center justify-center">
+      <div className="flex flex-row flex-wrap justify-between grow">
         {$enum(Faction)
           .getKeys()
           .map((faction, i) => {
@@ -62,7 +62,7 @@ const FilterOptions: React.FC<{ cardPool?: CardData[] }> = ({ cardPool }) => {
           value={query}
           onChange={handleChange}
           placeholder="Search..."
-          className="bg-[rgba(255,255,255,0.3)] rounded-md text-white border-white border-2 pl-5 min-h-full self-center"
+          className="w-full bg-[rgba(255,255,255,0.3)] rounded-md text-white border-white border-2 pl-5 min-h-full self-center"
         />
       </div>
     </div>
