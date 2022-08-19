@@ -32,9 +32,11 @@ const DeckDisplay: React.FC<{ deck: Deck }> = ({ deck }) => {
         <div className="flex flex-col w-full shadow-lg justify-between bg-secondary-dark-blue">
           <span>Reviews: 5</span>
           <div className="flex flex-row justify-center gap-1">
-            {Array.from({ length: Math.ceil(Math.random() * 4) }).map(() => (
-              <FaStar />
-            ))}
+            {Array.from({ length: Math.ceil(Math.random() * 4) }).map(
+              (_, i) => (
+                <FaStar key={i} />
+              )
+            )}
             {Math.random() > 0.5 && <FaStarHalf />}
           </div>
         </div>
