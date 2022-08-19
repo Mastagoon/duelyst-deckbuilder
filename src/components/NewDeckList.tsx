@@ -185,17 +185,17 @@ const NewDeckList: React.FC = () => {
                 <div
                   onClick={handleReset}
                   style={{
-                    backgroundImage: `url(${constants.imageUrl}/${general.resource.idle})`,
+                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url(${constants.imageUrl}/${general.resource.idle})`,
                     backgroundSize: "40px 150%",
                     backgroundRepeat: "no-repeat",
-                    backgroundPosition: "100% 50%",
+                    backgroundPosition: "85% 50%",
                     border: `1px solid ${getFactionColor(general.faction)}`,
                   }}
                   className="flex flex-row px-1 py-2 my-1 rounded-md gap-2 bg-primary-dark-blue cursor-pointer hover:scale-110 transition-all
 "
                 >
                   <ManaGem className="w-5 h-5" cost={0} />
-                  <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer">
+                  <span className="text-xs font-bold overflow-hidden whitespace-nowrap cursor-pointer">
                     {general.name}
                   </span>
                 </div>
@@ -205,15 +205,15 @@ const NewDeckList: React.FC = () => {
                     onClick={() => handleDeckCardClick(c.id)}
                     key={i}
                   >
-                    <span className="absolute right-0 top-0 text-black bg-primary-cyan rounded-full -translate-y-1/2 text-sm">
+                    <span className="absolute right-1 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm">
                       x{c.count}
                     </span>
                     <div
                       style={{
-                        backgroundImage: `url(${constants.imageUrl}/${c.resource.idle})`,
+                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url(${constants.imageUrl}/${c.resource.idle})`,
                         backgroundSize: "40px 150%",
                         backgroundRepeat: "no-repeat",
-                        backgroundPosition: "100% 50%",
+                        backgroundPosition: "85% 50%",
                         border: `1px solid `,
                         borderLeft: `1px solid ${getFactionColor(c.faction)}`,
                         borderBottom: `1px solid ${getFactionColor(c.faction)}`,
@@ -221,7 +221,7 @@ const NewDeckList: React.FC = () => {
                       className="flex flex-row px-1 py-2 my-1 rounded-md gap-2 bg-primary-dark-blue cursor-pointer hover:scale-110 transition-all"
                     >
                       <ManaGem className="w-5 h-5" cost={c.mana} />
-                      <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer">
+                      <span className="text-xs font-bold overflow-hidden whitespace-nowrap cursor-pointer">
                         {c.name}
                       </span>
                     </div>
@@ -252,7 +252,7 @@ const NewDeckList: React.FC = () => {
             </div>
           )}
         </div>
-        <div className="flex flex-row justify-between my-3 px-1 items-center">
+        <div className="flex flex-row justify-around my-3 px-1 items-center">
           <div className="flex flex-row justify-between gap-5">
             <div className={`border-2 rounded-sm p-1 border-white opacity-60`}>
               <FaClipboard />
@@ -268,7 +268,7 @@ const NewDeckList: React.FC = () => {
           </div>
           <button
             onClick={handleSaveDeck}
-            className="bg-primary-light-purple rounded-sm px-2 hover:opacity-80 cursor-pointer"
+            className="bg-primary-light-purple rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer"
           >
             Save
           </button>

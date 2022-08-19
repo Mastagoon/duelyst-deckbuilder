@@ -10,14 +10,12 @@ import ManaGem from "./Card/ManaGem"
 import constants from "../data/constants"
 import { FaBox, FaSearch } from "react-icons/fa"
 import { useState } from "react"
-import NewDeckList from "./NewDeckList";
 
 let debounceTimeout: any
 
 const DeckBuilderCardList: React.FC = ({}) => {
   const [query, setQuery] = useState("")
   const [searchMobileMenuActive, setSearchMobileMenuActive] = useState(false)
-  const [decklistMobileMenuActive, setDecklistMobileMenuActive] = useState(false)
   const [deckMobileSidebarActive, setDeckMobileSidebarActive] = useState(false)
   const {
     addCardToDeck,
@@ -55,9 +53,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
   const toggleSearchMenu = () => {
     setSearchMobileMenuActive(!searchMobileMenuActive)
   }
-  const toggleDeckMenu = () => {
-    setDecklistMobileMenuActive(!decklistMobileMenuActive)
-  }
+  const toggleDeckMenu = () => {}
 
   return (
     <>
@@ -86,12 +82,6 @@ const DeckBuilderCardList: React.FC = ({}) => {
             />
           </div>
         )}
-
-        {decklistMobileMenuActive && (
-            <div className={"h-[50vh] w-full max-w-md overflow-y-scroll mt-1 relative outline-none focus:outline-none self-center animate-slideInFromBottom"}>
-              <NewDeckList/>
-            </div>
-        )}
       </div>
       <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen grid-rows-[max-content]">
         <div className="col-span-12">
@@ -106,103 +96,89 @@ const DeckBuilderCardList: React.FC = ({}) => {
           )}
           <div className="col-span-12">
             <div className="flex flex-row justify-center hidden lg:block">
-              <div className="relative outline-none focus:outline-none mx-5 my-2">
-                <FaSearch className="absolute left-1 top-0 translate-y-1/2 text-[rgba(255,255,255,0.3)] p-0 m-0" />
+              <div className="text-center outline-none focus:outline-none mx-5 my-2">
                 <input
                   value={query}
                   onChange={handleQueryStringChange}
                   placeholder="Search..."
-                  className="bg-[rgba(255,255,255,0.3)] rounded-md text-white border-white border-2 pl-5 min-h-full self-center"
+                  className="bg-[rgba(255,255,255,0.3)] rounded-md text-white border-white border-2 pl-5 min-h-full self-center w-1/3"
                 />
               </div>
             </div>
           </div>
         </div>
-        <div className="col-span-12 text-center grid grid-cols-12 gap-y-5 gradient-border overflow-y-scroll h-full py-3 select-none">
+        <div className="col-span-12 text-center flex flex-wrap justify-between gap-y-5 gradient-border overflow-y-scroll h-full py-3 select-none">
           {filteredCards.map((card: CardData, i: number) => (
             <div
-              onClick={() => handleCardClick(card.id)}
-              className={`mx-5 col-span-12 md:col-span-6 xl:col-span-4`}
               key={i}
+              onClick={() => handleCardClick(card.id)}
+              style={{
+                border: `1px solid ${getFactionColor(card.faction)}`,
+                opacity:
+                  cards.find((c) => c.id === card.id)?.count === 3 ? 0.5 : 1,
+              }}
+              className="card-border cursor-pointer transition-all duration-100 m-5 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1 active:scale-110 w-52"
             >
-              <div
-                style={{
-                  border: `1px solid ${getFactionColor(card.faction)}`,
-                  opacity:
-                    cards.find((c) => c.id === card.id)?.count === 3 ? 0.5 : 1,
-                }}
-                className="card-border cursor-pointer transition-all duration-100 m-5 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1 active:scale-110"
-              >
-                <ManaGem
-                  cost={card.mana}
-                  className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-12 w-12"
+              <ManaGem
+                cost={card.mana}
+                className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-12 w-12"
+              />
+              {/* Rarity */}
+              <div className="absolute top-5 right-2">
+                <Image
+                  alt="rarity"
+                  src={`/icons/rarity/${card.rarity.toUpperCase()}.svg`}
+                  height={30}
+                  width={30}
                 />
-                {/* Rarity */}
-                <div className="absolute top-5 right-2">
-                  <Image
-                    alt="rarity"
-                    src={`/icons/rarity/${card.rarity.toUpperCase()}.svg`}
-                    height={30}
-                    width={30}
-                  />
-                </div>
-                <div
-                  className="flex-1 pixelated"
-                  style={{
-                    backgroundImage: `url(${constants.imageUrl}/${card.resource.idle})`,
-                    backgroundPosition: `${
-                      ["MINION", "GENERAL"].includes(
-                        card.cardType.toUpperCase()
-                      )
-                        ? "center 10%"
-                        : "center"
-                    }`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: `${
-                      ["MINION", "GENERAL"].includes(
-                        card.cardType.toUpperCase()
-                      )
-                        ? "75%"
-                        : "50%"
-                    }`,
-                  }}
-                ></div>
-                <span className="tracking-wide">
-                  {" "}
-                  {card.name.toUpperCase()}
-                </span>
-                <span className="tracking-wide mb-3 text-primary-cyan text-sm">
-                  {card.cardType.toUpperCase()}
-                  {card.rarity.toUpperCase() === "TOKEN" && ",TOKEN"}
-                </span>
-                {card.tribes.length > 0 && (
-                  <span className="text-primary-cyan text-sm tracking-widest">
-                    {card.tribes.join(",").toUpperCase()}
-                  </span>
-                )}
-                <CardDescription description={card.description} />
-                {/*@ts-ignore*/}
-                {cards.find((c) => c.id === card.id)?.count > 0 ? (
-                  <div className="z-2 bg-primary-cyan rounded-sm w-full">
-                    Copies in deck:{" "}
-                    <span>
-                      {cards.find((c) => c.id === card.id)?.count ?? 0}
-                    </span>
-                  </div>
-                ) : null}
-                {card.attack || card.health ? (
-                  <>
-                    <CardAttack
-                      attack={card.attack ?? 0}
-                      className="absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2 h-10 w-10"
-                    />
-                    <CardHealth
-                      health={card.health ?? 0}
-                      className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 h-10 w-10"
-                    />
-                  </>
-                ) : null}
               </div>
+              <div
+                className="flex-1 pixelated"
+                style={{
+                  backgroundImage: `url(${constants.imageUrl}/${card.resource.idle})`,
+                  backgroundPosition: `${
+                    ["MINION", "GENERAL"].includes(card.cardType.toUpperCase())
+                      ? "center 10%"
+                      : "center"
+                  }`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: `${
+                    ["MINION", "GENERAL"].includes(card.cardType.toUpperCase())
+                      ? "75%"
+                      : "50%"
+                  }`,
+                }}
+              ></div>
+              <span className="tracking-wide"> {card.name.toUpperCase()}</span>
+              <span className="tracking-wide mb-3 text-primary-cyan text-sm">
+                {card.cardType.toUpperCase()}
+                {card.rarity.toUpperCase() === "TOKEN" && ",TOKEN"}
+              </span>
+              {card.tribes.length > 0 && (
+                <span className="text-primary-cyan text-sm tracking-widest">
+                  {card.tribes.join(",").toUpperCase()}
+                </span>
+              )}
+              <CardDescription description={card.description} />
+              {/*@ts-ignore*/}
+              {cards.find((c) => c.id === card.id)?.count > 0 ? (
+                <div className="z-2 bg-primary-cyan rounded-sm w-full">
+                  Copies in deck:{" "}
+                  <span>{cards.find((c) => c.id === card.id)?.count ?? 0}</span>
+                </div>
+              ) : null}
+              {card.attack || card.health ? (
+                <>
+                  <CardAttack
+                    attack={card.attack ?? 0}
+                    className="absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2 h-10 w-10"
+                  />
+                  <CardHealth
+                    health={card.health ?? 0}
+                    className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 h-10 w-10"
+                  />
+                </>
+              ) : null}
             </div>
           ))}
         </div>
