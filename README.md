@@ -14,7 +14,7 @@ yarn dev
 
 # TODOS
 
-- [ ] Mobile & large screen responsiveness
+- [X] Mobile & large screen responsiveness
 -	[ ] Deck storing & Browsing
 - [ ] Still images for deck cards view
 - [ ]	Fix the issue with smaller card images
