@@ -6,6 +6,7 @@ import getFactionColor from "../utils/getFactionColor"
 import { FaClipboard, FaEdit, FaTrash } from "react-icons/fa"
 import { useState } from "react"
 import Loading from "./Loading"
+import { trpc } from "../utils/trpc"
 
 let debounceTimeout: any
 
@@ -26,6 +27,12 @@ const NewDeckList: React.FC = () => {
   const [localDeckName, setLocalDeckName] = useState(deckName)
   const [deckCode, setDeckCode] = useState("")
   const [loading, setLoading] = useState(false)
+
+  const {
+    mutateAsync: saveDeckMutation,
+    isLoading,
+    isSuccess,
+  } = trpc.useMutation(["decksave"])
 
   const deckTotal = minionCount + spellCount + artifactCount
 
@@ -104,6 +111,13 @@ const NewDeckList: React.FC = () => {
     }
     // passed all checks
     const code = await saveDeck()
+    if (!code) return
+    // saved successfully
+    const result = await saveDeckMutation({
+      deckName,
+      code,
+    })
+    console.log(result)
     const response = await Swal.fire({
       customClass: {
         popup: "alert-dialog",
@@ -133,7 +147,7 @@ const NewDeckList: React.FC = () => {
 
   return (
     <>
-      {loading && <Loading />}
+      {(loading || isLoading) && <Loading />}
       <div className="bg-secondary-dark-blue flex flex-col justify-between text-white h-screen w-full px-2 select-none">
         <div className="flex flex-col">
           <div className="flex flex-row justify-between items-center">

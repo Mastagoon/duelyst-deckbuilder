@@ -6,10 +6,22 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "mysql"
     url      = env("DATABASE_URL")
 }
 
 model Example {
     id String @id @default(cuid())
+}
+
+model Deck {
+	id String @id @default(cuid())
+	deckName String @default("New Deck")
+	code String
+	description String?
+}
+
+generator js {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }

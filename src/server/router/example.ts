@@ -9,6 +9,7 @@ export const exampleRouter = createRouter()
       })
       .nullish(),
     resolve({ input }) {
+      console.log("HI FROM SERVEr")
       return {
         greeting: `Hello ${input?.text ?? "world"}`,
       }
@@ -17,5 +18,10 @@ export const exampleRouter = createRouter()
   .query("getAll", {
     async resolve({ ctx }) {
       return await ctx.prisma.example.findMany()
+    },
+  })
+  .mutation("test", {
+    async resolve({ ctx }) {
+      return await ctx.prisma.example.create({ data: {} })
     },
   })
