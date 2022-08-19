@@ -21,7 +21,7 @@ const CardList: React.FC<{ compact?: boolean; cardList?: CardData[] }> = ({
           <FilterOptions />
         </div>
       </div>
-      <div className="col-span-12 text-center grid grid-cols-12 gap-y-5 gradient-border overflow-y-scroll h-full py-3 grid-rows-[max-content] ">
+      <div className="col-span-12 text-center flex flex-wrap justify-center gap-y-5 gradient-border overflow-y-scroll h-full py-3 grid-rows-[max-content] ">
         {filteredCards.map((card: CardData, i: number) => (
           <div
             className={`mx-5 ${compact ? "col-span-4" : "col-span-3 "}`}

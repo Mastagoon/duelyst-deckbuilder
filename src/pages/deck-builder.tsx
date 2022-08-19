@@ -21,7 +21,7 @@ const DeckBuilder: React.FC = () => {
         <div className="lg:col-span-10 col-span-12">
           <DeckBuilderCardList />
         </div>
-        <div className="lg:col-span-2">
+        <div className="hidden lg:block lg:col-span-2">
           <NewDeckList />
         </div>
       </div>
