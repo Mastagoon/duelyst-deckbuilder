@@ -1,5 +1,5 @@
-import { DeckCardEntry } from "../context/newDeckContext"
-import { CardData } from "../data/cards"
+import { DeckCardEntry, DeckData } from "../context/newDeckContext"
+import { allCards, CardData, generalCards } from "../data/cards"
 
 export const generateDeckCode = (
   general: CardData,
@@ -44,5 +44,51 @@ export const parseDeckCode = (
     deckName,
     generalId,
     cardsData,
+  }
+}
+
+export type ExtendedDeckInfo = DeckData & {
+  minionCount: number
+  spellCount: number
+  artifactCount: number
+  minionCards: DeckCardEntry[]
+  spellCards: DeckCardEntry[]
+  artifactCards: DeckCardEntry[]
+  deckName: string
+}
+
+export const loadDeckFromDeckCode = (
+  code: string
+): ExtendedDeckInfo | false => {
+  const deck = parseDeckCode(code)
+  if (!deck) return false
+  const general = generalCards.find((g) => g.id === deck.generalId)
+  if (!general) return false
+  const cards = deck.cardsData
+    .map((cd) => {
+      const card = allCards.find((c) => c.id === cd.id)!
+      return {
+        ...card,
+        count: cd.count,
+      }
+    })
+    .sort((a, b) => a.mana - b.mana)
+  const minionCards = cards.filter((c) => c.cardType.toUpperCase() === "MINION")
+  const spellCards = cards.filter((c) => c.cardType.toUpperCase() === "SPELL")
+  const artifactCards = cards.filter(
+    (c) => c.cardType.toUpperCase() === "ARTIFACT"
+  )
+  const deckName = deck.deckName ?? ""
+  return {
+    general,
+    deckCode: code,
+    cards,
+    minionCards,
+    spellCards,
+    artifactCards,
+    deckName,
+    minionCount: minionCards.reduce((tot, curr) => tot + curr.count, 0),
+    spellCount: spellCards.reduce((tot, curr) => tot + curr.count, 0),
+    artifactCount: artifactCards.reduce((tot, curr) => tot + curr.count, 0),
   }
 }

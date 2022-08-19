@@ -15,7 +15,9 @@ yarn dev
 # TODOS
 
 - [X] Mobile & large screen responsiveness
--	[ ] Deck storing & Browsing
+-	[X] Deck storing & Browsing
+- [ ] Deck rating
+- [ ] Link to duelyst-share to generate deck image
 - [ ] Still images for deck cards view
 - [ ]	Fix the issue with smaller card images
 - [ ] Auth

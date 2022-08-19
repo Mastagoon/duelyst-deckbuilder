@@ -1,13 +1,10 @@
 import { NextPage } from "next"
-import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import DeckDisplay from "../components/Deck/DeckDisplay"
 import Loading from "../components/Loading"
 import PageLayout from "../components/PageLayout"
-import { Faction, generalCards } from "../data/cards"
-import constants from "../data/constants"
-import getFactionColor from "../utils/getFactionColor"
+import { generalCards } from "../data/cards"
 import { trpc } from "../utils/trpc"
 
 const DecksPage: NextPage = () => {
@@ -34,7 +31,11 @@ const DecksPage: NextPage = () => {
           {data?.map((deck, i) => {
             const general = generalCards.find((g) => g.id === deck.generalId)
             if (!general) return
-            return <DeckDisplay key={i} deck={deck} />
+            return (
+              <div className="self-center justify-self-center" key={i}>
+                <DeckDisplay deck={deck} />
+              </div>
+            )
           })}
         </div>
       </div>

@@ -7,6 +7,7 @@ import { FaClipboard, FaEdit, FaTrash } from "react-icons/fa"
 import { useState } from "react"
 import Loading from "./Loading"
 import { trpc } from "../utils/trpc"
+import { useRouter } from "next/router"
 
 let debounceTimeout: any
 
@@ -27,6 +28,8 @@ const NewDeckList: React.FC = () => {
   const [localDeckName, setLocalDeckName] = useState(deckName)
   const [deckCode, setDeckCode] = useState("")
   const [loading, setLoading] = useState(false)
+
+  const router = useRouter()
 
   const { mutateAsync: saveDeckMutation, isLoading } = trpc.useMutation([
     "decksave",
@@ -120,18 +123,8 @@ const NewDeckList: React.FC = () => {
       spellCount,
       artifactCount,
     })
-    console.log(result)
-    const response = await Swal.fire({
-      customClass: {
-        popup: "alert-dialog",
-      },
-      title: `Deck ${deckName} has been Saved`,
-      text: "Your deck has been saved successfully",
-      confirmButtonText: "Copy Deck Code",
-    })
-    if (response.isConfirmed) {
-      navigator.clipboard.writeText(code)
-    }
+    reset()
+    router.push(`/deck/${result.id}`)
   }
 
   const handleReset = async () => {

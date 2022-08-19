@@ -9,7 +9,11 @@ import {
   queryFromCards,
 } from "../data/cards"
 import constants from "../data/constants"
-import { generateDeckCode, parseDeckCode } from "../utils/deckCode"
+import {
+  generateDeckCode,
+  loadDeckFromDeckCode,
+  parseDeckCode,
+} from "../utils/deckCode"
 import orderCards from "../utils/orderCards"
 
 export type DeckCardEntry = CardData & {
@@ -189,37 +193,14 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
   }
 
   const loadFromDeckCode = (code: string) => {
-    const deck = parseDeckCode(code)
-    if (!deck) return false
-    const general = generalCards.find((g) => g.id === deck.generalId)
-    if (!general) return false
-    updateGeneral(general)
-    const deckCards = deck.cardsData
-      .map((cd) => {
-        const card = allCards.find((c) => c.id === cd.id)!
-        return {
-          ...card,
-          count: cd.count,
-        }
-      })
-      .sort((a, b) => a.mana - b.mana)
-    setCards(deckCards)
-    setMinionCount(
-      deckCards
-        .filter((c) => c.cardType.toUpperCase() === "MINION")
-        .reduce((tot, cur) => tot + cur.count, 0)
-    )
-    setSpellCount(
-      deckCards
-        .filter((c) => c.cardType.toUpperCase() === "SPELL")
-        .reduce((tot, cur) => tot + cur.count, 0)
-    )
-    setArtifactCount(
-      deckCards
-        .filter((c) => c.cardType.toUpperCase() === "ARTIFACT")
-        .reduce((tot, cur) => tot + cur.count, 0)
-    )
-    setDeckName(deck.deckName ?? "New Deck")
+    const result = loadDeckFromDeckCode(code)
+    if (!result || !result.general) return false
+    updateGeneral(result.general)
+    setCards(result.cards)
+    setMinionCount(result.minionCount)
+    setSpellCount(result.spellCount)
+    setArtifactCount(result.artifactCount)
+    setDeckName(result.deckName)
     return true
   }
 

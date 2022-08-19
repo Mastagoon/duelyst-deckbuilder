@@ -1,5 +1,6 @@
 import { createRouter } from "./context"
 import { z } from "zod"
+import { resolve } from "dns"
 
 export const deckRouter = createRouter()
   .mutation("save", {
@@ -15,6 +16,14 @@ export const deckRouter = createRouter()
     }),
     async resolve({ input, ctx }) {
       return await ctx.prisma.deck.create({ data: input })
+    },
+  })
+  .query("getById", {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.deck.findFirst({ where: { id: input.id } })
     },
   })
   .query("getAll", {
