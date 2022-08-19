@@ -1,1 +1,0 @@
-import { CardData } from "./cards"

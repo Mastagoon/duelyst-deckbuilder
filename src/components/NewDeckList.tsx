@@ -28,11 +28,9 @@ const NewDeckList: React.FC = () => {
   const [deckCode, setDeckCode] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const {
-    mutateAsync: saveDeckMutation,
-    isLoading,
-    isSuccess,
-  } = trpc.useMutation(["decksave"])
+  const { mutateAsync: saveDeckMutation, isLoading } = trpc.useMutation([
+    "decksave",
+  ])
 
   const deckTotal = minionCount + spellCount + artifactCount
 
@@ -111,11 +109,16 @@ const NewDeckList: React.FC = () => {
     }
     // passed all checks
     const code = await saveDeck()
-    if (!code) return
+    if (!code || !general) return
     // saved successfully
     const result = await saveDeckMutation({
+      generalId: general.id,
       deckName,
       code,
+      minionCount,
+      faction: general.faction,
+      spellCount,
+      artifactCount,
     })
     console.log(result)
     const response = await Swal.fire({

@@ -17,8 +17,13 @@ model Example {
 model Deck {
 	id String @id @default(cuid())
 	deckName String @default("New Deck")
+	generalId Int
 	code String
 	description String?
+	minionCount Int
+	artifactCount Int
+	spellCount Int
+	faction Int
 }
 
 generator js {
