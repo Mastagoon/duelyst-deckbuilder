@@ -8,15 +8,17 @@ import CardAttack from "./Card/CardAttack"
 import CardHealth from "./Card/CardHealth"
 import ManaGem from "./Card/ManaGem"
 import constants from "../data/constants"
-import { FaBox, FaSearch } from "react-icons/fa"
+import { FaBox, FaLayerGroup, FaSearch } from "react-icons/fa"
 import { useState } from "react"
+import NewDeckList from "./NewDeckList"
 
 let debounceTimeout: any
 
 const DeckBuilderCardList: React.FC = ({}) => {
   const [query, setQuery] = useState("")
   const [searchMobileMenuActive, setSearchMobileMenuActive] = useState(false)
-  const [deckMobileSidebarActive, setDeckMobileSidebarActive] = useState(false)
+  const [decklistMobileMenuActive, setDecklistMobileMenuActive] =
+    useState(false)
   const {
     addCardToDeck,
     minionCount,
@@ -53,7 +55,10 @@ const DeckBuilderCardList: React.FC = ({}) => {
   const toggleSearchMenu = () => {
     setSearchMobileMenuActive(!searchMobileMenuActive)
   }
-  const toggleDeckMenu = () => {}
+
+  const toggleDeckMenu = () => {
+    setDecklistMobileMenuActive(!decklistMobileMenuActive)
+  }
 
   return (
     <>
@@ -65,7 +70,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
             onClick={toggleSearchMenu}
             size={32}
           />
-          <FaBox
+          <FaLayerGroup
             className="text-secondary-cyan hover:opacity-80 transition-all"
             onClick={toggleDeckMenu}
             size={32}
@@ -80,6 +85,15 @@ const DeckBuilderCardList: React.FC = ({}) => {
               placeholder="Search..."
               className="bg-[rgba(255,255,255,0.3)] rounded-md text-white border-white border-2 pl-5 min-h-full self-center"
             />
+          </div>
+        )}
+        {decklistMobileMenuActive && (
+          <div
+            className={
+              "h-[50vh] w-full max-w-md overflow-y-scroll mt-1 relative outline-none focus:outline-none self-center animate-slideInFromBottom"
+            }
+          >
+            <NewDeckList />
           </div>
         )}
       </div>
