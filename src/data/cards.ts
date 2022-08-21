@@ -5,6 +5,7 @@ const bannedCards = [20424]
 export type EnumType = { [s: number]: string }
 
 export const Keywords = [
+  "stun",
   "shadow creep",
   "airdrop",
   "celerity",
@@ -16,6 +17,22 @@ export const Keywords = [
   "opening gambit",
   "activate",
 ]
+
+export const KeywordDescription = {
+  stun: "Stunned units skip their next action.",
+  shadow_creep:
+    "Deal damage to units over Shadow Creep tiles for ever Shadow Creep tile you have.",
+  airdrop: "Airdrop units can be summoned on any tile.",
+  celerity: "Units with celerity can activate twice every turn.",
+  provoke:
+    "Nearby enemy units must attack the provoke units. If multiple provoke units are nearby, enemy units may attack any one of them.",
+  zeal: "Gain effect when nearby your general.",
+  rush: "Units with rush are activated immediately when they are played.",
+  ranged: "Units with ranged can attack on any tile.",
+  flying: "Flying units can move to any tile.",
+  opening_gambit: "Has an effect when played from your action bar.",
+  activate: "Allows unit to move or attack.",
+}
 
 export enum Faction {
   "lyonar" = 1,
@@ -131,4 +148,15 @@ export const queryFromCards = (
             tribe.toLowerCase().includes(text.toLowerCase())
           )
       )
+}
+
+export const HighlightKeywords = (description: string) => {
+  if (!description) return ""
+  const keywords = Keywords.map((keyword) => `\\b${keyword}\\b`)
+  const regex = new RegExp(keywords.join("|"), "gi")
+  return description.replace(
+    regex,
+    (match) =>
+      `<span class="font-bold text-secondary-cyan-bold">${match}</span>`
+  )
 }
