@@ -32,7 +32,7 @@ export const deckRouter = createRouter()
       })
       .nullish(),
     async resolve({ ctx, input }) {
-      const TAKE_LIMIT = 8
+      const TAKE_LIMIT = 20
       return input?.cursor
         ? await ctx.prisma.deck.findMany({
             take: TAKE_LIMIT,
