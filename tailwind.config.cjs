@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        decks: "repeat(auto-fit, minmax(260px, 1fr))",
+      },
       animation: {
         slideInFromTop: "slideInFromTop 0.5s ease-out",
         slideInFromBottom: "slideInFromBottom 0.5s ease-out",

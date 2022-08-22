@@ -49,15 +49,15 @@ const DecksPage: NextPage = () => {
       </Head>
       <PageLayout>
         {(isLoading || isFetchingNextPage) && <Loading />}
-        <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen grid-rows-[max-content]">
-          <div className="col-span-12">
-            <h1 className="col-span-12 md:text-4xl text-2xl font-bold">
+        <div className="flex flex-col px-10 text-white pt-5 h-screen">
+          <div className="ml-5">
+            <h1 className="md:text-4xl xl:text-6xl text-2xl font-bold">
               Deck Browser
             </h1>
           </div>
           <div
             ref={deckPageRef}
-            className="col-span-12 text-center flex flex-wrap justify-center gap-y-5 gradient-border overflow-y-scroll h-full py-3 grid-rows-[max-content] "
+            className="text-center grid grid-cols-decks justify-items-center gap-y-5 gradient-border overflow-y-scroll h-full py-3 "
           >
             {data?.pages.map((p: any) =>
               p.map((deck: Deck, i: number) => {
@@ -66,7 +66,7 @@ const DecksPage: NextPage = () => {
                 )
                 if (!general) return
                 return (
-                  <div className="self-center justify-self-center" key={i}>
+                  <div className="" key={i}>
                     <DeckDisplay deck={deck} />
                   </div>
                 )

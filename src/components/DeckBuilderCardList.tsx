@@ -121,7 +121,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
             </div>
           </div>
         </div>
-        <div className="col-span-12 text-center flex flex-wrap justify-center gap-y-5 gradient-border overflow-y-scroll h-full py-3 select-none">
+        <div className="col-span-12 text-center grid grid-cols-decks justify-items-center gap-y-5 gradient-border overflow-y-scroll h-full py-3 select-none">
           {filteredCards.map((card: CardData, i: number) => (
             <div
               key={i}
