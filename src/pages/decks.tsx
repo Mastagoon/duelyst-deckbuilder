@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Deck } from "@prisma/client"
 import { NextPage } from "next"
 import { useEffect, useRef, useState } from "react"
@@ -10,7 +11,7 @@ import { trpc } from "../utils/trpc"
 const DecksPage: NextPage = () => {
   let lastScroll: number = 0
   // for some reason my tsserver is angry with useInfiniteQuery
-  //@ts-ignore
+  // It seems the typing for trpc's implementation of this straight up does not work.
   const { isLoading, data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     trpc.useInfiniteQuery(["deckinfiniteDecks"], {
       getNextPageParam: (lastPage: Deck[]) => lastPage[lastPage.length - 1]?.id,
