@@ -21,6 +21,7 @@ export const Keywords = [
   "veil",
   "blast",
   "dying wish",
+  "rebearth",
 ]
 
 export const KeywordDescription = {
@@ -42,6 +43,8 @@ export const KeywordDescription = {
   veil: "Cannot be targeted by spells.",
   blast: "Units with blast can attack all enemies in a selected direction.",
   dying_wish: "Trigger effect when the unit dies.",
+  rebearth:
+    "Spawn an egg of this unit when it dies. At the end of your next turn, transform the egg back into the original unit.",
 }
 
 export enum Faction {
