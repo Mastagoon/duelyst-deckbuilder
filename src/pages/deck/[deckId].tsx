@@ -59,7 +59,7 @@ const DeckView: React.FC = () => {
       <PageLayout>
         {isLoading && <Loading />}
         {deckInfo && (
-          <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen grid-rows-[max-content]">
+          <div className="flex flex-col px-10 text-white pt-5 h-screen grid-rows-[max-content]">
             <div className="flex flex-col col-span-12 ml-5">
               <div className="col-span-12 gap-1 flex flex-row mb-3">
                 <div className="flex flex-col items-center justify-center text-center text-primary-cyan">
@@ -93,7 +93,7 @@ const DeckView: React.FC = () => {
                 Copy Deck Code
               </button>
             </div>
-            <div className="col-span-12 text-center flex flex-wrap justify-around px-10 gap-y-5 gradient-border overflow-y-scroll h-full py-3 grid-rows-[max-content] gap-5">
+            <div className="col-span-12 text-center flex flex-wrap justify-around px-10 gap-y-5 gradient-border overflow-y-scroll h-full py-3 grid-rows-[max-content] gap-5 flex-1">
               <div className="flex flex-col flex-1">
                 <span className="font-bold">General</span>
                 <div className="relative cursor-pointer">
