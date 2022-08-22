@@ -17,6 +17,9 @@ export const Keywords = [
   "opening gambit",
   "activate",
   "backstab",
+  "frenzy",
+  "veil",
+  "blast",
 ]
 
 export const KeywordDescription = {
@@ -34,6 +37,9 @@ export const KeywordDescription = {
   opening_gambit: "Has an effect when played from your action bar.",
   activate: "Allows unit to move or attack.",
   backstab: "Gain effect when attacking an enemy from behind.",
+  frenzy: "Also damages the units next to the target unit when attacking.",
+  veil: "Cannot be targeted by spells.",
+  blast: "Units with blast can attack all enemies in a selected direction.",
 }
 
 export enum Faction {
