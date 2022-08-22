@@ -11,14 +11,14 @@ const orderCards = (cards: CardData[]) => {
       }
       return -1
     }
-    // for all other cards, sort by mana cost -> faction -> name
-    return a.mana > b.mana
+    // for all other cards, sort by faction -> mana cost faction -> name
+    return Faction[a.faction] ?? 0 > (Faction[b.faction] ?? 0)
+      ? 1
+      : a.mana > b.mana
       ? 1
       : a.mana < b.mana
       ? -1
-      : Faction[a.faction] ?? 0 > (Faction[b.faction] ?? 0)
-      ? 1
-      : -1
+      : 1
   })
 }
 
