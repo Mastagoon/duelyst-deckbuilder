@@ -7,7 +7,7 @@ export const imageRouter = createRouter().mutation("getCardStaticImage", {
   }),
   async resolve({ input }) {
     const { url } = input
-    const img = await getOrCreateFirstFrameOfGif(url)
+    const img = {}
     return {
       img,
     }
