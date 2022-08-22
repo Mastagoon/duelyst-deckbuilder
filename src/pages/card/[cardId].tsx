@@ -87,7 +87,7 @@ const CardView: React.FC = () => {
               >
                 {Faction[card.faction]}
               </h3>
-              <div className="flex flex-row gap-5 flex-wrap md:items-start items-center justify-center md:justify-start">
+              <div className="flex flex-row gap-5 md:flex-nowrap flex-wrap md:items-start items-center justify-center md:justify-start">
                 <div className="flex flex-col justify-center items-center">
                   <div
                     style={{
@@ -135,7 +135,7 @@ const CardView: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <div className="flex md:flex-row flex-col items-center text-2xl text-secondary-cyan gap-3">
+                  <div className="flex md:flex-row flex-col items-center text-2xl text-secondary-cyan gap-3 ">
                     <div className="flex flex-row items-center gap-2 ">
                       {card.cardType.toUpperCase() === "GENERAL" ? (
                         <FaKhanda />
@@ -181,7 +181,7 @@ const CardView: React.FC = () => {
                       <span className="capitalize">{card.rarity}</span>
                     </div>
                   </div>
-                  <div className="flex flex-row items-center md:justify-start justify-center text-2xl text-secondary-cyan gap-3">
+                  <div className="flex flex-row items-center md:justify-start justify-center text-2xl text-secondary-cyan gap-3 ">
                     <div className="flex flex-row items-center gap-2">
                       <BsFillHexagonFill className="text-primary-light-blue" />
                       <span className="capitalize">{card.mana} Mana</span>
@@ -205,9 +205,9 @@ const CardView: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  <div className="flex flex-col text-secondary-cyan gap-3">
+                  <div className="flex flex-col text-secondary-cyan gap-3 ">
                     <span
-                      className="text-xl text-wrap w-2/3"
+                      className="text-xl text-wrap md:w-2/3"
                       dangerouslySetInnerHTML={{
                         __html: HighlightKeywords(card.description),
                       }}
@@ -215,7 +215,7 @@ const CardView: React.FC = () => {
                     {Keywords.filter((keyword) =>
                       card.description.toLowerCase().includes(keyword)
                     ).map((kw: string, key) => (
-                      <span key={key} className="text-md">
+                      <span key={key} className="text-md text-wrap">
                         <div className="text-white font-bold text-xl inline capitalize">
                           {kw}
                           {": "}
