@@ -20,6 +20,7 @@ export const Keywords = [
   "frenzy",
   "veil",
   "blast",
+  "dying wish",
 ]
 
 export const KeywordDescription = {
@@ -40,6 +41,7 @@ export const KeywordDescription = {
   frenzy: "Also damages the units next to the target unit when attacking.",
   veil: "Cannot be targeted by spells.",
   blast: "Units with blast can attack all enemies in a selected direction.",
+  dying_wish: "Trigger effect when the unit dies.",
 }
 
 export enum Faction {
