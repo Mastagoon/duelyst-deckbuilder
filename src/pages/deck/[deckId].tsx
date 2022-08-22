@@ -1,4 +1,5 @@
 import { useRouter } from "next/router"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import { FaArrowDown, FaArrowUp, FaClipboard, FaPen } from "react-icons/fa"
 import Swal from "sweetalert2"
@@ -36,7 +37,7 @@ const DeckView: React.FC = () => {
   }
 
   const handleEditDeck = () => {
-    const result = loadFromDeckCode(deck!.code)
+    loadFromDeckCode(deck!.code)
     router.push(`/deck-builder`)
   }
 
@@ -116,28 +117,30 @@ const DeckView: React.FC = () => {
                 </span>
               </span>
               {deckInfo.minionCards.map((c, i) => (
-                <div className="relative cursor-pointer" key={i}>
-                  <span className="absolute right-1 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm">
-                    x{c.count}
-                  </span>
-                  <div
-                    style={{
-                      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url(${constants.imageUrl}/${c.resource.idle})`,
-                      backgroundSize: "40px 150%",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "85% 50%",
-                      border: `1px solid `,
-                      borderLeft: `1px solid ${getFactionColor(c.faction)}`,
-                      borderBottom: `1px solid ${getFactionColor(c.faction)}`,
-                    }}
-                    className="flex flex-row px-1 py-2 my-1 rounded-md gap-2 bg-primary-dark-blue cursor-pointer hover:scale-110 transition-all"
-                  >
-                    <ManaGem className="w-5 h-5" cost={c.mana} />
-                    <span className="text-xs font-bold overflow-hidden whitespace-nowrap cursor-pointer">
-                      {c.name}
+                <Link href={`/card/${c.id}`} key={i}>
+                  <div className="relative cursor-pointer">
+                    <span className="absolute right-1 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm">
+                      x{c.count}
                     </span>
+                    <div
+                      style={{
+                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url(${constants.imageUrl}/${c.resource.idle})`,
+                        backgroundSize: "40px 150%",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "85% 50%",
+                        border: `1px solid `,
+                        borderLeft: `1px solid ${getFactionColor(c.faction)}`,
+                        borderBottom: `1px solid ${getFactionColor(c.faction)}`,
+                      }}
+                      className="flex flex-row px-1 py-2 my-1 rounded-md gap-2 bg-primary-dark-blue cursor-pointer hover:scale-110 transition-all"
+                    >
+                      <ManaGem className="w-5 h-5" cost={c.mana} />
+                      <span className="text-xs font-bold overflow-hidden whitespace-nowrap cursor-pointer">
+                        {c.name}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
             <div className="flex flex-col flex-1">
@@ -148,28 +151,30 @@ const DeckView: React.FC = () => {
                 </span>
               </span>
               {deckInfo.spellCards.map((c, i) => (
-                <div className="relative cursor-pointer" key={i}>
-                  <span className="absolute right-1 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm">
-                    x{c.count}
-                  </span>
-                  <div
-                    style={{
-                      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url(${constants.imageUrl}/${c.resource.idle})`,
-                      backgroundSize: "40px 150%",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "85% 50%",
-                      border: `1px solid `,
-                      borderLeft: `1px solid ${getFactionColor(c.faction)}`,
-                      borderBottom: `1px solid ${getFactionColor(c.faction)}`,
-                    }}
-                    className="flex flex-row px-1 py-2 my-1 rounded-md gap-2 bg-primary-dark-blue cursor-pointer hover:scale-110 transition-all"
-                  >
-                    <ManaGem className="w-5 h-5" cost={c.mana} />
-                    <span className="text-xs font-bold overflow-hidden whitespace-nowrap cursor-pointer">
-                      {c.name}
+                <Link href={`/card/${c.id}`} key={i}>
+                  <div className="relative cursor-pointer">
+                    <span className="absolute right-1 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm">
+                      x{c.count}
                     </span>
+                    <div
+                      style={{
+                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url(${constants.imageUrl}/${c.resource.idle})`,
+                        backgroundSize: "40px 150%",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "85% 50%",
+                        border: `1px solid `,
+                        borderLeft: `1px solid ${getFactionColor(c.faction)}`,
+                        borderBottom: `1px solid ${getFactionColor(c.faction)}`,
+                      }}
+                      className="flex flex-row px-1 py-2 my-1 rounded-md gap-2 bg-primary-dark-blue cursor-pointer hover:scale-110 transition-all"
+                    >
+                      <ManaGem className="w-5 h-5" cost={c.mana} />
+                      <span className="text-xs font-bold overflow-hidden whitespace-nowrap cursor-pointer">
+                        {c.name}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
             <div className="flex flex-col flex-1">
@@ -180,28 +185,30 @@ const DeckView: React.FC = () => {
                 </span>
               </span>
               {deckInfo.artifactCards.map((c, i) => (
-                <div className="relative cursor-pointer" key={i}>
-                  <span className="absolute right-1 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm">
-                    x{c.count}
-                  </span>
-                  <div
-                    style={{
-                      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url(${constants.imageUrl}/${c.resource.idle})`,
-                      backgroundSize: "40px 150%",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "85% 50%",
-                      border: `1px solid `,
-                      borderLeft: `1px solid ${getFactionColor(c.faction)}`,
-                      borderBottom: `1px solid ${getFactionColor(c.faction)}`,
-                    }}
-                    className="flex flex-row px-1 py-2 my-1 rounded-md gap-2 bg-primary-dark-blue cursor-pointer hover:scale-110 transition-all"
-                  >
-                    <ManaGem className="w-5 h-5" cost={c.mana} />
-                    <span className="text-xs font-bold overflow-hidden whitespace-nowrap cursor-pointer">
-                      {c.name}
+                <Link href={`/card/${c.id}`} key={i}>
+                  <div className="relative cursor-pointer">
+                    <span className="absolute right-1 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm">
+                      x{c.count}
                     </span>
+                    <div
+                      style={{
+                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url(${constants.imageUrl}/${c.resource.idle})`,
+                        backgroundSize: "40px 150%",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "85% 50%",
+                        border: `1px solid `,
+                        borderLeft: `1px solid ${getFactionColor(c.faction)}`,
+                        borderBottom: `1px solid ${getFactionColor(c.faction)}`,
+                      }}
+                      className="flex flex-row px-1 py-2 my-1 rounded-md gap-2 bg-primary-dark-blue cursor-pointer hover:scale-110 transition-all"
+                    >
+                      <ManaGem className="w-5 h-5" cost={c.mana} />
+                      <span className="text-xs font-bold overflow-hidden whitespace-nowrap cursor-pointer">
+                        {c.name}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
