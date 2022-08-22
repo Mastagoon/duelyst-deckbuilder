@@ -6,7 +6,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Duelyst Deckbuilder</title>
+        <title>Duelyst II Deckbuilder</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Sidebar />

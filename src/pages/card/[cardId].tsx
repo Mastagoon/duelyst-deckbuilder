@@ -25,7 +25,7 @@ import {
 import { BsFillHexagonFill, BsHeartFill } from "react-icons/bs"
 import { TbSword } from "react-icons/tb"
 import Link from "next/link"
-import { Head } from "next/document"
+import Head from "next/head"
 
 const CardView: React.FC = () => {
   const [card, setCard] = useState<CardData>()
@@ -69,7 +69,7 @@ const CardView: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Duelyst Deckbuilder | {card?.name ?? "Unknown Card"}</title>
+        <title>Duelyst II Deckbuilder | {card?.name ?? "Unknown Card"}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

@@ -1,5 +1,5 @@
 import { NextPage } from "next"
-import { Head } from "next/document"
+import Head from "next/head"
 import CardList from "../components/CardList"
 import PageLayout from "../components/PageLayout"
 import { nonTokens, CardData } from "../data/cards"
@@ -18,7 +18,7 @@ const CardsPage: NextPage<{ cards: CardData[] }> = ({ cards }) => {
   return (
     <>
       <Head>
-        <title>Duelyst Deckbuilder | Card Browser</title>
+        <title>Duelyst II Deckbuilder | Card Browser</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

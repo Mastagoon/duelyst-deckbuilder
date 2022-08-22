@@ -1,4 +1,5 @@
 //@ts-nocheck
+import Head from "next/head"
 import { Deck } from "@prisma/client"
 import { NextPage } from "next"
 import { useEffect, useRef, useState } from "react"
@@ -43,7 +44,7 @@ const DecksPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Duelyst Deckbuilder | Deck Browser</title>
+        <title>Duelyst II Deckbuilder | Deck Browser</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <PageLayout>

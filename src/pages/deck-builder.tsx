@@ -1,4 +1,4 @@
-import { Head } from "next/document"
+import Head from "next/head"
 import DeckBuilderCardList from "../components/DeckBuilderCardList"
 import NewDeckList from "../components/NewDeckList"
 import PageLayout from "../components/PageLayout"
@@ -7,7 +7,7 @@ const DeckBuilder: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Duelyst Deckbuilder </title>
+        <title>Duelyst II Deckbuilder </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

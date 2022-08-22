@@ -11,7 +11,7 @@ import constants from "../../data/constants"
 import { ExtendedDeckInfo, loadDeckFromDeckCode } from "../../utils/deckCode"
 import getFactionColor from "../../utils/getFactionColor"
 import { trpc } from "../../utils/trpc"
-import { Head } from "next/document"
+import Head from "next/head"
 
 const DeckView: React.FC = () => {
   const router = useRouter()
