@@ -36,7 +36,6 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
 
   useEffect(() => {
     setFilteredCards(queryFromCards(cards, deferredFilterText, filterFactions))
-    console.log(deferredFilterText)
   }, [deferredFilterText, filterFactions])
 
   const setInitialCards = (c: CardData[]) => {
