@@ -77,23 +77,23 @@ const CardView: React.FC = () => {
         {card && (
           <div className="grid grid-cols-12 my-5 text-white">
             <div className="md:col-span-2 hidden md:inline"></div>
-            <div className="md:col-span-10 col-span-12 lg:ml-5 mt-20 flex flex-col text-center md:text-left">
-              <h1 className="md:text-4xl text-2xl font-bold md:ml-5 uppercase text-white">
+            <div className="md:col-span-10 col-span-12 mt-20 flex flex-col text-center md:text-left">
+              <h1 className="md:text-4xl text-2xl font-bold uppercase text-white">
                 {card.name}
               </h1>
               <h3
                 style={{ color: getFactionColors(card.faction) }}
-                className="md:text-2xl text-xl font-bold md:ml-5 uppercase"
+                className="md:text-2xl text-xl font-bold uppercase"
               >
                 {Faction[card.faction]}
               </h3>
-              <div className="flex flex-row gap-5 md:flex-nowrap flex-wrap md:items-start items-center justify-center md:justify-start">
+              <div className="flex flex-row gap-5 md:flex-nowrap flex-wrap md:items-start items-center justify-center md:justify-start ">
                 <div className="flex flex-col justify-center items-center">
                   <div
                     style={{
                       border: `1px solid ${getFactionColor(card.faction)}`,
                     }}
-                    className="w-52 h-full card-border cursor-pointer transition-all m-2 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1 select-none bg-no-repeat bg-cover text-center"
+                    className="w-52 h-full card-border cursor-pointer transition-all mr-2 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1 select-none bg-no-repeat bg-cover text-center"
                   >
                     <div
                       className="flex-1 pixelated animation-fade animate-slideInFromBottom"
