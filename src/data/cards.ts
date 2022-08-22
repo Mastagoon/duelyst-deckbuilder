@@ -16,6 +16,7 @@ export const Keywords = [
   "flying",
   "opening gambit",
   "activate",
+  "backstab",
 ]
 
 export const KeywordDescription = {
@@ -32,6 +33,7 @@ export const KeywordDescription = {
   flying: "Flying units can move to any tile.",
   opening_gambit: "Has an effect when played from your action bar.",
   activate: "Allows unit to move or attack.",
+  backstab: "Gain effect when attacking an enemy from behind.",
 }
 
 export enum Faction {
