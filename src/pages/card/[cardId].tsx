@@ -196,7 +196,7 @@ const CardView: React.FC = () => {
                 </div>
                 <div className="flex flex-col text-secondary-cyan gap-3">
                   <span
-                    className="text-xl"
+                    className="text-xl text-wrap w-2/3"
                     dangerouslySetInnerHTML={{
                       __html: HighlightKeywords(card.description),
                     }}

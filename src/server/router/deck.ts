@@ -25,8 +25,18 @@ export const deckRouter = createRouter()
       return await ctx.prisma.deck.findFirst({ where: { id: input.id } })
     },
   })
-  .query("getAll", {
-    async resolve({ ctx }) {
-      return await ctx.prisma.deck.findMany()
+  .query("infiniteDecks", {
+    input: z
+      .object({
+        cursor: z.string().optional(),
+      })
+      .nullish(),
+    async resolve({ ctx, input }) {
+      const TAKE_LIMIT = 1
+      return await ctx.prisma.deck.findMany({
+        take: TAKE_LIMIT,
+        cursor: { id: input?.cursor ?? undefined },
+        skip: input?.cursor ? 1 : 0,
+      })
     },
   })

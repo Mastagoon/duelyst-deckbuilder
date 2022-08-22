@@ -1,4 +1,5 @@
 import { NextPage } from "next"
+import { useEffect, useState } from "react"
 import DeckDisplay from "../components/Deck/DeckDisplay"
 import Loading from "../components/Loading"
 import PageLayout from "../components/PageLayout"
@@ -6,7 +7,14 @@ import { generalCards } from "../data/cards"
 import { trpc } from "../utils/trpc"
 
 const DecksPage: NextPage = () => {
-  const { isLoading, data } = trpc.useQuery(["deckgetAll"])
+  const [cursor, setCusror] = useState<string>()
+  const { isLoading, data } = trpc.useQuery(["deckgetAll", { cursor }])
+
+  const loadMore = () => {}
+
+  useEffect(() => {
+    if (data) setCusror(data[data.length]?.id)
+  }, [data])
 
   return (
     <PageLayout>
