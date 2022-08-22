@@ -85,7 +85,7 @@ export interface CardData {
   }
   faction: Faction
   cardType: CardType
-  description: string
+  description?: string
   mana: number
   attack?: number
   health?: number

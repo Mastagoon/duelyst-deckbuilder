@@ -205,47 +205,49 @@ const CardView: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  <div className="flex flex-col text-secondary-cyan gap-3 ">
-                    <span
-                      className="text-xl text-wrap md:w-2/3"
-                      dangerouslySetInnerHTML={{
-                        __html: HighlightKeywords(card.description),
-                      }}
-                    ></span>
-                    {Keywords.filter((keyword) =>
-                      card.description.toLowerCase().includes(keyword)
-                    ).map((kw: string, key) => (
-                      <span key={key} className="text-md text-wrap">
-                        <div className="text-white font-bold text-xl inline capitalize">
-                          {kw}
-                          {": "}
-                        </div>
-                        {/* @ts-ignore */}
-                        {KeywordDescription[kw.replace(" ", "_")]}
-                      </span>
-                    ))}
-                    {!!card.relatedCards.length && (
-                      <>
-                        <hr className="border-secondary-cyan my-1" />
-                        <span className="text-2xl font-bold">
-                          Related Cards
+                  {!!card.description && (
+                    <div className="flex flex-col text-secondary-cyan gap-3 ">
+                      <span
+                        className="text-xl text-wrap md:w-2/3"
+                        dangerouslySetInnerHTML={{
+                          __html: HighlightKeywords(card.description),
+                        }}
+                      ></span>
+                      {Keywords.filter((keyword) =>
+                        card.description!.toLowerCase().includes(keyword)
+                      ).map((kw: string, key) => (
+                        <span key={key} className="text-md text-wrap">
+                          <div className="text-white font-bold text-xl inline capitalize">
+                            {kw}
+                            {": "}
+                          </div>
+                          {/* @ts-ignore */}
+                          {KeywordDescription[kw.replace(" ", "_")]}
                         </span>
-                        <div className="flex flex-col">
-                          {card.relatedCards.map((id, i) => (
-                            <Link
-                              className="cursor-pointer hover:scale-110"
-                              key={i}
-                              href={`/card/${id}`}
-                            >
-                              <span className="text-white font-bold text-xl hover:opacity-75 transition-all cursor-pointer">
-                                {cardDataById[id]?.name}
-                              </span>
-                            </Link>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
+                      ))}
+                      {!!card.relatedCards.length && (
+                        <>
+                          <hr className="border-secondary-cyan my-1" />
+                          <span className="text-2xl font-bold">
+                            Related Cards
+                          </span>
+                          <div className="flex flex-col">
+                            {card.relatedCards.map((id, i) => (
+                              <Link
+                                className="cursor-pointer hover:scale-110"
+                                key={i}
+                                href={`/card/${id}`}
+                              >
+                                <span className="text-white font-bold text-xl hover:opacity-75 transition-all cursor-pointer">
+                                  {cardDataById[id]?.name ?? id}
+                                </span>
+                              </Link>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

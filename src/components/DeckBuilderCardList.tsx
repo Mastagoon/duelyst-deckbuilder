@@ -173,7 +173,9 @@ const DeckBuilderCardList: React.FC = ({}) => {
                   {card.tribes.join(",").toUpperCase()}
                 </span>
               )}
-              <CardDescription description={card.description} />
+              {!!card.description && (
+                <CardDescription description={card.description} />
+              )}
               {/*@ts-ignore*/}
               {cards.find((c) => c.id === card.id)?.count > 0 ? (
                 <div className="z-2 bg-primary-cyan rounded-sm w-full">

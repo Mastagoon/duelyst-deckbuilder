@@ -71,7 +71,9 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
               {card.tribes.join(",").toUpperCase()}
             </span>
           )}
-          <CardDescription description={card.description} />
+          {!!card.description && (
+            <CardDescription description={card.description} />
+          )}
           {card.attack || card.health ? (
             <>
               <CardAttack
