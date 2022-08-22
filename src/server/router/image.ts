@@ -1,5 +1,4 @@
 import { createRouter } from "./context"
-import { getOrCreateFirstFrameOfGif } from "../../utils/images"
 import { z } from "zod"
 
 export const imageRouter = createRouter().mutation("getCardStaticImage", {
