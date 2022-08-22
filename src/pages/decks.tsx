@@ -41,32 +41,40 @@ const DecksPage: NextPage = () => {
   }
 
   return (
-    <PageLayout>
-      {(isLoading || isFetchingNextPage) && <Loading />}
-      <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen grid-rows-[max-content]">
-        <div className="col-span-12">
-          <h1 className="col-span-12 md:text-4xl text-2xl font-bold">
-            Deck Browser
-          </h1>
+    <>
+      <Head>
+        <title>Duelyst Deckbuilder | Deck Browser</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <PageLayout>
+        {(isLoading || isFetchingNextPage) && <Loading />}
+        <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen grid-rows-[max-content]">
+          <div className="col-span-12">
+            <h1 className="col-span-12 md:text-4xl text-2xl font-bold">
+              Deck Browser
+            </h1>
+          </div>
+          <div
+            ref={deckPageRef}
+            className="col-span-12 text-center flex flex-wrap justify-center gap-y-5 gradient-border overflow-y-scroll h-full py-3 grid-rows-[max-content] "
+          >
+            {data?.pages.map((p: any) =>
+              p.map((deck: Deck, i: number) => {
+                const general = generalCards.find(
+                  (g) => g.id === deck.generalId
+                )
+                if (!general) return
+                return (
+                  <div className="self-center justify-self-center" key={i}>
+                    <DeckDisplay deck={deck} />
+                  </div>
+                )
+              })
+            )}
+          </div>
         </div>
-        <div
-          ref={deckPageRef}
-          className="col-span-12 text-center flex flex-wrap justify-center gap-y-5 gradient-border overflow-y-scroll h-full py-3 grid-rows-[max-content] "
-        >
-          {data?.pages.map((p: any) =>
-            p.map((deck: Deck, i: number) => {
-              const general = generalCards.find((g) => g.id === deck.generalId)
-              if (!general) return
-              return (
-                <div className="self-center justify-self-center" key={i}>
-                  <DeckDisplay deck={deck} />
-                </div>
-              )
-            })
-          )}
-        </div>
-      </div>
-    </PageLayout>
+      </PageLayout>
+    </>
   )
 }
 

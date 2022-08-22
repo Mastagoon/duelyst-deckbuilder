@@ -1,4 +1,5 @@
 import { NextPage } from "next"
+import { Head } from "next/document"
 import CardList from "../components/CardList"
 import PageLayout from "../components/PageLayout"
 import { nonTokens, CardData } from "../data/cards"
@@ -15,9 +16,16 @@ export const getStaticProps = async () => {
 
 const CardsPage: NextPage<{ cards: CardData[] }> = ({ cards }) => {
   return (
-    <PageLayout>
-      <CardList cardList={cards} />
-    </PageLayout>
+    <>
+      <Head>
+        <title>Duelyst Deckbuilder | Card Browser</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <PageLayout>
+        <CardList cardList={cards} />
+      </PageLayout>
+    </>
   )
 }
 
