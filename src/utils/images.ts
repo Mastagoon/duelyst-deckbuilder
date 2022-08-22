@@ -1,5 +1,3 @@
-import { GifReader } from "omggif"
-
 export const loadGifFrameList = async (
   gifUrl: string
 ): Promise<ImageData[]> => {
