@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        decks: "repeat(auto-fit, minmax(260px, 1fr))",
+        decks: "repeat(auto-fill, minmax(260px, 1fr))",
       },
       animation: {
         slideInFromTop: "slideInFromTop 0.5s ease-out",
