@@ -2,7 +2,6 @@ import { useDeckContext } from "../context/newDeckContext"
 import Swal from "sweetalert2"
 import Image from "next/image"
 import { CardData, Faction } from "../data/cards"
-import getFactionColor from "../utils/getFactionColor"
 import CardDescription from "./Card/CardDescription"
 import ManaGem from "./Card/ManaGem"
 import constants from "../data/constants"
@@ -126,7 +125,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
                 onClick={() => handleCardClick(card.id)}
                 style={{
                   opacity:
-                    cards.find((c) => c.id === card.id)?.count ?? 0 >= 3
+                    (cards.find((c) => c.id === card.id)?.count ?? 0) >= 3
                       ? 0.3
                       : 1,
                   backgroundImage: `url(/card/${

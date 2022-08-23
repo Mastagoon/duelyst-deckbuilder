@@ -42,8 +42,8 @@
     box-sizing: border-box;
     clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
     background: #3daed9;
-    box-shadow: 15px 16px 16px rgba(0, 0, 0, 1),
-      inset 10px -2px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 15px 16px 16px rgba(255, 255, 255, 1),
+      inset 10px -2px 20px rgba(0, 0, 255, 0.55);
   }
 }
 
