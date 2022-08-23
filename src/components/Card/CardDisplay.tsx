@@ -19,8 +19,15 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
         <div
           style={{
             border: `1px solid ${getFactionColor(card.faction)}`,
+            backgroundImage: `url(/card/${
+              card.cardType.toUpperCase() === "SPELL"
+                ? "spell"
+                : card.cardType.toUpperCase() === "ARTIFACT"
+                ? "item"
+                : "troop"
+            }.png)`,
           }}
-          className="w-52 py-2 card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] p-1 select-none bg-no-repeat bg-cover"
+          className="w-52 pb-2 card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue min-h-[330px] min-w-[250px] p-1 select-none bg-no-repeat bg-cover"
         >
           <ManaGem
             cost={card.mana}
@@ -37,12 +44,6 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
                 width={30}
               />
             </div>
-            <Image
-              alt="Icon rarity"
-              src={`/icons/rarity/${card.rarity.toUpperCase()}.svg`}
-              height={30}
-              width={30}
-            />
           </div>
           <div
             className="flex-1 pixelated"
@@ -50,8 +51,8 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
               backgroundImage: `url(${constants.imageUrl}/${card.resource.idle})`,
               backgroundPosition: `${
                 ["MINION", "GENERAL"].includes(card.cardType.toUpperCase())
-                  ? "center 10%"
-                  : "center"
+                  ? "center "
+                  : "center "
               }`,
               backgroundRepeat: "no-repeat",
               backgroundSize: `${
@@ -61,31 +62,44 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
               }`,
             }}
           ></div>
-          <span className="tracking-wide"> {card.name.toUpperCase()}</span>
-          <span className="tracking-wide mb-3 text-primary-cyan text-sm">
-            {card.cardType.toUpperCase()}
-            {card.rarity.toUpperCase() === "TOKEN" && ",TOKEN"}
-          </span>
-          {card.tribes.length > 0 && (
-            <span className="text-primary-cyan text-sm tracking-widest">
-              {card.tribes.join(",").toUpperCase()}
+          <div className="flex-1 flex flex-col justify-start">
+            <div className="flex flex-col flex-1">
+              <span className="tracking-wide text-sm font-bold">
+                {card.name.toUpperCase()}
+              </span>
+              {card.tribes.length ? (
+                <span className="text-primary-cyan text-sm tracking-widest">
+                  {card.tribes.join(",").toUpperCase()}
+                </span>
+              ) : (
+                <span className="tracking-wide mb-3 text-primary-cyan text-sm">
+                  {card.cardType.toUpperCase()}
+                  {card.rarity.toUpperCase() === "TOKEN" && ",TOKEN"}
+                </span>
+              )}
+            </div>
+            <span className="text-xl absolute left-[3.35rem] bottom-[7.2rem]">
+              {card.attack}
             </span>
-          )}
-          {!!card.description && (
-            <CardDescription description={card.description} />
-          )}
-          {card.attack || card.health ? (
-            <>
-              <CardAttack
-                attack={card.attack ?? 0}
-                className="absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2 h-10 w-10"
+            <span className="text-xl absolute right-[3.57rem] bottom-[7.2rem] translate-x-1/2">
+              {card.health}
+            </span>
+            <div className="absolute bottom-20 left-1/2 -translate-x-1/2">
+              <Image
+                alt="Icon rarity"
+                src={`/icons/rarity/${card.rarity.toUpperCase()}.svg`}
+                height={30}
+                width={30}
               />
-              <CardHealth
-                health={card.health ?? 0}
-                className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 h-10 w-10"
-              />
-            </>
-          ) : null}
+            </div>
+
+            {!!card.description && (
+              <div className="flex-1">
+                {" "}
+                <CardDescription description={card.description} />
+              </div>
+            )}
+          </div>
         </div>
       </Link>
     </>

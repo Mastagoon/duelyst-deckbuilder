@@ -5,7 +5,7 @@ const CardDescription: React.FC<{ description: string }> = ({
 }) => {
   return (
     <span
-      className="text-secondary-cyan text-xs overflow-y-scroll no-scrollbar text-center"
+      className="text-primary-cyan text-xs overflow-y-scroll no-scrollbar text-center"
       dangerouslySetInnerHTML={{ __html: HighlightKeywords(description) }}
     ></span>
   )
