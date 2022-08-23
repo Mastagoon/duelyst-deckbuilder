@@ -21,9 +21,9 @@ const CardList: React.FC<{ compact?: boolean; cardList?: CardData[] }> = ({
           <FilterOptions />
         </div>
       </div>
-      <div className="col-span-12 text-center grid grid-cols-decks justify-items-center gap-y-5 gradient-border overflow-y-scroll h-full py-3 grid-rows-[max-content] ">
+      <div className="col-span-12 text-center grid grid-cols-decks justify-items-center gap-y-5 gradient-border overflow-y-scroll h-full py-3 px-6">
         {filteredCards.map((card: CardData, i: number) => (
-          <div className={`mx-5 `} key={i}>
+          <div className={``} key={i}>
             <CardDisplay card={card} />
           </div>
         ))}
