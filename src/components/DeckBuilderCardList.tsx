@@ -126,7 +126,9 @@ const DeckBuilderCardList: React.FC = ({}) => {
                 onClick={() => handleCardClick(card.id)}
                 style={{
                   opacity:
-                    cards.find((c) => c.id === card.id)?.count >= 3 ? 0.3 : 1,
+                    cards.find((c) => c.id === card.id)?.count ?? 0 >= 3
+                      ? 0.3
+                      : 1,
                   backgroundImage: `url(/card/${
                     card.cardType.toUpperCase() === "SPELL"
                       ? "spell"
