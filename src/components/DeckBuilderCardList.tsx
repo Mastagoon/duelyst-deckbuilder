@@ -4,7 +4,6 @@ import Image from "next/image"
 import { CardData, Faction } from "../data/cards"
 import CardDescription from "./Card/CardDescription"
 import ManaGem from "./Card/ManaGem"
-import constants from "../data/constants"
 import { FaLayerGroup, FaSearch } from "react-icons/fa"
 import { useState } from "react"
 import NewDeckList from "./NewDeckList"
@@ -174,7 +173,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
                       : ""
                   }`}
                   style={{
-                    backgroundImage: `url(${constants.imageUrl}/${card.resource.idle})`,
+                    backgroundImage: `url(/card_sprites/${card.id}.gif)`,
                     backgroundPosition: `${
                       ["MINION", "GENERAL"].includes(
                         card.cardType.toUpperCase()

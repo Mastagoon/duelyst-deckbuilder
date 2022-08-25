@@ -33,7 +33,7 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
                 : ""
             }`}
             style={{
-              backgroundImage: `url(${constants.imageUrl}/${card.resource.idle})`,
+              backgroundImage: `url(/card_sprites/${card.id}.gif)`,
               backgroundPosition: `${
                 ["MINION", "GENERAL"].includes(card.cardType.toUpperCase())
                   ? "center "
