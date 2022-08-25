@@ -25,24 +25,6 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
           }}
           className="pb-2 card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md  min-h-[330px] min-w-[250px] p-1 select-none bg-no-repeat bg-cover"
         >
-          {card.cardType.toUpperCase() !== "GENERAL" && (
-            <ManaGem
-              cost={card.mana}
-              className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-12 w-12"
-            />
-          )}
-          {/* Rarity */}
-          <div className="absolute top-5 right-2 flex flex-col gap-2">
-            <div className="">
-              <Image
-                className="overflow-hidden"
-                alt="Faction"
-                src={`/icons/factions/${Faction[card.faction]} rune.png`}
-                height={30}
-                width={30}
-              />
-            </div>
-          </div>
           <div
             className={`flex-1 pixelated ${
               card.cardType.toUpperCase() === "SPELL" ||
@@ -94,6 +76,37 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
               {card.health}
             </span>
             <div className="absolute bottom-20 left-1/2 -translate-x-1/2"></div>
+            {card.cardType.toUpperCase() !== "GENERAL" && (
+              <ManaGem
+                cost={card.mana}
+                className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-12 w-12"
+              />
+            )}
+            {/* Rarity */}
+            {card.cardType.toUpperCase() !== "GENERAL" &&
+              card.rarity.toUpperCase() !== "TOKEN" && (
+                <div className="absolute bottom-24 right-1/2 translate-x-1/2">
+                  <Image
+                    className="overflow-hidden"
+                    alt="Rarity"
+                    src={`/icons/rarity/collection_card_rarity_${card.rarity.toLowerCase()}.png`}
+                    height={44}
+                    width={44}
+                  />
+                </div>
+              )}
+            {/* Faction */}
+            <div className="absolute top-[1.1em] right-[1em] flex flex-col gap-2">
+              <div className="">
+                <Image
+                  className="overflow-hidden"
+                  alt="Faction"
+                  src={`/icons/factions/${Faction[card.faction]} rune.png`}
+                  height={30}
+                  width={30}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </Link>
