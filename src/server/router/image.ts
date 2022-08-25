@@ -1,5 +1,4 @@
 import { createRouter } from "./context"
-import { get, getSync } from "@andreekeberg/imagedata"
 import { z } from "zod"
 
 export const imageRouter = createRouter().mutation("getCardStaticImage", {
