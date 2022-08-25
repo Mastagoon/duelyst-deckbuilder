@@ -1,4 +1,5 @@
 import { createRouter } from "./context"
+import { get, getSync } from "@andreekeberg/imagedata"
 import { z } from "zod"
 
 export const imageRouter = createRouter().mutation("getCardStaticImage", {
@@ -7,9 +8,10 @@ export const imageRouter = createRouter().mutation("getCardStaticImage", {
   }),
   async resolve({ input }) {
     const { url } = input
-    const img = {}
+    const result2 = await fetch(url)
+    console.log(result2.body)
     return {
-      img,
+      hello: "world",
     }
   },
 })

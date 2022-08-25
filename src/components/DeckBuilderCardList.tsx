@@ -154,7 +154,6 @@ const DeckBuilderCardList: React.FC = ({}) => {
                   />
                 </div>
                 {/* Rarity */}
-                {/* Rarity */}
                 {card.cardType.toUpperCase() !== "GENERAL" &&
                   card.rarity.toUpperCase() !== "TOKEN" && (
                     <div className="absolute bottom-24 right-1/2 translate-x-1/2">

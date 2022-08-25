@@ -1,4 +1,5 @@
 import { useDeckContext } from "../context/newDeckContext"
+import Image from "next/image"
 import Swal from "sweetalert2"
 import constants from "../data/constants"
 import ManaGem from "./Card/ManaGem"
@@ -8,6 +9,8 @@ import { useState } from "react"
 import Loading from "./Loading"
 import { trpc } from "../utils/trpc"
 import { useRouter } from "next/router"
+import { getStillImageUrl } from "../utils/image"
+import { CardType } from "../data/cards"
 
 let debounceTimeout: any
 
@@ -192,45 +195,75 @@ const NewDeckList: React.FC = () => {
           {general ? (
             <>
               <div className="flex flex-col overflow-x-hidden cursor-pointer">
-                <div
-                  onClick={handleReset}
-                  style={{
-                    backgroundImage: `url(/card/deck_builder_card_general_bg.png)`,
-                    backgroundSize: "100%",
-                    backgroundRepeat: "no-repeat",
-                  }}
-                  className="flex flex-row justify-start items-center px-1 py-2 my-1 rounded-md gap-2 cursor-pointer hover:scale-110 transition-all h-14
-"
-                >
-                  <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer ml-8">
-                    {general.name}
-                  </span>
-                </div>
-                {cards.map((c, i) => (
+                <div className="h-14 mb-1">
                   <div
-                    className="relative cursor-pointer"
-                    onClick={() => handleDeckCardClick(c.id)}
-                    key={i}
+                    onClick={handleReset}
+                    style={{
+                      backgroundImage: `url(/card/deck_builder_card_general_bg.png)`,
+                      backgroundSize: "100%",
+                      backgroundRepeat: "no-repeat",
+                    }}
+                    className="flex flex-row justify-start items-center px-1 py-2 my-1 rounded-md gap-2 cursor-pointer hover:scale-110 transition-all h-14 relative
+"
                   >
-                    <span className="absolute right-1 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm">
-                      x{c.count}
+                    <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer ml-8">
+                      {general.name}
                     </span>
                     <div
+                      className="absolute -top-9 right-0 h-20 w-28"
                       style={{
-                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url(${constants.imageUrl}/${c.resource.idle})`,
-                        backgroundSize: "40px 150%",
+                        backgroundSize: "auto auto",
                         backgroundRepeat: "no-repeat",
-                        backgroundPosition: "85% 50%",
-                        border: `1px solid `,
-                        borderLeft: `1px solid ${getFactionColor(c.faction)}`,
-                        borderBottom: `1px solid ${getFactionColor(c.faction)}`,
                       }}
-                      className="flex flex-row px-1 py-2 my-1 rounded-md gap-2 bg-primary-dark-blue cursor-pointer hover:scale-110 transition-all"
+                    ></div>
+                  </div>
+                </div>
+                {cards.map((c, i) => (
+                  <div key={i} className="h-14 relative">
+                    <div
+                      style={{
+                        backgroundImage: `url(/card/deck_builder_card_bg.png)`,
+                        backgroundSize: "100%",
+                        backgroundRepeat: "no-repeat",
+                      }}
+                      className="flex flex-row justify-start items-center mb-1 rounded-md gap-2 cursor-pointer hover:scale-110 transition-all h-14 relative"
+                      onClick={() => handleDeckCardClick(c.id)}
                     >
-                      <ManaGem className="w-5 h-5" cost={c.mana} />
-                      <span className="text-xs font-bold overflow-hidden whitespace-nowrap cursor-pointer">
+                      <span className="absolute text-lg font-bold left-[1.35rem] text-black">
+                        {c.mana}
+                      </span>
+                      <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer ml-16 uppercase">
                         {c.name}
                       </span>
+                      <span className="absolute right-3 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm flex justify-center items-center">
+                        x{c.count}
+                      </span>
+                      <div
+                        className="absolute"
+                        style={{
+                          width:
+                            c.cardType.toUpperCase() === "MINION"
+                              ? "3.5rem"
+                              : "3rem",
+                          right:
+                            c.cardType.toUpperCase() === "MINION"
+                              ? "2.5rem"
+                              : "2.25rem",
+                          top:
+                            c.cardType.toUpperCase() === "MINION"
+                              ? "-15px"
+                              : "0",
+                          height:
+                            c.cardType.toUpperCase() === "MINION"
+                              ? "5rem"
+                              : "3rem",
+                          backgroundSize: "auto auto",
+                          backgroundRepeat: "no-repeat",
+                          backgroundImage: `url(${getStillImageUrl(
+                            `${constants.imageUrl}/${c.resource.idle}`
+                          )})`,
+                        }}
+                      ></div>
                     </div>
                   </div>
                 ))}
