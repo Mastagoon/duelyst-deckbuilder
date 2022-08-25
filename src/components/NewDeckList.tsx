@@ -1,10 +1,12 @@
 import { useDeckContext } from "../context/newDeckContext"
+import { useAutoAnimate } from "@formkit/auto-animate/react"
 import Swal from "sweetalert2"
 import { FaClipboard, FaEdit, FaTrash } from "react-icons/fa"
 import { useState } from "react"
 import Loading from "./Loading"
 import { trpc } from "../utils/trpc"
 import { useRouter } from "next/router"
+import getFactionColors from "../utils/getFactionColor"
 
 let debounceTimeout: any
 
@@ -25,6 +27,11 @@ const NewDeckList: React.FC = () => {
   const [localDeckName, setLocalDeckName] = useState(deckName)
   const [deckCode, setDeckCode] = useState("")
   const [loading, setLoading] = useState(false)
+
+  const [parent] = useAutoAnimate<HTMLDivElement>({
+    duration: 90,
+    easing: "ease-out",
+  })
 
   const router = useRouter()
 
@@ -197,7 +204,7 @@ const NewDeckList: React.FC = () => {
                       backgroundSize: "100%",
                       backgroundRepeat: "no-repeat",
                     }}
-                    className="flex flex-row justify-start items-center px-1 py-2 my-1 rounded-md gap-2 cursor-pointer hover:scale-110 transition-all h-14 relative
+                    className="flex flex-row justify-start items-center px-1 py-2 my-1 rounded-md gap-2 cursor-pointer transition-all h-14 relative
 "
                   >
                     <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer ml-8">
@@ -214,52 +221,56 @@ const NewDeckList: React.FC = () => {
                     ></div>
                   </div>
                 </div>
-                {cards.map((c, i) => (
-                  <div key={i} className="h-14 relative">
-                    <div
-                      style={{
-                        backgroundImage: `url(/card/deck_builder_card_bg.png)`,
-                        backgroundSize: "100%",
-                        backgroundRepeat: "no-repeat",
-                      }}
-                      className="flex flex-row justify-start items-center mb-1 rounded-md gap-2 cursor-pointer hover:scale-110 transition-all h-14 relative"
-                      onClick={() => handleDeckCardClick(c.id)}
-                    >
-                      <span className="absolute text-lg font-bold left-[1.35rem] text-black">
-                        {c.mana}
-                      </span>
-                      <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer ml-16 uppercase">
-                        {c.name}
-                      </span>
-                      <span className="absolute right-3 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm flex justify-center items-center">
-                        x{c.count}
-                      </span>
+                <div className="h-screen" ref={parent}>
+                  {cards.map((c, i) => (
+                    <div key={i} className="h-14 relative">
                       <div
-                        className="absolute"
                         style={{
-                          width:
-                            c.cardType.toUpperCase() === "MINION"
-                              ? "3.8rem"
-                              : "3rem",
-                          right:
-                            c.cardType.toUpperCase() === "MINION"
-                              ? "2.5rem"
-                              : "2.25rem",
-                          top: c.cardType.toUpperCase() === "MINION" ? "" : "0",
-                          height:
-                            c.cardType.toUpperCase() === "MINION"
-                              ? "5rem"
-                              : "3rem",
-                          backgroundSize: "auto auto",
-                          backgroundPosition: "center",
+                          backgroundImage: `url(/card/deck_builder_card_bg.png)`,
+                          backgroundSize: "100%",
                           backgroundRepeat: "no-repeat",
-                          backgroundImage: `url(/card_sprites/${c.id}.png)`,
-                          opacity: 0.5,
+                          borderColor: getFactionColors(c.faction),
                         }}
-                      ></div>
+                        className="flex flex-row justify-start items-center mb-1 rounded-md gap-2 cursor-pointer hover:border-b-2  transition-all h-14 relative"
+                        onClick={() => handleDeckCardClick(c.id)}
+                      >
+                        <span className="absolute text-lg font-bold left-[1.35rem] text-black">
+                          {c.mana}
+                        </span>
+                        <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer ml-16 uppercase">
+                          {c.name}
+                        </span>
+                        <span className="absolute right-3 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm flex justify-center items-center">
+                          x{c.count}
+                        </span>
+                        <div
+                          className="absolute"
+                          style={{
+                            width:
+                              c.cardType.toUpperCase() === "MINION"
+                                ? "3.8rem"
+                                : "3rem",
+                            right:
+                              c.cardType.toUpperCase() === "MINION"
+                                ? "2.5rem"
+                                : "2.25rem",
+                            top:
+                              c.cardType.toUpperCase() === "MINION" ? "" : "0",
+                            height:
+                              c.cardType.toUpperCase() === "MINION"
+                                ? "5rem"
+                                : "3rem",
+                            backgroundSize: "auto auto",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                            backgroundImage: `url(/card_sprites/${c.id}.png)`,
+                            opacity: 0.5,
+                          }}
+                        ></div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </>
           ) : (
