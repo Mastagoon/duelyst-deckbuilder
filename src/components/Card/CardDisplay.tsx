@@ -1,19 +1,24 @@
-import { CardData, Faction } from "../../data/cards"
+import { CardData, cardDataById, Faction } from "../../data/cards"
 import ManaGem from "./ManaGem"
 import Image from "next/image"
 import CardDescription from "./CardDescription"
-import constants from "../../data/constants"
 import Link from "next/link"
+import CardTooltip from "../CardTooltip"
+import { useState } from "react"
 
 interface CardDisplayProps {
   card: CardData
 }
 
 const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
+  const [showTooltip, setShowTooltip] = useState(false)
+
   return (
     <>
       <Link href={`/card/${card.id}`}>
         <div
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
           style={{
             backgroundImage: `url(/card/${
               card.cardType.toUpperCase() === "SPELL"
@@ -108,6 +113,15 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
               </div>
             </div>
           </div>
+          {card.relatedCards.map((r) =>
+            cardDataById[r] ? (
+              <CardTooltip
+                c={cardDataById[r]!}
+                show={showTooltip}
+                nested={false}
+              />
+            ) : null
+          )}
         </div>
       </Link>
     </>

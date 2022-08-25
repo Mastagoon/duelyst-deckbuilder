@@ -1,7 +1,6 @@
 import React, { useContext, useDeferredValue, useEffect } from "react"
 import { useState } from "react"
 import {
-  allCards,
   CardData,
   Faction,
   generalCards,
