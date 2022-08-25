@@ -195,17 +195,14 @@ const NewDeckList: React.FC = () => {
                 <div
                   onClick={handleReset}
                   style={{
-                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url(${constants.imageUrl}/${general.resource.idle})`,
-                    backgroundSize: "40px 150%",
+                    backgroundImage: `url(/card/deck_builder_card_general_bg.png)`,
+                    backgroundSize: "100%",
                     backgroundRepeat: "no-repeat",
-                    backgroundPosition: "85% 50%",
-                    border: `1px solid ${getFactionColor(general.faction)}`,
                   }}
-                  className="flex flex-row px-1 py-2 my-1 rounded-md gap-2 bg-primary-dark-blue cursor-pointer hover:scale-110 transition-all
+                  className="flex flex-row justify-start items-center px-1 py-2 my-1 rounded-md gap-2 cursor-pointer hover:scale-110 transition-all h-14
 "
                 >
-                  <ManaGem className="w-5 h-5" cost={0} />
-                  <span className="text-xs font-bold overflow-hidden whitespace-nowrap cursor-pointer">
+                  <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer ml-8">
                     {general.name}
                   </span>
                 </div>
