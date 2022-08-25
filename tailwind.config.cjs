@@ -6,6 +6,9 @@ module.exports = {
       gridTemplateColumns: {
         decks: "repeat(auto-fill, minmax(260px, 1fr))",
       },
+      gridTemplateRows: {
+        decks: "repeat(auto-fill, minmax(300px, 1fr))",
+      },
       animation: {
         slideInFromTop: "slideInFromTop 0.5s ease-out",
         slideInFromBottom: "slideInFromBottom 0.5s ease-out",

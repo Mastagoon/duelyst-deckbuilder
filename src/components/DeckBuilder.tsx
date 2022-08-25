@@ -29,7 +29,7 @@ const DeckBuilderScreen: React.FC = () => {
   const [loading, setLoading] = useState(false)
 
   const [parent] = useAutoAnimate<HTMLDivElement>({
-    duration: 140,
+    duration: 250,
     easing: "ease-in-out",
   })
 

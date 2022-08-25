@@ -1,4 +1,5 @@
 import { useRouter } from "next/router"
+import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { FaArrowDown, FaArrowUp, FaClipboard, FaPen } from "react-icons/fa"
@@ -97,19 +98,19 @@ const DeckView: React.FC = () => {
                 <div className="h-14 mb-1">
                   <Link href={`/card/${deckInfo.general?.id}`}>
                     <div
-                      style={{
-                        backgroundImage: `url(/card/deck_builder_card_general_bg.png)`,
-                        backgroundSize: "100%",
-                        backgroundRepeat: "no-repeat",
-                      }}
                       className="flex flex-row justify-start items-center px-1 py-2 my-1 rounded-md gap-2 cursor-pointer hover:scale-110 transition-all h-14 relative
 "
                     >
+                      <Image
+                        src={"/card/deck_builder_card_general_bg.png"}
+                        className="z-0"
+                        layout="fill"
+                      />
                       <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer ml-8">
                         {deckInfo.general?.name}
                       </span>
                       <div
-                        className="absolute right-0 h-20 w-28"
+                        className="absolute right-0 h-20 w-28 top-1"
                         style={{
                           backgroundSize: "auto auto",
                           backgroundRepeat: "no-repeat",

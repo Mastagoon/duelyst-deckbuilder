@@ -57,7 +57,7 @@ const DecksPage: NextPage = () => {
           </div>
           <div
             ref={deckPageRef}
-            className="text-center grid grid-cols-decks justify-items-center gap-y-5 gradient-border overflow-y-scroll h-full py-3 "
+            className="text-center grid grid-cols-decks grid-rows-decks justify-items-center gradient-border overflow-y-scroll h-full py-3 "
           >
             {data?.pages.map((p: any) =>
               p.map((deck: Deck, i: number) => {
@@ -65,11 +65,7 @@ const DecksPage: NextPage = () => {
                   (g) => g.id === deck.generalId
                 )
                 if (!general) return
-                return (
-                  <div className="" key={i}>
-                    <DeckDisplay deck={deck} />
-                  </div>
-                )
+                return <DeckDisplay key={i} deck={deck} />
               })
             )}
           </div>
