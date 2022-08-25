@@ -6,7 +6,8 @@ import CardDescription from "./Card/CardDescription"
 import ManaGem from "./Card/ManaGem"
 import { FaLayerGroup, FaSearch } from "react-icons/fa"
 import { useState } from "react"
-import NewDeckList from "./NewDeckList"
+import DeckBuilderScreen from "./DeckBuilder"
+import { $enum } from "ts-enum-util"
 
 let debounceTimeout: any
 
@@ -89,7 +90,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
               "h-[50vh] w-full max-w-md overflow-y-scroll mt-1 relative outline-none focus:outline-none self-center animate-slideInFromBottom"
             }
           >
-            <NewDeckList />
+            <DeckBuilderScreen />
           </div>
         )}
       </div>
@@ -105,6 +106,18 @@ const DeckBuilderCardList: React.FC = ({}) => {
             </h1>
           )}
           <div className="col-span-12">
+            <div className="border-2 border-white py-5 rounded-md my-5 px-5 flex flex-row flex-wrap items-center justify-center">
+              <div className="flex flex-row flex-wrap justify-between grow"></div>
+              <div className="relative outline-none focus:outline-none mx-5">
+                <FaSearch className="absolute left-1 top-0 translate-y-1/2 text-[rgba(255,255,255,0.3)] p-0 m-0" />
+                <input
+                  value={query}
+                  onChange={handleQueryStringChange}
+                  placeholder="Search..."
+                  className="w-full bg-[rgba(255,255,255,0.3)] rounded-md text-white border-white border-2 pl-5 min-h-full self-center"
+                />
+              </div>
+            </div>
             <div className="flex flex-row justify-center hidden lg:block">
               <div className="text-center outline-none focus:outline-none mx-5 my-2">
                 <input

@@ -60,7 +60,7 @@ const DeckCard: React.FC<{
           ></div>
         </div>
       </div>
-      <CardTooltip c={c} show={showTooltip} />
+      <CardTooltip nested={false} c={c} show={showTooltip} />
     </div>
   )
 }

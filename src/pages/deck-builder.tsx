@@ -1,6 +1,6 @@
 import Head from "next/head"
 import DeckBuilderCardList from "../components/DeckBuilderCardList"
-import NewDeckList from "../components/NewDeckList"
+import DeckBuilderScreen from "../components/DeckBuilder"
 import PageLayout from "../components/PageLayout"
 
 const DeckBuilder: React.FC = () => {
@@ -17,7 +17,7 @@ const DeckBuilder: React.FC = () => {
             <DeckBuilderCardList />
           </div>
           <div className="hidden lg:block lg:col-span-3">
-            <NewDeckList />
+            <DeckBuilderScreen />
           </div>
         </div>
       </PageLayout>
