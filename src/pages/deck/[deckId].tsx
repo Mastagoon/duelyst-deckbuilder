@@ -3,15 +3,13 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { FaArrowDown, FaArrowUp, FaClipboard, FaPen } from "react-icons/fa"
 import Swal from "sweetalert2"
-import ManaGem from "../../components/Card/ManaGem"
 import Loading from "../../components/Loading"
 import PageLayout from "../../components/PageLayout"
 import { useDeckContext } from "../../context/newDeckContext"
-import constants from "../../data/constants"
 import { ExtendedDeckInfo, loadDeckFromDeckCode } from "../../utils/deckCode"
-import getFactionColor from "../../utils/getFactionColor"
 import { trpc } from "../../utils/trpc"
 import Head from "next/head"
+import DeckCard from "../../components/Deck/DeckCard"
 
 const DeckView: React.FC = () => {
   const router = useRouter()
@@ -132,50 +130,7 @@ const DeckView: React.FC = () => {
                 </span>
                 {deckInfo.minionCards.map((c, i) => (
                   <Link href={`/card/${c.id}`} key={i}>
-                    <div className="h-14 relative">
-                      <div
-                        style={{
-                          backgroundImage: `url(/card/deck_builder_card_bg.png)`,
-                          backgroundSize: "100%",
-                          backgroundRepeat: "no-repeat",
-                        }}
-                        className="flex flex-row justify-start items-center mb-1 rounded-md gap-2 cursor-pointer hover:scale-110 transition-all h-14 relative"
-                      >
-                        <span className="absolute text-lg font-bold top-3 left-[1.22rem] text-black">
-                          {c.mana}
-                        </span>
-                        <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer ml-16 uppercase">
-                          {c.name}
-                        </span>
-                        <span className="absolute right-3 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm flex justify-center items-center">
-                          x{c.count}
-                        </span>
-                        <div
-                          className="absolute"
-                          style={{
-                            width:
-                              c.cardType.toUpperCase() === "MINION"
-                                ? "3.8rem"
-                                : "3rem",
-                            right:
-                              c.cardType.toUpperCase() === "MINION"
-                                ? "2.5rem"
-                                : "2.25rem",
-                            top:
-                              c.cardType.toUpperCase() === "MINION" ? "" : "0",
-                            height:
-                              c.cardType.toUpperCase() === "MINION"
-                                ? "5rem"
-                                : "3rem",
-                            backgroundSize: "auto auto",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundImage: `url(/card_sprites/${c.id}.png)`,
-                            opacity: 0.5,
-                          }}
-                        ></div>
-                      </div>
-                    </div>
+                    <DeckCard c={c} clickCallBack={() => {}} />
                   </Link>
                 ))}
               </div>
@@ -188,50 +143,7 @@ const DeckView: React.FC = () => {
                 </span>
                 {deckInfo.spellCards.map((c, i) => (
                   <Link href={`/card/${c.id}`} key={i}>
-                    <div className="h-14 relative">
-                      <div
-                        style={{
-                          backgroundImage: `url(/card/deck_builder_card_bg.png)`,
-                          backgroundSize: "100%",
-                          backgroundRepeat: "no-repeat",
-                        }}
-                        className="flex flex-row justify-start items-center mb-1 rounded-md gap-2 cursor-pointer hover:scale-110 transition-all h-14 relative"
-                      >
-                        <span className="absolute text-lg font-bold top-3 left-[1.22rem] text-black">
-                          {c.mana}
-                        </span>
-                        <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer ml-16 uppercase">
-                          {c.name}
-                        </span>
-                        <span className="absolute right-3 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm flex justify-center items-center">
-                          x{c.count}
-                        </span>
-                        <div
-                          className="absolute"
-                          style={{
-                            width:
-                              c.cardType.toUpperCase() === "MINION"
-                                ? "3.8rem"
-                                : "3rem",
-                            right:
-                              c.cardType.toUpperCase() === "MINION"
-                                ? "2.5rem"
-                                : "2.25rem",
-                            top:
-                              c.cardType.toUpperCase() === "MINION" ? "" : "0",
-                            height:
-                              c.cardType.toUpperCase() === "MINION"
-                                ? "5rem"
-                                : "3rem",
-                            backgroundSize: "auto auto",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundImage: `url(/card_sprites/${c.id}.png)`,
-                            opacity: 0.5,
-                          }}
-                        ></div>
-                      </div>
-                    </div>
+                    <DeckCard c={c} clickCallBack={() => {}} />
                   </Link>
                 ))}
               </div>
@@ -244,50 +156,7 @@ const DeckView: React.FC = () => {
                 </span>
                 {deckInfo.artifactCards.map((c, i) => (
                   <Link href={`/card/${c.id}`} key={i}>
-                    <div className="h-14 relative">
-                      <div
-                        style={{
-                          backgroundImage: `url(/card/deck_builder_card_bg.png)`,
-                          backgroundSize: "100%",
-                          backgroundRepeat: "no-repeat",
-                        }}
-                        className="flex flex-row justify-start items-center mb-1 rounded-md gap-2 cursor-pointer hover:scale-110 transition-all h-14 relative"
-                      >
-                        <span className="absolute text-lg font-bold left-[1.22rem] top-3 text-black">
-                          {c.mana}
-                        </span>
-                        <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer ml-16 uppercase">
-                          {c.name}
-                        </span>
-                        <span className="absolute right-3 top-0 text-black bg-secondary-cyan rounded-sm h-6 w-6 translate-y-1/2 text-sm flex justify-center items-center">
-                          x{c.count}
-                        </span>
-                        <div
-                          className="absolute"
-                          style={{
-                            width:
-                              c.cardType.toUpperCase() === "MINION"
-                                ? "3.8rem"
-                                : "3rem",
-                            right:
-                              c.cardType.toUpperCase() === "MINION"
-                                ? "2.5rem"
-                                : "2.25rem",
-                            top:
-                              c.cardType.toUpperCase() === "MINION" ? "" : "0",
-                            height:
-                              c.cardType.toUpperCase() === "MINION"
-                                ? "5rem"
-                                : "3rem",
-                            backgroundSize: "auto auto",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundImage: `url(/card_sprites/${c.id}.png)`,
-                            opacity: 0.5,
-                          }}
-                        ></div>
-                      </div>
-                    </div>
+                    <DeckCard c={c} clickCallBack={() => {}} />
                   </Link>
                 ))}
               </div>

@@ -45,6 +45,9 @@
     box-shadow: 15px 16px 16px rgba(255, 255, 255, 1),
       inset 10px -2px 20px rgba(0, 0, 255, 0.55);
   }
+  .temp {
+    background-color: red !important;
+  }
 }
 
 .card-border:hover {
