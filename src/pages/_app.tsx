@@ -1,4 +1,5 @@
 // src/pages/_app.tsx
+import { SessionProvider } from "next-auth/react"
 import { withTRPC } from "@trpc/next"
 import type { AppRouter } from "../server/router"
 import type { AppType } from "next/dist/shared/lib/utils"
@@ -10,19 +11,24 @@ import Router from "next/router"
 import { useState } from "react"
 import Loading from "../components/Loading"
 
-const MyApp: AppType = ({ Component, pageProps }) => {
+const MyApp: AppType = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}) => {
   const [loading, setLoading] = useState(false)
 
   Router.events.on("routeChangeStart", () => setLoading(true))
   Router.events.on("routeChangeComplete", () => setLoading(false))
 
   return (
-    <NewDeckProvider>
-      <FilterProvider>
-        <Component {...pageProps} />
-        {loading && <Loading />}
-      </FilterProvider>
-    </NewDeckProvider>
+    <SessionProvider session={session}>
+      <NewDeckProvider>
+        <FilterProvider>
+          <Component {...pageProps} />
+          {loading && <Loading />}
+        </FilterProvider>
+      </NewDeckProvider>
+    </SessionProvider>
   )
 }
 

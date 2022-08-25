@@ -1,4 +1,5 @@
 import Logo from "../../public/icons/Logo.png"
+import { useSession, signIn, signOut } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
 import navigation from "../data/navigation"
@@ -8,6 +9,8 @@ import { useRef } from "react"
 const Sidebar: React.FC = () => {
   const router = useRouter()
   const mobileMenuRef = useRef<HTMLDivElement>(null)
+
+  const { data: session } = useSession()
 
   const toggleMobileMenu = () => {
     mobileMenuRef.current?.classList.toggle("hidden")
@@ -83,6 +86,20 @@ const Sidebar: React.FC = () => {
               <Link href={n.path}>{n.name}</Link>
             </li>
           ))}
+          {session ? (
+            <li
+              className={`text-white text-2xl font-bold cursor-pointer transition-all  px-10 `}
+            >
+              <h1>Logged in as {session.user?.email}</h1>
+              <button onClick={() => signOut()}>Sign out</button>
+            </li>
+          ) : (
+            <li
+              className={`text-white text-2xl font-bold cursor-pointer transition-all  px-10 `}
+            >
+              <button onClick={() => signIn()}>Sign in</button>
+            </li>
+          )}
         </ul>
       </div>
     </>
