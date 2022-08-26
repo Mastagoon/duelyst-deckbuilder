@@ -84,7 +84,7 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
             {card.cardType.toUpperCase() !== "GENERAL" && (
               <ManaGem
                 cost={card.mana}
-                className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-12 w-12"
+                className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-14 w-14"
               />
             )}
             {/* Rarity */}

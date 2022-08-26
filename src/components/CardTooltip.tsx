@@ -59,6 +59,7 @@ const CardTooltip: React.FC<{
               }`,
             }}
           ></div>
+          <div className="text-primary-cyan capitalize-mb-2">{c.name}</div>
           <span className="text-primary-cyan capitalize">
             <CardDescription description={c.description ?? ""} />
           </span>
