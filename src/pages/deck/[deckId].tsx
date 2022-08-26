@@ -186,7 +186,9 @@ const DeckView: React.FC = () => {
                 </div>
                 {deckInfo.minionCards.map((c, i) => (
                   <Link href={`/card/${c.id}`} key={i}>
-                    <DeckCard c={c} clickCallBack={() => {}} />
+                    <div>
+                      <DeckCard c={c} />
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -202,7 +204,9 @@ const DeckView: React.FC = () => {
                 </div>
                 {deckInfo.spellCards.map((c, i) => (
                   <Link href={`/card/${c.id}`} key={i}>
-                    <DeckCard c={c} clickCallBack={() => {}} />
+                    <div>
+                      <DeckCard c={c} />
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -218,7 +222,9 @@ const DeckView: React.FC = () => {
                 </div>
                 {deckInfo.artifactCards.map((c, i) => (
                   <Link href={`/card/${c.id}`} key={i}>
-                    <DeckCard c={c} clickCallBack={() => {}} />
+                    <div>
+                      <DeckCard c={c} />
+                    </div>
                   </Link>
                 ))}
               </div>

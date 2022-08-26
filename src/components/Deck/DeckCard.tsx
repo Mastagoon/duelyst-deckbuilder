@@ -6,8 +6,8 @@ import CardTooltip from "../CardTooltip"
 
 const DeckCard: React.FC<{
   c: DeckCardEntry
-  clickCallBack: (id: number) => void
-}> = ({ c, clickCallBack }) => {
+  clickCallBack?: (id: number) => void
+}> = ({ c, clickCallBack = () => {} }) => {
   const [showTooltip, setShowTooltip] = useState(false)
 
   const handleOnMouseEnter = () => {
