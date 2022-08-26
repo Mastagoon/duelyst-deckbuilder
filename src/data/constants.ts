@@ -1,8 +1,9 @@
 import twcolors from "tailwindcss/colors"
 
 const constants = {
+  appUrl: "https://duelyst-deckbuilder.vercel.app",
   imageUrl: "https://alpha.duelyst2.com",
-  deckShareUrl: "https://decklyst.vercel.app/i",
+  deckShareUrl: "https://decklyst.vercel.app/api/snapshot",
   colors: {
     lyonar: "#e5c56d",
     songhai: "#db4460",

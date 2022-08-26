@@ -10,7 +10,6 @@ import {
   FaKhanda,
   FaPaw,
   FaPen,
-  FaRegHandRock,
   FaShare,
 } from "react-icons/fa"
 import Swal from "sweetalert2"
@@ -24,16 +23,21 @@ import DeckCard from "../../components/Deck/DeckCard"
 import getFactionColors from "../../utils/getFactionColor"
 import constants from "../../data/constants"
 import { GiLunarWand } from "react-icons/gi"
+import ShareDeckOverlay from "../../components/Deck/ShareDeckOverlay"
 
 const DeckView: React.FC = () => {
   const router = useRouter()
   const [deckInfo, setDeckInfo] = useState<ExtendedDeckInfo>()
   const [loading, setLoading] = useState(false)
+  const [deckImage, setDeckImage] = useState<string>("")
+  const [showShareDeckOverlay, setShowShareDeckOverlay] = useState(false)
+
   const { deckId } = router.query
   const { data: deck, isLoading } = trpc.useQuery([
     "deckgetById",
     { id: (deckId as string) ?? "" },
   ])
+
   const { loadFromDeckCode } = useDeckContext()
 
   if (!isLoading && !deck) router.push("/")
@@ -56,10 +60,13 @@ const DeckView: React.FC = () => {
   }
 
   const handleShareDeck = async () => {
+    if (deckImage) return setShowShareDeckOverlay(true)
     setLoading(true)
     try {
-      const png = await fetch(`${constants.deckShareUrl}/${deck?.code}.png`)
-      console.log(png)
+      const png = await fetch(`${constants.deckShareUrl}/${deck?.code}`)
+      const blob = await png.blob()
+      setDeckImage(URL.createObjectURL(blob))
+      setShowShareDeckOverlay(true)
     } catch (err) {}
     setLoading(false)
   }
@@ -82,7 +89,7 @@ const DeckView: React.FC = () => {
       <PageLayout>
         {isLoading && <Loading />}
         {deckInfo && (
-          <div className="flex flex-col px-10 text-white pt-5 h-screen grid-rows-[max-content]">
+          <div className="flex flex-col px-10 text-white pt-5 h-screen grid-rows-[max-content] relative">
             <div className="flex flex-col col-span-12 ml-5">
               <div className="col-span-12 gap-1 flex flex-row mb-3">
                 <div className="flex flex-col items-center justify-center text-center text-primary-cyan">
@@ -216,6 +223,13 @@ const DeckView: React.FC = () => {
                 ))}
               </div>
             </div>
+            <ShareDeckOverlay
+              png={deckImage}
+              show={showShareDeckOverlay}
+              setShow={setShowShareDeckOverlay}
+              id={deck?.id ?? ""}
+              deckName={deckInfo.deckName}
+            />
           </div>
         )}
       </PageLayout>
