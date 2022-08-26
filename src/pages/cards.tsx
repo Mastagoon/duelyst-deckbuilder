@@ -1,20 +1,17 @@
 import { NextPage } from "next"
 import Head from "next/head"
+import { useMemo } from "react"
 import CardList from "../components/CardList"
 import PageLayout from "../components/PageLayout"
 import { nonTokens, CardData } from "../data/cards"
 import orderCards from "../utils/orderCards"
 
-export const getStaticProps = async () => {
-  const cards = nonTokens
-  return {
-    props: {
-      cards: orderCards(cards),
-    },
-  }
-}
+const CardsPage: NextPage = ({}) => {
+  const orderedCards: CardData[] = useMemo(
+    () => orderCards(nonTokens),
+    [nonTokens]
+  )
 
-const CardsPage: NextPage<{ cards: CardData[] }> = ({ cards }) => {
   return (
     <>
       <Head>
@@ -23,7 +20,7 @@ const CardsPage: NextPage<{ cards: CardData[] }> = ({ cards }) => {
       </Head>
 
       <PageLayout>
-        <CardList cardList={cards} />
+        <CardList cardList={orderedCards} />
       </PageLayout>
     </>
   )
