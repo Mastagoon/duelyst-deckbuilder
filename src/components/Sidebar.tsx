@@ -1,11 +1,12 @@
 import Logo from "../../public/icons/Logo.png"
 import { GiCardDraw, GiCardExchange, GiTinker } from "react-icons/gi"
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signOut } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
 import navigation from "../data/navigation"
 import { useRouter } from "next/router"
 import { useRef } from "react"
+import { MdLogin, MdLogout } from "react-icons/md"
 
 const Sidebar: React.FC = () => {
   const router = useRouter()
@@ -21,6 +22,8 @@ const Sidebar: React.FC = () => {
         return <GiTinker />
       case "/cards":
         return <GiCardExchange />
+      case "/login":
+        return <MdLogin />
     }
   }
 
@@ -87,18 +90,35 @@ const Sidebar: React.FC = () => {
         {/*Menu*/}
         <ul className="text-start flex flex-col gap-5 w-full">
           {navigation.map((n, i) => (
-            <li
-              key={i}
-              className={`flex flex-row items-center gap-4 text-2xl font-bold cursor-pointer transition-all  px-10 ${
-                router.pathname === n.path
-                  ? "text-primary-light-blue border-l-2 border-primary-light-blue"
-                  : "hover:text-primary-light-blue hover:border-l-2 border-primary-light-blue"
-              }`}
-            >
-              {getNavIcon(n.path)}
-              <Link href={n.path}>{n.name}</Link>
-            </li>
+            <Link href={n.path}>
+              <li
+                key={i}
+                className={`flex flex-row items-center gap-4 text-2xl font-bold cursor-pointer transition-all  px-10 ${
+                  router.pathname === n.path
+                    ? "text-primary-light-blue border-l-2 border-primary-light-blue"
+                    : "hover:text-primary-light-blue hover:border-l-2 border-primary-light-blue"
+                }`}
+              >
+                {getNavIcon(n.path)}
+                <div>{n.name}</div>
+              </li>
+            </Link>
           ))}
+          {session ? (
+            <li
+              className={`flex flex-row items-center gap-4 text-2xl font-bold cursor-pointer transition-all  px-10 "hover:text-primary-light-blue hover:border-l-2 border-primary-light-blue`}
+            >
+              <MdLogout />
+              <div onClick={() => signOut()}>Logout</div>
+            </li>
+          ) : (
+            <li
+              className={`flex flex-row items-center gap-4 text-2xl font-bold cursor-pointer transition-all  px-10 "hover:text-primary-light-blue hover:border-l-2 border-primary-light-blue`}
+            >
+              <MdLogin />
+              <Link href={"/login"}>Sign In</Link>
+            </li>
+          )}
         </ul>
       </div>
     </>

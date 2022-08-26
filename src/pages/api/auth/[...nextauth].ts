@@ -18,4 +18,7 @@ export default NextAuth({
       clientSecret: process.env.DISCORD_CLIENT_SECRET ?? "",
     }),
   ],
+  pages: {
+    signIn: "/login",
+  },
 })

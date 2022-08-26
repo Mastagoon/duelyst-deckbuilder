@@ -189,7 +189,7 @@ const DeckBuilderScreen: React.FC = () => {
         </div>
         <hr />
         <div
-          className={`reverse-gradient-border flex flex-col text-center overflow-y-scroll h-full px-1 ${
+          className={`flex flex-col text-center overflow-y-scroll h-full px-1 ${
             !general && "items-center justify-center"
           }`}
         >
