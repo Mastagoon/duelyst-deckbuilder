@@ -35,7 +35,7 @@ const FilterOptions: React.FC<{ cardPool?: CardData[] }> = ({ cardPool }) => {
   }
 
   return (
-    <div className="border-2 border-white py-5 rounded-md my-5 px-5 flex flex-row flex-wrap items-center justify-center">
+    <div className="shadow-lg border-2 border-secondary-dark-blue py-5 rounded-md my-5 px-5 flex flex-row flex-wrap items-center justify-center text-faint">
       <div className="flex flex-row flex-wrap justify-between grow">
         {$enum(Faction)
           .getKeys()

@@ -26,6 +26,7 @@ import { BsFillHexagonFill, BsHeartFill } from "react-icons/bs"
 import { TbSword } from "react-icons/tb"
 import Link from "next/link"
 import Head from "next/head"
+import { GiLunarWand } from "react-icons/gi"
 
 const CardView: React.FC = () => {
   const [card, setCard] = useState<CardData>()
@@ -144,7 +145,7 @@ const CardView: React.FC = () => {
                       ) : card.cardType.toUpperCase() === "SPELL" ? (
                         <FaFire />
                       ) : (
-                        <FaRegHandRock />
+                        <GiLunarWand />
                       )}
                       <span className="capitalize font-bold">
                         {card.cardType}
@@ -174,7 +175,7 @@ const CardView: React.FC = () => {
                     <div className="flex flex-row items-center gap-2">
                       <Image
                         alt="Icon rarity"
-                        src={`/icons/rarity/${card.rarity.toUpperCase()}.svg`}
+                        src={`/icons/rarity/collection_card_rarity_${card.rarity.toLowerCase()}.png`}
                         height={30}
                         width={30}
                       />

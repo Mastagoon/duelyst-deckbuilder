@@ -15,7 +15,6 @@ const CardTooltip: React.FC<{
   useEffect(() => {
     if (
       tooltipRef.current &&
-      !nested &&
       tooltipRef.current.getBoundingClientRect().top > 500
     )
       setIsAtEdge(true)
@@ -81,7 +80,7 @@ const CardTooltip: React.FC<{
       {!nested &&
         c.relatedCards.map((r) =>
           cardDataById[r] ? (
-            <CardTooltip c={cardDataById[r]!} show={show} nested={true} />
+            <CardTooltip c={cardDataById[r]!} show={true} nested={true} />
           ) : null
         )}
     </div>

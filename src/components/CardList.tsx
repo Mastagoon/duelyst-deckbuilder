@@ -16,12 +16,12 @@ const CardList: React.FC<{ compact?: boolean; cardList?: CardData[] }> = ({
   return (
     <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen grid-rows-[max-content]">
       <div className="col-span-12">
-        <h1 className="col-span-12 text-4xl font-bold">All Cards</h1>
+        <h1 className="col-span-12 text-4xl font-bold text-faint">All Cards</h1>
         <div className="col-span-12">
           <FilterOptions />
         </div>
       </div>
-      <div className="col-span-12 text-center grid grid-cols-decks justify-items-center gap-y-5 gradient-border overflow-y-scroll h-full py-3 px-6">
+      <div className="col-span-12 text-center grid grid-cols-decks justify-items-center gap-y-5 overflow-y-scroll h-full py-3 px-6">
         {filteredCards.map((card: CardData, i: number) => (
           <div className={``} key={i}>
             <CardDisplay card={card} />

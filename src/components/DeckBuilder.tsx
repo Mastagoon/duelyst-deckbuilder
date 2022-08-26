@@ -148,7 +148,7 @@ const DeckBuilderScreen: React.FC = () => {
   return (
     <>
       {(loading || isLoading) && <Loading />}
-      <div className="bg-secondary-dark-blue flex flex-col justify-between text-white h-screen w-full px-2 select-none">
+      <div className="bg-tester-color border-l-2 border-secondary-dark-blue shadow-lg text-[rgba(200,200,230,1)] flex flex-col justify-between text-white h-screen w-full px-2 select-none">
         <div className="flex flex-col">
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-col">

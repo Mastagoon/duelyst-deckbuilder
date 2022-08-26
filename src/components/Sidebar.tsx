@@ -1,4 +1,5 @@
 import Logo from "../../public/icons/Logo.png"
+import { GiCardDraw, GiCardExchange, GiTinker } from "react-icons/gi"
 import { useSession, signIn, signOut } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
@@ -11,6 +12,17 @@ const Sidebar: React.FC = () => {
   const mobileMenuRef = useRef<HTMLDivElement>(null)
 
   const { data: session } = useSession()
+
+  const getNavIcon = (nav: string) => {
+    switch (nav) {
+      case "/decks":
+        return <GiCardDraw />
+      case "/deck-builder":
+        return <GiTinker />
+      case "/cards":
+        return <GiCardExchange />
+    }
+  }
 
   const toggleMobileMenu = () => {
     mobileMenuRef.current?.classList.toggle("hidden")
@@ -48,7 +60,7 @@ const Sidebar: React.FC = () => {
 
         <div
           ref={mobileMenuRef}
-          className="hidden lg:hidden mobile-menu left-0 py-3 animate-slideInFromTop w-screen bg-primary-dark-blue"
+          className="hidden lg:hidden mobile-menu left-0 py-3 animate-slideInFromTop w-screen bg-secondary-dark-blue"
         >
           <ul className="text-start flex flex-col gap-5 w-full justify-around h-full">
             {navigation.map((n, i) => (
@@ -68,21 +80,22 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Normal sidebar */}
-      <div className="top-0 bg-primary-dark-blue h-screen shadow-lg text-white text-center flex flex-col items-center py-5 hidden lg:block">
+      <div className="top-0 bg-tester-color h-screen shadow-lg text-white text-center flex flex-col items-center py-5 hidden lg:block shadow-lg border-r-2 border-secondary-dark-blue text-faint">
         {/*Logo*/}
         <Image alt="Logo" src={Logo} />
-        <hr className="w-full p-2 my-3" />
+        <hr className="w-full border-faint p-2 my-3" />
         {/*Menu*/}
         <ul className="text-start flex flex-col gap-5 w-full">
           {navigation.map((n, i) => (
             <li
               key={i}
-              className={`text-white text-2xl font-bold cursor-pointer transition-all  px-10 ${
+              className={`flex flex-row items-center gap-4 text-2xl font-bold cursor-pointer transition-all  px-10 ${
                 router.pathname === n.path
                   ? "text-primary-light-blue border-l-2 border-primary-light-blue"
                   : "hover:text-primary-light-blue hover:border-l-2 border-primary-light-blue"
               }`}
             >
+              {getNavIcon(n.path)}
               <Link href={n.path}>{n.name}</Link>
             </li>
           ))}

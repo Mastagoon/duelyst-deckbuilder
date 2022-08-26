@@ -1,6 +1,6 @@
 const nav = [
-  { name: "Cards", path: "/cards" },
-  { name: "Decks", path: "/decks" },
+  { name: "Browse Decks", path: "/decks" },
+  { name: "Card List", path: "/cards" },
   { name: "Deck Builder", path: "/deck-builder" },
 ]
 

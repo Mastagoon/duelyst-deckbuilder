@@ -54,12 +54,19 @@
   border: 1px solid rgba(89, 81, 188, 1) !important;
 }
 
+*,
+html,
+body {
+  font-family: "Roboto";
+}
+
 body {
   cursor: url(/cursor/default.png), pointer;
+  /* background: rgba(9, 5, 52, 1); */
   background: linear-gradient(
-    65.72deg,
-    #130e4d 18.75%,
-    rgba(141, 7, 104, 1) 180.52%
+    120.72deg,
+    rgba(9, 5, 52, 1) 18.75%,
+    rgba(141, 7, 104, 1) 350.52%
   );
   background-attachment: fixed;
   min-height: 100vh;

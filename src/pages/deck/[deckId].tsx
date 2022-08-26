@@ -2,7 +2,17 @@ import { useRouter } from "next/router"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { FaArrowDown, FaArrowUp, FaClipboard, FaPen } from "react-icons/fa"
+import {
+  FaArrowDown,
+  FaArrowUp,
+  FaClipboard,
+  FaFire,
+  FaKhanda,
+  FaPaw,
+  FaPen,
+  FaRegHandRock,
+  FaShare,
+} from "react-icons/fa"
 import Swal from "sweetalert2"
 import Loading from "../../components/Loading"
 import PageLayout from "../../components/PageLayout"
@@ -11,10 +21,14 @@ import { ExtendedDeckInfo, loadDeckFromDeckCode } from "../../utils/deckCode"
 import { trpc } from "../../utils/trpc"
 import Head from "next/head"
 import DeckCard from "../../components/Deck/DeckCard"
+import getFactionColors from "../../utils/getFactionColor"
+import constants from "../../data/constants"
+import { GiLunarWand } from "react-icons/gi"
 
 const DeckView: React.FC = () => {
   const router = useRouter()
   const [deckInfo, setDeckInfo] = useState<ExtendedDeckInfo>()
+  const [loading, setLoading] = useState(false)
   const { deckId } = router.query
   const { data: deck, isLoading } = trpc.useQuery([
     "deckgetById",
@@ -41,6 +55,15 @@ const DeckView: React.FC = () => {
     router.push(`/deck-builder`)
   }
 
+  const handleShareDeck = async () => {
+    setLoading(true)
+    try {
+      const png = await fetch(`${constants.deckShareUrl}/${deck?.code}.png`)
+      console.log(png)
+    } catch (err) {}
+    setLoading(false)
+  }
+
   useEffect(() => {
     if (deck) {
       const result = loadDeckFromDeckCode(deck.code)
@@ -54,6 +77,7 @@ const DeckView: React.FC = () => {
         <title>Deck {deck?.deckName ?? "Unknown"}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {loading && <Loading t={"Generating deck image..."} />}
 
       <PageLayout>
         {isLoading && <Loading />}
@@ -73,7 +97,18 @@ const DeckView: React.FC = () => {
               <h4 className="md:text-2xl text-1xl font-bold ml-5">
                 {deckInfo.deckName}
               </h4>
+              <span className="text-faint ml-5">
+                Created by <span className="text-primary-cyan">Masta</span> .{" "}
+                Last updated: <span className="text-white">2 days ago</span>
+              </span>
             </div>
+            <hr
+              style={{
+                borderColor: `${getFactionColors(deck?.faction ?? 0)}`,
+                borderBottomWidth: "1px",
+              }}
+              className="my-3 border-0"
+            />
             <div className="col-span-12 flex flex-row gap-2 justify-end items-center">
               {/* description */}
               <div>{deck?.description}</div>
@@ -91,10 +126,20 @@ const DeckView: React.FC = () => {
                 <FaClipboard />
                 Copy Deck Code
               </button>
+              <button
+                onClick={handleShareDeck}
+                className="bg-primary-light-purple rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer flex flex-row items-center gap-1"
+              >
+                <FaShare />
+                Share Deck
+              </button>
             </div>
-            <div className="col-span-12 text-center flex flex-wrap justify-around px-10 gap-y-5 gradient-border overflow-y-scroll h-full py-3 grid-rows-[max-content] gap-5 flex-1">
+            <div className="col-span-12 text-center flex flex-wrap justify-around px-10 gap-y-5 overflow-y-scroll h-full py-3 grid-rows-[max-content] gap-5 flex-1">
               <div className="flex flex-col flex-1">
-                <span className="font-bold">General</span>
+                <div className="flex flex-row items-center justify-center gap-1 text-faint">
+                  <FaKhanda />
+                  <span className="font-bold">General</span>
+                </div>
                 <div className="h-14 mb-1">
                   <Link href={`/card/${deckInfo.general?.id}`}>
                     <div
@@ -123,12 +168,15 @@ const DeckView: React.FC = () => {
                 </div>
               </div>
               <div className="flex flex-col flex-1">
-                <span className="font-bold">
-                  Minions{" "}
-                  <span className="text-primary-cyan">
-                    ({deckInfo.minionCount})
+                <div className="flex flex-row items-center justify-center text-faint gap-1 mb-1">
+                  <FaPaw />
+                  <span className="font-bold">
+                    Minions{" "}
+                    <span className="text-primary-cyan">
+                      ({deckInfo.minionCount})
+                    </span>
                   </span>
-                </span>
+                </div>
                 {deckInfo.minionCards.map((c, i) => (
                   <Link href={`/card/${c.id}`} key={i}>
                     <DeckCard c={c} clickCallBack={() => {}} />
@@ -136,12 +184,15 @@ const DeckView: React.FC = () => {
                 ))}
               </div>
               <div className="flex flex-col flex-1">
-                <span className="font-bold">
-                  Spells{" "}
-                  <span className="text-primary-cyan">
-                    ({deckInfo.spellCount})
+                <div className="flex flex-row items-center justify-center text-center text-faint gap-1 mb-1">
+                  <FaFire />
+                  <span className="font-bold">
+                    Spells{" "}
+                    <span className="text-primary-cyan">
+                      ({deckInfo.spellCount})
+                    </span>
                   </span>
-                </span>
+                </div>
                 {deckInfo.spellCards.map((c, i) => (
                   <Link href={`/card/${c.id}`} key={i}>
                     <DeckCard c={c} clickCallBack={() => {}} />
@@ -149,12 +200,15 @@ const DeckView: React.FC = () => {
                 ))}
               </div>
               <div className="flex flex-col flex-1">
-                <span className="font-bold">
-                  Artifacts{" "}
-                  <span className="text-primary-cyan">
-                    ({deckInfo.artifactCount})
+                <div className="flex flex-row items-center justify-center text-faint gap-1 mb-1">
+                  <GiLunarWand />
+                  <span className="font-bold">
+                    Artifacts{" "}
+                    <span className="text-primary-cyan">
+                      ({deckInfo.artifactCount})
+                    </span>
                   </span>
-                </span>
+                </div>
                 {deckInfo.artifactCards.map((c, i) => (
                   <Link href={`/card/${c.id}`} key={i}>
                     <DeckCard c={c} clickCallBack={() => {}} />
