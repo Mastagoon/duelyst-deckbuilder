@@ -26,6 +26,19 @@ const ShareDeckOverlay: React.FC<{
     })
   }
 
+  const handleCopyImageUrl = () => {
+    navigator.clipboard.writeText(png)
+    return Swal.fire({
+      customClass: {
+        popup: "alert-dialog",
+      },
+      title: "Copied!",
+      timer: 2000,
+      position: "bottom-right",
+      showConfirmButton: false,
+    })
+  }
+
   const handleDownloadImage = () => {
     const link = document.createElement("a")
     link.href = png
@@ -67,7 +80,13 @@ const ShareDeckOverlay: React.FC<{
             onClick={handleCopyUrl}
             className="bg-primary-light-purple py-2 px-6 hover:opacity-80 cursor-pointer w-full rounded-md font-bold"
           >
-            Copy Url
+            Copy Deck Url
+          </button>
+          <button
+            onClick={handleCopyImageUrl}
+            className="bg-primary-light-purple px-6 py-2 hover:opacity-80 cursor-pointer w-full rounded-md font-bold"
+          >
+            Copy Image Url
           </button>
           <button
             onClick={handleDownloadImage}
