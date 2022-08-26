@@ -32,7 +32,12 @@ const LoginPage: React.FC<{ providers: Provider[]; csrfToken: string }> = ({
   return (
     <PageLayout>
       <div className="flex flex-col justify-center h-full items-center -translate-y-10">
-        <Image height={90} width={90} src={`/card_sprites/11245.png`} />
+        <Image
+          alt="Healing Mystic"
+          height={90}
+          width={90}
+          src={`/card_sprites/11245.png`}
+        />
         <div className="text-white w-1/4 text-center">
           <span className="text-3xl font-bold">Sign In</span>
           {Object.values(providers).map((provider) => (
@@ -86,7 +91,7 @@ const LoginPage: React.FC<{ providers: Provider[]; csrfToken: string }> = ({
               </span>
             </Link>
             <span className="text-faint">
-              Don't have an account?{" "}
+              Donapos&;t have an account?{" "}
               <Link href="/register">
                 <span className="text-vetruvian cursor-pointer">Sign Up</span>
               </Link>

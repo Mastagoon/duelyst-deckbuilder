@@ -90,9 +90,8 @@ const Sidebar: React.FC = () => {
         {/*Menu*/}
         <ul className="text-start flex flex-col gap-5 w-full">
           {navigation.map((n, i) => (
-            <Link href={n.path}>
+            <Link key={i} href={n.path}>
               <li
-                key={i}
                 className={`flex flex-row items-center gap-4 text-2xl font-bold cursor-pointer transition-all  px-10 ${
                   router.pathname === n.path
                     ? "text-primary-light-blue border-l-2 border-primary-light-blue"
