@@ -2,7 +2,7 @@
 import Head from "next/head"
 import { Deck } from "@prisma/client"
 import { NextPage } from "next"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import DeckDisplay from "../components/Deck/DeckDisplay"
 import Loading from "../components/Loading"
 import PageLayout from "../components/PageLayout"
