@@ -19,15 +19,15 @@ yarn dev
 - [ ] Deck rating
 - [ ] Link to duelyst-share to generate deck image
 - [ ] Still images for deck cards view
-- [ ]	Fix the issue with smaller card images
-- [ ] Auth
-- [ ] Filtering by mana & card type
+- [X]	Fix the issue with smaller card images
+- [X] Auth
+- [X] Filtering by mana & card type
 - [ ] Main page redesign
 - [ ] /Cards page file size
 - [ ] Undo functioanlity
-- [ ] Tooltip hover for card information
-- [ ] Tooltip hover for related cards
+- [X] Tooltip hover for card information
+- [X] Tooltip hover for related cards
 - [ ] Token cards in card browser
 - [X] Loading state
-- [ ] Card rairity & faction assets
+- [X] Card rairity & faction assets
 - [ ] Page metadata
