@@ -11,8 +11,6 @@ const ShareDeckOverlay: React.FC<{
   id: string
   deckName: string
 }> = ({ id, png, show, deckName, setShow }) => {
-  if (!show) return <></>
-
   const boxRef = useRef<HTMLDivElement>(null)
 
   const handleCopyUrl = () => {
@@ -36,6 +34,8 @@ const ShareDeckOverlay: React.FC<{
     link.click()
   }
 
+  if (!show) return <></>
+
   return (
     <div
       onClick={(e) => {
@@ -53,7 +53,11 @@ const ShareDeckOverlay: React.FC<{
       >
         <span className="text-lg font-bold">
           Powered by{" "}
-          <a target={"_blank"} href="https://decklyst.vercel.app">
+          <a
+            rel="noreferrer"
+            target={"_blank"}
+            href="https://decklyst.vercel.app"
+          >
             <span className="text-vetruvian">Decklyst</span>
           </a>
         </span>
