@@ -81,8 +81,14 @@ const DeckView: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Deck {deck?.deckName ?? "Unknown"}</title>
+        <title>{deck?.deckName ?? "Unknown"}</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta property="og:site_name" content="Duelyst Deckbuilder" />
+        <meta property="og:title" content={`${deck?.deckName}`} />
+        <meta
+          property="og:image"
+          content={`/card_sprites/${deck?.generalId}.png`}
+        />
       </Head>
       {loading && <Loading t={"Generating deck image..."} />}
 
