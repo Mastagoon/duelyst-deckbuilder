@@ -27,7 +27,6 @@
     "react-icons": "^4.4.0",
     "react-query": "3.39.2",
     "react-tooltip": "^4.2.21",
-    "sharp": "^0.30.7",
     "superjson": "^1.9.1",
     "sweetalert2": "^11.4.26",
     "ts-enum-util": "^4.0.2",

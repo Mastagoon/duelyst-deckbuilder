@@ -113,12 +113,13 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
               </div>
             </div>
           </div>
-          {card.relatedCards.map((r) =>
+          {card.relatedCards.map((r, i) =>
             cardDataById[r] ? (
               <CardTooltip
+                key={i}
                 c={cardDataById[r]!}
                 show={showTooltip}
-                nested={false}
+                nested={true}
               />
             ) : null
           )}
