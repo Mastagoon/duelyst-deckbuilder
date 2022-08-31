@@ -93,29 +93,43 @@ export interface CardData {
   attack?: number
   health?: number
   rarity: Rarity
-  spriteName?: string | null
 }
 
+export const generalCards: CardData[] = cards.filter(
+  (card) => card.cardType.toUpperCase() === "GENERAL"
+) as CardData[]
+
 export const lyonarCards = cards.filter(
-  (card) => card.faction === Faction.lyonar
+  (card) =>
+    card.faction === Faction.lyonar && card.cardType.toUpperCase() !== "GENERAL"
 ) as CardData[]
 export const songhaiCards = cards.filter(
-  (card) => card.faction === Faction.songhai
+  (card) =>
+    card.faction === Faction.songhai &&
+    card.cardType.toUpperCase() !== "GENERAL"
 ) as CardData[]
 export const vetruvianCards = cards.filter(
-  (card) => card.faction === Faction.vetruvian
+  (card) =>
+    card.faction === Faction.vetruvian &&
+    card.cardType.toUpperCase() !== "GENERAL"
 ) as CardData[]
 export const abyssianCards = cards.filter(
-  (card) => card.faction === Faction.abyssian
+  (card) =>
+    card.faction === Faction.abyssian &&
+    card.cardType.toUpperCase() !== "GENERAL"
 ) as CardData[]
 export const magmarCards = cards.filter(
-  (card) => card.faction === Faction.magmar
+  (card) =>
+    card.faction === Faction.magmar && card.cardType.toUpperCase() !== "GENERAL"
 ) as CardData[]
 export const vanarCards = cards.filter(
-  (card) => card.faction === Faction.vanar
+  (card) =>
+    card.faction === Faction.vanar && card.cardType.toUpperCase() !== "GENERAL"
 ) as CardData[]
 export const neutralCards = cards.filter(
-  (card) => card.faction === Faction.neutral
+  (card) =>
+    card.faction === Faction.neutral &&
+    card.cardType.toUpperCase() !== "GENERAL"
 ) as CardData[]
 
 export const allCards: CardData[] = [
@@ -126,15 +140,31 @@ export const allCards: CardData[] = [
   ...magmarCards,
   ...vanarCards,
   ...neutralCards,
+  ...generalCards,
 ]
 
 export const nonTokens = allCards.filter(
   (c) => c.rarity.toUpperCase() !== "TOKEN" && bannedCards.indexOf(c.id) === -1
 )
 
-export const generalCards: CardData[] = allCards.filter(
-  (card) => card.cardType.toUpperCase() === "GENERAL"
-)
+export const getFactionCards = (faction: Faction) => {
+  switch (faction) {
+    case Faction.lyonar:
+      return lyonarCards
+    case Faction.songhai:
+      return songhaiCards
+    case Faction.vetruvian:
+      return vetruvianCards
+    case Faction.abyssian:
+      return abyssianCards
+    case Faction.magmar:
+      return magmarCards
+    case Faction.vanar:
+      return vanarCards
+    case Faction.neutral:
+      return neutralCards
+  }
+}
 
 export const cardDataById = allCards.reduce(
   (acc, cardData) => ({

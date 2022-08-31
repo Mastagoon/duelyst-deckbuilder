@@ -12,6 +12,7 @@ export const deckRouter = createRouter()
       spellCount: z.number().default(0),
       artifactCount: z.number().default(0),
       faction: z.number(),
+      creatorId: z.string(),
     }),
     async resolve({ input, ctx }) {
       return await ctx.prisma.deck.create({ data: input })

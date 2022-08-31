@@ -1,17 +1,9 @@
 import { NextPage } from "next"
 import Head from "next/head"
-import { useMemo } from "react"
 import CardList from "../components/CardList"
 import PageLayout from "../components/PageLayout"
-import { nonTokens, CardData } from "../data/cards"
-import orderCards from "../utils/orderCards"
 
 const CardsPage: NextPage = ({}) => {
-  const orderedCards: CardData[] = useMemo(
-    () => orderCards(nonTokens),
-    [nonTokens]
-  )
-
   return (
     <>
       <Head>
@@ -20,7 +12,7 @@ const CardsPage: NextPage = ({}) => {
       </Head>
 
       <PageLayout>
-        <CardList cardList={orderedCards} />
+        <CardList />
       </PageLayout>
     </>
   )

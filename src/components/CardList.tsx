@@ -1,17 +1,20 @@
-import { useEffect } from "react"
 import { useFilterContext } from "../context/filterContext"
-import { CardData } from "../data/cards"
+import {
+  abyssianCards,
+  Faction,
+  generalCards,
+  lyonarCards,
+  magmarCards,
+  neutralCards,
+  songhaiCards,
+  vanarCards,
+  vetruvianCards,
+} from "../data/cards"
 import CardDisplay from "./Card/CardDisplay"
 import FilterOptions from "./FilterOptions"
 
-const CardList: React.FC<{ compact?: boolean; cardList?: CardData[] }> = ({
-  compact,
-  cardList,
-}) => {
-  const { filteredCards, setInitialCards } = useFilterContext()
-  useEffect(() => {
-    if (cardList?.length) setInitialCards(cardList)
-  }, [])
+const CardList: React.FC = () => {
+  const { filteredCards } = useFilterContext()
 
   return (
     <div className="grid grid-cols-12 px-10 text-white pt-5 h-screen grid-rows-[max-content]">
@@ -28,18 +31,72 @@ const CardList: React.FC<{ compact?: boolean; cardList?: CardData[] }> = ({
           <FilterOptions />
         </div>
       </div>
-      {
-        <div className="col-span-12 text-center grid grid-cols-decks justify-items-center gap-y-5 overflow-y-scroll h-full py-3 px-6">
-          {cardList?.map((card: CardData, i: number) => (
-            <div
-              className={`${filteredCards.includes(card.id) ? "" : "hidden"}`}
-              key={i}
-            >
-              <CardDisplay card={card} />
-            </div>
-          ))}
-        </div>
-      }
+      <div className="col-span-12 text-center grid grid-cols-decks justify-items-center gap-y-5 overflow-y-scroll h-full py-3 px-6">
+        {generalCards.map((c, i) => (
+          <div
+            className={`${filteredCards.includes(c.id) ? "" : "hidden"}`}
+            key={i}
+          >
+            <CardDisplay card={c} />
+          </div>
+        ))}
+        {lyonarCards.map((c, i) => (
+          <div
+            className={`${filteredCards.includes(c.id) ? "" : "hidden"}`}
+            key={i}
+          >
+            <CardDisplay card={c} />
+          </div>
+        ))}
+        {songhaiCards.map((c, i) => (
+          <div
+            className={`${filteredCards.includes(c.id) ? "" : "hidden"}`}
+            key={i}
+          >
+            <CardDisplay card={c} />
+          </div>
+        ))}
+        {vetruvianCards.map((c, i) => (
+          <div
+            className={`${filteredCards.includes(c.id) ? "" : "hidden"}`}
+            key={i}
+          >
+            <CardDisplay card={c} />
+          </div>
+        ))}
+        {abyssianCards.map((c, i) => (
+          <div
+            className={`${filteredCards.includes(c.id) ? "" : "hidden"}`}
+            key={i}
+          >
+            <CardDisplay card={c} />
+          </div>
+        ))}
+        {magmarCards.map((c, i) => (
+          <div
+            className={`${filteredCards.includes(c.id) ? "" : "hidden"}`}
+            key={i}
+          >
+            <CardDisplay card={c} />
+          </div>
+        ))}
+        {vanarCards.map((c, i) => (
+          <div
+            className={`${filteredCards.includes(c.id) ? "" : "hidden"}`}
+            key={i}
+          >
+            <CardDisplay card={c} />
+          </div>
+        ))}
+        {neutralCards.map((c, i) => (
+          <div
+            className={`${filteredCards.includes(c.id) ? "" : "hidden"}`}
+            key={i}
+          >
+            <CardDisplay card={c} />
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

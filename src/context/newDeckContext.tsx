@@ -29,6 +29,8 @@ export interface DeckContextType {
   general?: CardData
   deckName: string
   updateDeckName: (name: string) => void
+  deckDescription: string
+  updateDeckDescription: (description: string) => void
   cards: DeckCardEntry[]
   addCardToDeck: (cardId: number) => void
   removeCardFromDeck: (cardId: number) => void
@@ -68,6 +70,7 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
   const [spellCount, setSpellCount] = useState(0)
   const [artifactCount, setArtifactCount] = useState(0)
   const [deckTotal, setDeckTotal] = useState(0)
+  const [deckDescription, setDeckDescription] = useState("")
 
   const deferredQuery = useDeferredValue(filterText)
 
@@ -203,6 +206,10 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
     return true
   }
 
+  const updateDeckDescription = (d: string) => {
+    setDeckDescription(d)
+  }
+
   return (
     <DeckContext.Provider
       value={{
@@ -221,6 +228,8 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
         saveDeck,
         reset,
         loadFromDeckCode,
+        deckDescription,
+        updateDeckDescription,
       }}
     >
       {children}

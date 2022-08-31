@@ -7,6 +7,7 @@ import Loading from "./Loading"
 import { trpc } from "../utils/trpc"
 import { useRouter } from "next/router"
 import DeckCard from "./Deck/DeckCard"
+import { useSession } from "next-auth/react"
 
 let debounceTimeout: any
 
@@ -15,6 +16,7 @@ const DeckBuilderScreen: React.FC = () => {
     general,
     deckName,
     saveDeck,
+    updateDeckDescription,
     updateDeckName,
     removeCardFromDeck,
     cards,
@@ -27,6 +29,9 @@ const DeckBuilderScreen: React.FC = () => {
   const [localDeckName, setLocalDeckName] = useState(deckName)
   const [deckCode, setDeckCode] = useState("")
   const [loading, setLoading] = useState(false)
+  const { data: session } = useSession()
+
+  console.log(session)
 
   const [parent] = useAutoAnimate<HTMLDivElement>({
     duration: 250,
@@ -84,6 +89,23 @@ const DeckBuilderScreen: React.FC = () => {
   }
 
   const handleSaveDeck = async () => {
+    // check if logged in
+    // if not, prompt to login
+    console.log(session)
+    if (!session || !session.user.id) {
+      const response = await Swal.fire({
+        customClass: {
+          popup: "alert-dialog",
+        },
+        title: "Not Logged In",
+        text: "You must be logged in to save decks.",
+        confirmButtonText: "Login",
+      })
+      if (response.isConfirmed) {
+        router.push("/login")
+      }
+      return
+    }
     // check deck cards
     const cardCount = minionCount + spellCount + artifactCount
     if (cardCount !== 39) {
@@ -101,34 +123,60 @@ const DeckBuilderScreen: React.FC = () => {
         showConfirmButton: false,
       })
     }
-    // check deck name
-    if (deckName.length > 20) {
-      return Swal.fire({
-        customClass: {
-          popup: "alert-dialog",
-        },
-        title: "Invalid Deck",
-        text: "Your deck name is too long",
-        timer: 2000,
-        position: "bottom-right",
-        showConfirmButton: false,
-      })
-    }
-    // passed all checks
-    const code = await saveDeck()
-    if (!code || !general) return
-    // saved successfully
-    const result = await saveDeckMutation({
-      generalId: general.id,
-      deckName,
-      code,
-      minionCount,
-      faction: general.faction,
-      spellCount,
-      artifactCount,
+    // deck saving dialog
+    const { isConfirmed, value: formValues } = await Swal.fire({
+      title: "Save Deck",
+      html:
+        '<input id="deck-name" class="swal2-input" placeholder="Deck Name" required value="' +
+        localDeckName +
+        '">' +
+        '<textarea id="deck-description" class="swal2-textarea" placeholder="Write a short description of your deck" rows="6"></textarea>' +
+        'Private Deck? <input type="checkbox" id="deck-private" class="swal2-checkbox" >',
+      focusConfirm: false,
+      preConfirm: () => {
+        return [
+          (document.getElementById("deck-name") as HTMLInputElement).value ??
+            "",
+          (document.getElementById("deck-description") as HTMLTextAreaElement)
+            .value ?? "",
+        ]
+      },
     })
-    reset()
-    router.push(`/deck/${result.id}`)
+    if (isConfirmed && formValues) {
+      const [deckName, deckDescription] = formValues
+      if (!deckName || deckName.length > 20) {
+        return Swal.fire({
+          customClass: {
+            popup: "alert-dialog",
+          },
+          title: "Invalid Deck",
+          text: "Your deck name is too long",
+          timer: 2000,
+          position: "bottom-right",
+          showConfirmButton: false,
+        })
+      }
+      setLocalDeckName(deckName)
+      updateDeckDescription(deckDescription ?? "")
+      // check deck name
+      // passed all checks
+      const code = await saveDeck()
+      if (!code || !general) return
+      // saved successfully
+      const result = await saveDeckMutation({
+        creatorId: session.user.id,
+        generalId: general.id,
+        description: deckDescription,
+        deckName,
+        code,
+        minionCount,
+        faction: general.faction,
+        spellCount,
+        artifactCount,
+      })
+      reset()
+      router.push(`/deck/${result.id}`)
+    }
   }
 
   const handleReset = async () => {
@@ -150,6 +198,19 @@ const DeckBuilderScreen: React.FC = () => {
       {(loading || isLoading) && <Loading />}
       <div className="bg-tester-color border-l-2 border-secondary-dark-blue shadow-lg text-[rgba(200,200,230,1)] flex flex-col justify-between text-white h-screen w-full px-2 select-none">
         <div className="flex flex-col">
+          <div className="text-2xl font-bold flex items-center flex-row items-center py-2 gap-1 cursor-pointer">
+            <label htmlFor="deckName" className="cursor-pointer">
+              <FaEdit className="" />
+            </label>
+            <input
+              name="deckName"
+              maxLength={20}
+              className="bg-transparent cursor-pointer focus:border-none active:border-none outline-none w-full"
+              value={localDeckName}
+              onChange={(e) => handleUpdateDeckName(e.target.value)}
+            />
+          </div>
+          <div className="border-b-[1px] border-faint my-2"></div>
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-col">
               <span>Minions: {minionCount}</span>
@@ -161,7 +222,7 @@ const DeckBuilderScreen: React.FC = () => {
                 style={{
                   color: `${
                     deckTotal < 39
-                      ? "white"
+                      ? "rgba(200,200,230,1)"
                       : deckTotal > 39
                       ? "red"
                       : "#0fd700"
@@ -174,20 +235,8 @@ const DeckBuilderScreen: React.FC = () => {
             </span>
           </div>
           <div>Mana Curve placeholder</div>
-          <div className="text-md font-bold flex items-center flex-row items-center py-2 gap-1 cursor-pointer">
-            <label htmlFor="deckName" className="cursor-pointer">
-              <FaEdit className="" />
-            </label>
-            <input
-              name="deckName"
-              maxLength={20}
-              className="bg-transparent cursor-pointer focus:border-none active:border-none outline-none w-full"
-              value={localDeckName}
-              onChange={(e) => handleUpdateDeckName(e.target.value)}
-            />
-          </div>
         </div>
-        <hr />
+        <div className="border-b-[1px] text-faint"></div>
         <div
           className={`flex flex-col text-center overflow-y-scroll h-full px-1 ${
             !general && "items-center justify-center"
@@ -239,7 +288,7 @@ const DeckBuilderScreen: React.FC = () => {
               </div>
               <div className="block font-bold tracking-widest">OR</div>
               <input
-                className="bg-transparent text-center mx-auto border-b-2 border-secondary-light-cyan overflow-hidden w-full outline-none cursor-pointer"
+                className="bg-transparent text-center mx-auto border-b-[1px] border-faint overflow-hidden w-full outline-none cursor-pointer"
                 placeholder="Enter Deck Code..."
                 value={deckCode}
                 onChange={(e) => setDeckCode(e.target.value)}
@@ -248,7 +297,7 @@ const DeckBuilderScreen: React.FC = () => {
               <button
                 onClick={handleImportDeckCode}
                 disabled={!deckCode}
-                className="bg-primary-light-purple rounded-sm px-2 hover:opacity-80 cursor-pointer my-2 disabled:opacity-50"
+                className="bg-vetruvian text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer my-2 disabled:opacity-50"
               >
                 Import
               </button>
@@ -257,12 +306,12 @@ const DeckBuilderScreen: React.FC = () => {
         </div>
         <div className="flex flex-row justify-around my-3 px-1 items-center">
           <div className="flex flex-row justify-between gap-5">
-            <div className={`border-2 rounded-sm p-1 border-white opacity-60`}>
+            <div className={`border-2 rounded-sm p-1 border-faint opacity-60`}>
               <FaClipboard />
             </div>
             <div
               onClick={handleReset}
-              className={`border-2 hover:scale-110 hover:opacity-90 transition-all rounded-sm p-1 border-white ${
+              className={`border-2 hover:scale-110 hover:opacity-90 transition-all rounded-sm p-1 border-faint ${
                 general ? "" : "opacity-60"
               }`}
             >
@@ -271,9 +320,9 @@ const DeckBuilderScreen: React.FC = () => {
           </div>
           <button
             onClick={handleSaveDeck}
-            className="bg-primary-light-purple rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer"
+            className="bg-vetruvian text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer uppercase"
           >
-            Save
+            Save Deck
           </button>
         </div>
       </div>

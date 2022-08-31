@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 generator js {
@@ -11,33 +11,35 @@ generator js {
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
-		referentialIntegrity = "prisma"
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
 model Example {
-    id String @id @default(cuid())
+  id String @id @default(cuid())
 }
 
 model Account {
-	id String @id @default(cuid())
-	userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  @db.Text
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-	@@index([userId])
+  @@index([userId])
 }
 
 model Session {
@@ -47,17 +49,19 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-	@@index([userId])
+  @@index([userId])
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  decks         Deck[]
+  votes         DeckVote[]
 }
 
 model VerificationToken {
@@ -69,13 +73,36 @@ model VerificationToken {
 }
 
 model Deck {
-	id String @id @default(cuid())
-	deckName String @default("New Deck")
-	generalId Int
-	code String
-	description String?
-	minionCount Int
-	artifactCount Int
-	spellCount Int
-	faction Int
+  id            String     @id @default(cuid())
+  deckName      String     @default("New Deck")
+  generalId     Int
+  code          String
+  description   String?
+  deckType      String?
+  isPrivate     Boolean    @default(false)
+  minionCount   Int
+  artifactCount Int
+  spellCount    Int
+  faction       Int
+  creatorId     String
+  creator       User       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  votes         DeckVote[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([creatorId])
+}
+
+model DeckVote {
+  id        String   @id @default(cuid())
+  deckId    String
+  userId    String
+  vote      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deck      Deck     @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([deckId, userId])
+  @@index([deckId, userId])
 }

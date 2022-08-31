@@ -1,3 +1,7 @@
+import NextBundleAnalyzer from "@next/bundle-analyzer"
+const withBundleAnalyzer = NextBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+})
 /**
  * Don't be scared of the generics here.
  * All they do is to give us autocompletion when using this.
@@ -10,10 +14,12 @@ function defineNextConfig(config) {
   return config
 }
 
-export default defineNextConfig({
-  reactStrictMode: true,
-  swcMinify: true,
-  images: {
-    domains: ["alpha.duelyst2.com"],
-  },
-})
+export default withBundleAnalyzer(
+  defineNextConfig({
+    reactStrictMode: true,
+    swcMinify: true,
+    images: {
+      domains: ["alpha.duelyst2.com"],
+    },
+  })
+)
