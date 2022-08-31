@@ -12,10 +12,8 @@ import {
   FaPen,
   FaShare,
 } from "react-icons/fa"
-import Swal from "sweetalert2"
 import Loading from "../../components/Loading"
 import PageLayout from "../../components/PageLayout"
-import { useDeckContext } from "../../context/newDeckContext"
 import { ExtendedDeckInfo, loadDeckFromDeckCode } from "../../utils/deckCode"
 import { trpc } from "../../utils/trpc"
 import Head from "next/head"
@@ -38,11 +36,10 @@ const DeckView: React.FC = () => {
     { id: (deckId as string) ?? "" },
   ])
 
-  const { loadFromDeckCode } = useDeckContext()
-
   if (!isLoading && !deck) router.push("/")
 
   const handleCopyDeckCode = async () => {
+    const Swal = (await import("sweetalert2")).default
     const response = await Swal.fire({
       customClass: {
         popup: "alert-dialog",
@@ -55,8 +52,7 @@ const DeckView: React.FC = () => {
   }
 
   const handleEditDeck = () => {
-    loadFromDeckCode(deck!.code)
-    router.push(`/deck-builder`)
+    router.push(`/deck-builder/${deck!.code}`)
   }
 
   const handleShareDeck = async () => {

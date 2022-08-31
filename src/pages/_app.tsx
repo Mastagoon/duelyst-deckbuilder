@@ -5,8 +5,6 @@ import type { AppRouter } from "../server/router"
 import type { AppType } from "next/dist/shared/lib/utils"
 import superjson from "superjson"
 import "../styles/globals.css"
-import { FilterProvider } from "../context/filterContext"
-import { NewDeckProvider } from "../context/newDeckContext"
 import Router from "next/router"
 import { useState } from "react"
 import Loading from "../components/Loading"
@@ -22,12 +20,8 @@ const MyApp: AppType = ({
 
   return (
     <SessionProvider session={session}>
-      <NewDeckProvider>
-        <FilterProvider>
-          <Component {...pageProps} />
-          {loading && <Loading />}
-        </FilterProvider>
-      </NewDeckProvider>
+      <Component {...pageProps} />
+      {loading && <Loading />}
     </SessionProvider>
   )
 }

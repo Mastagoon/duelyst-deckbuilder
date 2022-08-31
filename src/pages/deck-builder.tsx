@@ -2,10 +2,11 @@ import Head from "next/head"
 import DeckBuilderCardList from "../components/DeckBuilderCardList"
 import DeckBuilderScreen from "../components/DeckBuilder"
 import PageLayout from "../components/PageLayout"
+import { NewDeckProvider } from "../context/newDeckContext"
 
 const DeckBuilder: React.FC = () => {
   return (
-    <>
+    <NewDeckProvider>
       <Head>
         <title>Duelyst II Deckbuilder </title>
         <link rel="icon" href="/favicon.ico" />
@@ -21,7 +22,7 @@ const DeckBuilder: React.FC = () => {
           </div>
         </div>
       </PageLayout>
-    </>
+    </NewDeckProvider>
   )
 }
 

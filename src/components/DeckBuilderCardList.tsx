@@ -5,17 +5,23 @@ import { CardData, Faction } from "../data/cards"
 import CardDescription from "./Card/CardDescription"
 import ManaGem from "./Card/ManaGem"
 import { FaLayerGroup, FaSearch } from "react-icons/fa"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import DeckBuilderScreen from "./DeckBuilder"
+import { useRouter } from "next/router"
 
 let debounceTimeout: any
 
 const DeckBuilderCardList: React.FC = ({}) => {
+  const router = useRouter()
+
+  const deckCode = useMemo(() => router.query.deck, [router.query]) as string
+
   const [query, setQuery] = useState("")
   const [searchMobileMenuActive, setSearchMobileMenuActive] = useState(false)
   const [decklistMobileMenuActive, setDecklistMobileMenuActive] =
     useState(false)
   const {
+    loadFromDeckCode,
     addCardToDeck,
     minionCount,
     spellCount,
@@ -25,6 +31,8 @@ const DeckBuilderCardList: React.FC = ({}) => {
     filteredCards,
     updateFilterText,
   } = useDeckContext()
+
+  if (deckCode) loadFromDeckCode(deckCode)
 
   const handleQueryStringChange = (e: any) => {
     clearTimeout(debounceTimeout)
@@ -117,7 +125,7 @@ const DeckBuilderCardList: React.FC = ({}) => {
             </div>
           </div>
         </div>
-        <div className="col-span-12 text-center grid grid-cols-decks justify-items-center gap-y-5 gradient-border overflow-y-scroll h-full py-3 select-none">
+        <div className="col-span-12 text-center grid grid-cols-decks justify-items-center gap-y-5 overflow-y-scroll h-full py-3 select-none">
           {filteredCards.map((card: CardData, i: number) => (
             <div key={i}>
               <div
