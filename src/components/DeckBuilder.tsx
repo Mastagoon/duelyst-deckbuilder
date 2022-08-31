@@ -1,13 +1,15 @@
 import { useDeckContext } from "../context/newDeckContext"
+import { generateDeckCode } from "../utils/deckCode"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import Swal from "sweetalert2"
-import { FaClipboard, FaEdit, FaTrash } from "react-icons/fa"
+import { FaEdit } from "react-icons/fa"
 import { useState } from "react"
 import Loading from "./Loading"
 import { trpc } from "../utils/trpc"
 import { useRouter } from "next/router"
 import DeckCard from "./Deck/DeckCard"
 import { useSession } from "next-auth/react"
+import SaveDeckModal from "./SaveDeckModal"
 
 let debounceTimeout: any
 
@@ -29,12 +31,12 @@ const DeckBuilderScreen: React.FC = () => {
   const [localDeckName, setLocalDeckName] = useState(deckName)
   const [deckCode, setDeckCode] = useState("")
   const [loading, setLoading] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const [showSaveDeckModal, setShowSaveDeckModal] = useState(false)
   const { data: session } = useSession()
 
-  console.log(session)
-
   const [parent] = useAutoAnimate<HTMLDivElement>({
-    duration: 250,
+    duration: 150,
     easing: "ease-in-out",
   })
 
@@ -88,10 +90,19 @@ const DeckBuilderScreen: React.FC = () => {
     }, 500)
   }
 
+  const handleCopyCode = () => {
+    if (!general) return
+    const code = generateDeckCode(general, cards, localDeckName)
+    navigator.clipboard.writeText(code)
+    setCopied(true)
+    setTimeout(() => {
+      setCopied(false)
+    }, 3000)
+  }
+
   const handleSaveDeck = async () => {
     // check if logged in
     // if not, prompt to login
-    console.log(session)
     if (!session || !session.user.id) {
       const response = await Swal.fire({
         customClass: {
@@ -100,7 +111,13 @@ const DeckBuilderScreen: React.FC = () => {
         title: "Not Logged In",
         text: "You must be logged in to save decks.",
         confirmButtonText: "Login",
+        denyButtonText: "Copy Deck Code",
+        showDenyButton: true,
       })
+      if (response.isDenied) {
+        const code = saveDeck()
+        navigator.clipboard.writeText(code)
+      }
       if (response.isConfirmed) {
         router.push("/login")
       }
@@ -123,60 +140,7 @@ const DeckBuilderScreen: React.FC = () => {
         showConfirmButton: false,
       })
     }
-    // deck saving dialog
-    const { isConfirmed, value: formValues } = await Swal.fire({
-      title: "Save Deck",
-      html:
-        '<input id="deck-name" class="swal2-input" placeholder="Deck Name" required value="' +
-        localDeckName +
-        '">' +
-        '<textarea id="deck-description" class="swal2-textarea" placeholder="Write a short description of your deck" rows="6"></textarea>' +
-        'Private Deck? <input type="checkbox" id="deck-private" class="swal2-checkbox" >',
-      focusConfirm: false,
-      preConfirm: () => {
-        return [
-          (document.getElementById("deck-name") as HTMLInputElement).value ??
-            "",
-          (document.getElementById("deck-description") as HTMLTextAreaElement)
-            .value ?? "",
-        ]
-      },
-    })
-    if (isConfirmed && formValues) {
-      const [deckName, deckDescription] = formValues
-      if (!deckName || deckName.length > 20) {
-        return Swal.fire({
-          customClass: {
-            popup: "alert-dialog",
-          },
-          title: "Invalid Deck",
-          text: "Your deck name is too long",
-          timer: 2000,
-          position: "bottom-right",
-          showConfirmButton: false,
-        })
-      }
-      setLocalDeckName(deckName)
-      updateDeckDescription(deckDescription ?? "")
-      // check deck name
-      // passed all checks
-      const code = await saveDeck()
-      if (!code || !general) return
-      // saved successfully
-      const result = await saveDeckMutation({
-        creatorId: session.user.id,
-        generalId: general.id,
-        description: deckDescription,
-        deckName,
-        code,
-        minionCount,
-        faction: general.faction,
-        spellCount,
-        artifactCount,
-      })
-      reset()
-      router.push(`/deck/${result.id}`)
-    }
+    setShowSaveDeckModal(true)
   }
 
   const handleReset = async () => {
@@ -306,26 +270,26 @@ const DeckBuilderScreen: React.FC = () => {
         </div>
         <div className="flex flex-row justify-around my-3 px-1 items-center">
           <div className="flex flex-row justify-between gap-5">
-            <div className={`border-2 rounded-sm p-1 border-faint opacity-60`}>
-              <FaClipboard />
-            </div>
-            <div
-              onClick={handleReset}
-              className={`border-2 hover:scale-110 hover:opacity-90 transition-all rounded-sm p-1 border-faint ${
-                general ? "" : "opacity-60"
+            <button
+              disabled={!general}
+              onClick={handleCopyCode}
+              className={`text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer uppercase transition-all ${
+                copied ? "bg-green-600" : "disabled:opacity-50 bg-vetruvian"
               }`}
             >
-              <FaTrash />
-            </div>
+              {copied ? "Copied!" : "Copy Code"}
+            </button>
+            <button
+              onClick={handleSaveDeck}
+              disabled={minionCount + spellCount + artifactCount !== 39}
+              className="bg-vetruvian text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer uppercase disabled:opacity-50"
+            >
+              Save Deck
+            </button>
           </div>
-          <button
-            onClick={handleSaveDeck}
-            className="bg-vetruvian text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer uppercase"
-          >
-            Save Deck
-          </button>
         </div>
       </div>
+      <SaveDeckModal show={showSaveDeckModal} setShow={setShowSaveDeckModal} />
     </>
   )
 }

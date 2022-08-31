@@ -13,6 +13,7 @@ export const deckRouter = createRouter()
       artifactCount: z.number().default(0),
       faction: z.number(),
       creatorId: z.string(),
+      isPrivate: z.boolean().default(false),
     }),
     async resolve({ input, ctx }) {
       return await ctx.prisma.deck.create({ data: input })
@@ -23,7 +24,10 @@ export const deckRouter = createRouter()
       id: z.string(),
     }),
     async resolve({ input, ctx }) {
-      return await ctx.prisma.deck.findFirst({ where: { id: input.id } })
+      return await ctx.prisma.deck.findFirst({
+        where: { id: input.id },
+        include: { creator: true },
+      })
     },
   })
   .query("infiniteDecks", {
@@ -39,7 +43,11 @@ export const deckRouter = createRouter()
             take: TAKE_LIMIT,
             cursor: { id: input?.cursor },
             skip: input?.cursor ? 1 : 0,
+            include: { creator: true },
           })
-        : await ctx.prisma.deck.findMany({ take: TAKE_LIMIT })
+        : await ctx.prisma.deck.findMany({
+            take: TAKE_LIMIT,
+            include: { creator: true },
+          })
     },
   })

@@ -86,6 +86,11 @@ a {
   cursor: url(/cursor/select.png), pointer;
 }
 
+.deck-description-area {
+  width: 80% !important;
+  resize: none !important;
+}
+
 ::-webkit-scrollbar {
   width: 7px;
   background-color: transparent;

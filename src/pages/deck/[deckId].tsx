@@ -1,11 +1,12 @@
 import { useRouter } from "next/router"
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useMemo, useState } from "react"
 import {
   FaArrowDown,
   FaArrowUp,
   FaClipboard,
+  FaClock,
   FaFire,
   FaKhanda,
   FaPaw,
@@ -14,7 +15,7 @@ import {
 } from "react-icons/fa"
 import Loading from "../../components/Loading"
 import PageLayout from "../../components/PageLayout"
-import { ExtendedDeckInfo, loadDeckFromDeckCode } from "../../utils/deckCode"
+import { loadDeckFromDeckCode } from "../../utils/deckCode"
 import { trpc } from "../../utils/trpc"
 import Head from "next/head"
 import DeckCard from "../../components/Deck/DeckCard"
@@ -22,10 +23,10 @@ import getFactionColors from "../../utils/getFactionColor"
 import constants from "../../data/constants"
 import { GiLunarWand } from "react-icons/gi"
 import ShareDeckOverlay from "../../components/Deck/ShareDeckOverlay"
+import timePassedFormat from "../../utils/timePassedFormat"
 
 const DeckView: React.FC = () => {
   const router = useRouter()
-  const [deckInfo, setDeckInfo] = useState<ExtendedDeckInfo>()
   const [loading, setLoading] = useState(false)
   const [deckImage, setDeckImage] = useState<string>("")
   const [showShareDeckOverlay, setShowShareDeckOverlay] = useState(false)
@@ -37,6 +38,8 @@ const DeckView: React.FC = () => {
   ])
 
   if (!isLoading && !deck) router.push("/")
+
+  console.log(deck)
 
   const handleCopyDeckCode = async () => {
     const Swal = (await import("sweetalert2")).default
@@ -67,11 +70,8 @@ const DeckView: React.FC = () => {
     setLoading(false)
   }
 
-  useEffect(() => {
-    if (deck) {
-      const result = loadDeckFromDeckCode(deck.code)
-      if (result) setDeckInfo(result)
-    }
+  const deckInfo = useMemo(() => {
+    if (deck) return loadDeckFromDeckCode(deck.code)
   }, [deck])
 
   return (
@@ -106,10 +106,21 @@ const DeckView: React.FC = () => {
               <h4 className="md:text-2xl text-1xl font-bold ml-5">
                 {deckInfo.deckName}
               </h4>
-              <span className="text-faint ml-5">
-                Created by <span className="text-primary-cyan">Masta</span> .{" "}
-                Last updated: <span className="text-white">2 days ago</span>
+              <span className="text-faint ml-5 flex flex-row gap-1 items-center">
+                Created by{" "}
+                <Link href={`/user/${deck?.creatorId}`}>
+                  <span className="text-primary-cyan hover:opacity-80 cursor-pointer">
+                    {deck?.creator.name}
+                  </span>
+                </Link>
               </span>
+              <div className="flex flex-row items-center text-faint gap-1 ml-5">
+                <FaClock />
+                Last updated:
+                <span className="text-white">
+                  {timePassedFormat(deck!.updatedAt)}
+                </span>
+              </div>
             </div>
             <hr
               style={{
@@ -118,30 +129,38 @@ const DeckView: React.FC = () => {
               }}
               className="my-3 border-0"
             />
-            <div className="col-span-12 flex flex-row gap-2 justify-end items-center">
+            <div className="col-span-12 flex flex-row gap-2 justify-between items-center">
               {/* description */}
-              <div>{deck?.description}</div>
-              <button
-                onClick={handleEditDeck}
-                className="bg-primary-light-purple rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer flex flex-row items-center gap-1"
-              >
-                <FaPen />
-                Edit Deck
-              </button>
-              <button
-                onClick={handleCopyDeckCode}
-                className="bg-primary-light-purple rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer flex flex-row items-center gap-1"
-              >
-                <FaClipboard />
-                Copy Deck Code
-              </button>
-              <button
-                onClick={handleShareDeck}
-                className="bg-primary-light-purple rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer flex flex-row items-center gap-1"
-              >
-                <FaShare />
-                Share Deck
-              </button>
+              {deck?.description && (
+                <div>
+                  <h1 className="text-white text-xl">Description:</h1>
+                  {deck.description}
+                </div>
+              )}
+              <div className="flex flex-row justify-end gap-2">
+                {" "}
+                <button
+                  onClick={handleEditDeck}
+                  className="bg-primary-light-purple rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer flex flex-row items-center gap-1"
+                >
+                  <FaPen />
+                  Edit Deck
+                </button>
+                <button
+                  onClick={handleCopyDeckCode}
+                  className="bg-primary-light-purple rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer flex flex-row items-center gap-1"
+                >
+                  <FaClipboard />
+                  Copy Deck Code
+                </button>
+                <button
+                  onClick={handleShareDeck}
+                  className="bg-primary-light-purple rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer flex flex-row items-center gap-1"
+                >
+                  <FaShare />
+                  Share Deck
+                </button>
+              </div>
             </div>
             <div className="col-span-12 text-center flex flex-wrap justify-around px-10 gap-y-5 overflow-y-scroll h-full py-3 grid-rows-[max-content] gap-5 flex-1">
               <div className="flex flex-col flex-1">

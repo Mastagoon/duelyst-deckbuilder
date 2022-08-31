@@ -31,7 +31,7 @@ export interface DeckContextType {
   addCardToDeck: (cardId: number) => void
   removeCardFromDeck: (cardId: number) => void
   filteredCards: CardData[]
-  saveDeck: () => Promise<string>
+  saveDeck: () => string
   minionCount: number
   spellCount: number
   artifactCount: number
@@ -180,7 +180,7 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
     setFilterText(text)
   }
 
-  const saveDeck = async () => {
+  const saveDeck = () => {
     // #TODO
     // 1: check the deck validity
     if (minionCount + spellCount + artifactCount !== 39 || !general) return ""

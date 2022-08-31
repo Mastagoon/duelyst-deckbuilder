@@ -20,7 +20,12 @@ const DeckDisplay: React.FC<{ deck: Deck }> = ({ deck }) => {
         </span>
         <div className="flex flex-row">
           <span className="text-faint text-left text-sm px-2">
-            Created By Masta
+            Created By{" "}
+            <Link href={`/user/${deck?.creatorId}`}>
+              <span className="text-primary-cyan hover:opacity-80 cursor-pointer">
+                {deck?.creator.name}
+              </span>
+            </Link>
           </span>
         </div>
         <div
