@@ -44,10 +44,12 @@ export const deckRouter = createRouter()
             cursor: { id: input?.cursor },
             skip: input?.cursor ? 1 : 0,
             include: { creator: true },
+            where: { isPrivate: false },
           })
         : await ctx.prisma.deck.findMany({
             take: TAKE_LIMIT,
             include: { creator: true },
+            where: { isPrivate: false },
           })
     },
   })
