@@ -1,5 +1,5 @@
 import { useDeckContext } from "../context/newDeckContext"
-import { generateDeckCode } from "../utils/deckCode"
+import { generateDeckCode } from "../utils/deckUtils"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import Swal from "sweetalert2"
 import { FaEdit } from "react-icons/fa"

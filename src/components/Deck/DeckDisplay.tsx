@@ -17,14 +17,14 @@ const DeckDisplay: React.FC<{
         style={{
           border: `1px solid ${getFactionColor(deck.faction)}`,
         }}
-        className="card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue select-none bg-no-repeat bg-cover py-2 hover:scale-110 duration-500 group h-[350px]"
+        className="card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue select-none bg-no-repeat bg-cover py-2 hover:scale-110 duration-500 group h-[350px] w-[250px]"
       >
         <span className="text-white text-left text-lg font-bold px-2 truncate">
           {deck.deckName}
         </span>
-        <span className="text-faint text-left text-sm px-2 wrap text-ellipsis">
+        <p className="text-faint text-left text-sm px-2 truncate break-all">
           {deck.description}
-        </span>
+        </p>
         <div
           className="border-2 rounded-full p-0 m-auto"
           style={{

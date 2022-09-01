@@ -2,11 +2,11 @@ import { useRouter } from "next/router"
 import Image from "next/image"
 import Link from "next/link"
 import { useMemo, useState } from "react"
+import { BsClockHistory } from "react-icons/bs"
 import {
   FaArrowDown,
   FaArrowUp,
   FaClipboard,
-  FaClock,
   FaFire,
   FaKhanda,
   FaPaw,
@@ -15,7 +15,7 @@ import {
 } from "react-icons/fa"
 import Loading from "../../components/Loading"
 import PageLayout from "../../components/PageLayout"
-import { loadDeckFromDeckCode } from "../../utils/deckCode"
+import { getManaCurve, loadDeckFromDeckCode } from "../../utils/deckUtils"
 import { trpc } from "../../utils/trpc"
 import Head from "next/head"
 import DeckCard from "../../components/Deck/DeckCard"
@@ -24,12 +24,14 @@ import constants from "../../data/constants"
 import { GiLunarWand } from "react-icons/gi"
 import ShareDeckOverlay from "../../components/Deck/ShareDeckOverlay"
 import timePassedFormat from "../../utils/timePassedFormat"
+import { Faction } from "../../data/cards"
 
 const DeckView: React.FC = () => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [deckImage, setDeckImage] = useState<string>("")
   const [showShareDeckOverlay, setShowShareDeckOverlay] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   const { deckId } = router.query
   const { data: deck, isLoading } = trpc.useQuery([
@@ -39,19 +41,12 @@ const DeckView: React.FC = () => {
 
   if (!isLoading && !deck) router.push("/")
 
-  console.log(deck)
-
   const handleCopyDeckCode = async () => {
-    const Swal = (await import("sweetalert2")).default
-    const response = await Swal.fire({
-      customClass: {
-        popup: "alert-dialog",
-      },
-      title: "Copy deck code",
-      text: "You can now share this deck code with others or import it using the in-game import deck function",
-      confirmButtonText: "Copy Deck code",
-    })
-    if (response.isConfirmed) navigator.clipboard.writeText(deck!.code)
+    navigator.clipboard.writeText(deck!.code)
+    setCopied(true)
+    setTimeout(() => {
+      setCopied(false)
+    }, 3000)
   }
 
   const handleEditDeck = () => {
@@ -86,40 +81,136 @@ const DeckView: React.FC = () => {
           content={`/card_sprites/${deck?.generalId}.png`}
         />
       </Head>
-      {loading && <Loading t={"Generating deck image..."} />}
-
       <PageLayout>
         {isLoading && <Loading />}
         {deckInfo && (
           <div className="flex flex-col px-10 text-white pt-5 h-screen grid-rows-[max-content] relative">
-            <div className="flex flex-col col-span-12 ml-5">
-              <div className="col-span-12 gap-1 flex flex-row mb-3">
-                <div className="flex flex-col items-center justify-center text-center text-primary-cyan">
-                  <FaArrowUp className="hover:scale-110" />
-                  <span className="text-md my-1">0</span>
-                  <FaArrowDown className="hover:scale-110" />
+            <div className="flex flex-row justify-between items-center">
+              <div className="flex flex-col col-span-12 ml-5">
+                <div className="col-span-12 gap-1 flex flex-row mb-3 items-center">
+                  <div className="flex flex-col items-center justify-center text-center text-primary-cyan">
+                    <FaArrowUp className="hover:scale-110" />
+                    <span className="text-md my-1">0</span>
+                    <FaArrowDown className="hover:scale-110" />
+                  </div>
+                  <h1 className="md:text-4xl text-2xl font-bold ml-5">
+                    {deckInfo.deckName}
+                  </h1>
                 </div>
-                <h1 className="md:text-4xl text-2xl font-bold ml-5">
-                  Deck List
-                </h1>
-              </div>
-              <h4 className="md:text-2xl text-1xl font-bold ml-5">
-                {deckInfo.deckName}
-              </h4>
-              <span className="text-faint ml-5 flex flex-row gap-1 items-center">
-                Created by{" "}
-                <Link href={`/user/${deck?.creatorId}`}>
-                  <span className="text-primary-cyan hover:opacity-80 cursor-pointer">
-                    {deck?.creator.name}
-                  </span>
-                </Link>
-              </span>
-              <div className="flex flex-row items-center text-faint gap-1 ml-5">
-                <FaClock />
-                Last updated:
-                <span className="text-white">
-                  {timePassedFormat(deck!.updatedAt)}
+                <span className="text-faint ml-5 flex flex-row gap-1 items-center">
+                  Created by{" "}
+                  <Link href={`/user/${deck?.creatorId}`}>
+                    <span className="text-primary-cyan hover:opacity-80 cursor-pointer">
+                      {deck?.creator.name}
+                    </span>
+                  </Link>
                 </span>
+                <div className="flex flex-row items-center text-faint gap-1 ml-5">
+                  <BsClockHistory />
+                  Last updated:
+                  <span className="text-white">
+                    {timePassedFormat(deck!.updatedAt)}
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-row justify-between items-center gap-10">
+                {" "}
+                {/* Card Ratio */}
+                <div className="flex flex-col self-start">
+                  <div className="flex flex-row items-center gap-3">
+                    <div className="flex-1 border-faint border-t-[1px]"></div>
+                    <span className="">Card Ratio</span>
+                    <div className="flex-1 border-faint border-t-[1px]"></div>
+                  </div>
+                  <div className="flex flex-col capitalize">
+                    <div className="flex flex-row items-center gap-2">
+                      <Image
+                        height={30}
+                        width={30}
+                        src={`/icons/factions/${
+                          Faction[deck?.faction ?? 0]
+                        } rune.png`}
+                      />
+                      <div className="flex flex-row items-center">
+                        <div
+                          className="h-3 w-1"
+                          style={{
+                            backgroundColor: getFactionColors(deck!.faction),
+                          }}
+                        ></div>
+                        {[...Array(deck!.factionCardCount)].map(() => (
+                          <div
+                            style={{
+                              backgroundColor: getFactionColors(deck!.faction),
+                            }}
+                            className={`h-3 w-1`}
+                          ></div>
+                        ))}
+                        <span className="mx-2 text-sm">
+                          {deck!.factionCardCount} cards
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-row items-center gap-2 justify-start">
+                      <Image
+                        height={30}
+                        width={30}
+                        src={`/icons/factions/neutral rune.png`}
+                      />
+                      <div className="flex flex-row items-center">
+                        <div className="h-3 w-1 bg-white"></div>
+                        {[...Array(deck!.neutralCardCount)].map(() => (
+                          <div className="h-3 w-1 bg-white"></div>
+                        ))}
+                        <span className="mx-2 text-sm">
+                          {deck!.neutralCardCount} cards
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Mana Curve */}
+                <div className="flex flex-col self-start">
+                  <div className="flex flex-row items-center gap-3">
+                    <div className="flex-1 border-faint border-t-[1px]"></div>
+                    <span className="">Mana Curve</span>
+                    <div className="flex-1 border-faint border-t-[1px]"></div>
+                  </div>
+                  <div className="flex flex-row ">
+                    {getManaCurve(deckInfo.cards).map((c, i) => {
+                      return (
+                        <div
+                          key={i}
+                          className="flex flex-col w-6 justify-end text-center"
+                        >
+                          {c.count > 0 && c.count}
+                          <div
+                            className="mx-1"
+                            style={{
+                              backgroundColor: getFactionColors(
+                                deck?.faction ?? 0
+                              ),
+                              height: `${Math.round(40 * c.ratio)}px`,
+                            }}
+                          ></div>
+                          <div className="bg-white w-full h-[1px] mb-1"></div>
+                          <div
+                            className="mx-auto flex items-center justify-center text-xs text-black "
+                            style={{
+                              height: "20px",
+                              width: "20px",
+                              backgroundImage: `url(/card/icon_mana.png)`,
+                              backgroundSize: "100%",
+                              backgroundRepeat: "no-repeat",
+                            }}
+                          >
+                            {i}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
             <hr
@@ -129,36 +220,53 @@ const DeckView: React.FC = () => {
               }}
               className="my-3 border-0"
             />
-            <div className="col-span-12 flex flex-row gap-2 justify-between items-center">
+            <div className="col-span-12 flex flex-row gap-2 justify-between items-start my-2">
               {/* description */}
-              {deck?.description && (
-                <div>
+              {deck?.description ? (
+                <div className="break-all w-1/3 text-faint">
                   <h1 className="text-white text-xl">Description:</h1>
-                  {deck.description}
+                  <p className=""> {deck.description}</p>
                 </div>
+              ) : (
+                <div></div>
               )}
-              <div className="flex flex-row justify-end gap-2">
+              <div className="flex flex-row justify-end gap-2 items-start">
                 {" "}
                 <button
                   onClick={handleEditDeck}
-                  className="bg-primary-light-purple rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer flex flex-row items-center gap-1"
+                  className={`text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer capitalize transition-all flex flex-row items-center gap-1 bg-vetruvian`}
                 >
                   <FaPen />
                   Edit Deck
                 </button>
                 <button
+                  disabled={copied}
                   onClick={handleCopyDeckCode}
-                  className="bg-primary-light-purple rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer flex flex-row items-center gap-1"
+                  className={`text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer capitalize transition-all flex flex-row items-center gap-1 ${
+                    copied ? "bg-green-600" : "disabled:opacity-50 bg-vetruvian"
+                  }`}
                 >
-                  <FaClipboard />
-                  Copy Deck Code
+                  {copied ? (
+                    "Copied!"
+                  ) : (
+                    <>
+                      {" "}
+                      <FaClipboard />
+                      Copy Deck Code
+                    </>
+                  )}
                 </button>
                 <button
                   onClick={handleShareDeck}
-                  className="bg-primary-light-purple rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer flex flex-row items-center gap-1"
+                  disabled={loading}
+                  className={`text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer capitalize transition-all flex flex-row items-center gap-1 bg-vetruvian`}
                 >
-                  <FaShare />
-                  Share Deck
+                  {loading ? (
+                    <div className="h-4 w-4 animate-pulse animate-bounce rounded-full border-white border-2"></div>
+                  ) : (
+                    <FaShare />
+                  )}
+                  {loading ? "Generating Deck Code..." : "Share Deck"}
                 </button>
               </div>
             </div>

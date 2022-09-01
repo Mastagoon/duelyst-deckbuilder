@@ -81,7 +81,7 @@ const DecksPage: NextPage = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search decks..."
-              className="w-full bg-white rounded-md py-1 pl-6 min-h-full self-center"
+              className="w-full bg-[#f1f1f1] rounded-md py-1 pl-6 min-h-full self-center"
             />
           </div>
           {/* Deck filter Toggle */}

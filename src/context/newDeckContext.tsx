@@ -8,7 +8,7 @@ import {
   queryFromCards,
 } from "../data/cards"
 import constants from "../data/constants"
-import { generateDeckCode, loadDeckFromDeckCode } from "../utils/deckCode"
+import { generateDeckCode, loadDeckFromDeckCode } from "../utils/deckUtils"
 import orderCards from "../utils/orderCards"
 
 export type DeckCardEntry = CardData & {

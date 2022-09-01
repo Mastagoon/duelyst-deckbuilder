@@ -3,6 +3,7 @@ const timePassedFormat = (date: Date) => {
   const diffInMinutes = Math.floor(
     (now.getTime() - date.getTime()) / (1000 * 60)
   )
+  if (!diffInMinutes) return `just now.`
   if (diffInMinutes < 60)
     return `${diffInMinutes} minute${diffInMinutes > 1 ? "s" : ""} ago.`
   const diffInHours = Math.floor(diffInMinutes / 60)

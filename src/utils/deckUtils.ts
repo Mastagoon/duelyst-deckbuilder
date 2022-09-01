@@ -92,3 +92,21 @@ export const loadDeckFromDeckCode = (
     artifactCount: artifactCards.reduce((tot, curr) => tot + curr.count, 0),
   }
 }
+
+export const getManaCurve = (deckCards: DeckCardEntry[]) => {
+  const absoluteManaCurve = new Array(10).fill(0)
+  for (const card of deckCards) {
+    const mana = card.mana
+    if (mana < 10) absoluteManaCurve[mana] += card.count
+    else absoluteManaCurve[9] += card.count
+  }
+  // relative mana curve
+  const relativeManaCurve = absoluteManaCurve.map((count, index) => {
+    return {
+      mana: index,
+      ratio: count / deckCards.length,
+      count,
+    }
+  })
+  return relativeManaCurve
+}

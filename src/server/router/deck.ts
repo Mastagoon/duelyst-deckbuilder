@@ -15,6 +15,8 @@ export const deckRouter = createRouter()
       faction: z.number(),
       creatorId: z.string(),
       isPrivate: z.boolean().default(false),
+      factionCardCount: z.number(),
+      neutralCardCount: z.number(),
     }),
     async resolve({ input, ctx }) {
       return await ctx.prisma.deck.create({ data: input })

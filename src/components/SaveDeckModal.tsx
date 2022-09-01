@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { useDeckContext } from "../context/newDeckContext"
+import { Faction } from "../data/cards"
 import { trpc } from "../utils/trpc"
 import Modal from "./Common/Modal"
 import Loading from "./Loading"
@@ -14,17 +15,8 @@ const SaveDeckModal: React.FC<{
   const [isPrivate, setIsPrivate] = useState(false)
   const [localDescription, setLocalDescription] = useState("")
   const [localDeckName, setLocalDeckName] = useState(name)
-  const {
-    deckName,
-    updateDeckDescription,
-    deckDescription,
-    updateDeckName,
-    saveDeck,
-    general,
-    minionCount,
-    spellCount,
-    artifactCount,
-  } = useDeckContext()
+  const { saveDeck, general, minionCount, spellCount, artifactCount, cards } =
+    useDeckContext()
 
   const { data: session } = useSession()
   const router = useRouter()
@@ -48,6 +40,19 @@ const SaveDeckModal: React.FC<{
         showConfirmButton: false,
       })
     }
+
+    if (localDescription.length >= 150)
+      return Swal.fire({
+        customClass: {
+          popup: "alert-dialog",
+        },
+        title: "Invalid description",
+        text: "Your deck description is too long (Max 150 characters.)",
+        timer: 2000,
+        position: "bottom-right",
+        showConfirmButton: false,
+      })
+
     const code = saveDeck()
     if (!code) return
     const result = await saveDeckMutation({
@@ -61,6 +66,14 @@ const SaveDeckModal: React.FC<{
       spellCount,
       artifactCount,
       isPrivate,
+      factionCardCount: cards.reduce(
+        (acc, c) => acc + (c.faction === general.faction ? c.count : 0),
+        0
+      ),
+      neutralCardCount: cards.reduce(
+        (acc, c) => acc + (c.faction === Faction.neutral ? c.count : 0),
+        0
+      ),
     })
     router.push(`/deck/${result.id}`)
   }

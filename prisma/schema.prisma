@@ -77,13 +77,15 @@ model Deck {
   deckName      String     @default("New Deck")
   generalId     Int
   code          String
-  description   String?
+  description   String?		 @db.VarChar(150)
   deckType      String?
   isPrivate     Boolean    @default(false)
   minionCount   Int
   artifactCount Int
   spellCount    Int
   faction       Int
+	factionCardCount Int		 @default(15)
+	neutralCardCount Int		 @default(15)
   creatorId     String
   creator       User       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   votes         DeckVote[]
