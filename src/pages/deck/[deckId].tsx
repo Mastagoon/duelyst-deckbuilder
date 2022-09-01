@@ -26,6 +26,7 @@ import ShareDeckOverlay from "../../components/Deck/ShareDeckOverlay"
 import timePassedFormat from "../../utils/timePassedFormat"
 import { Faction } from "../../data/cards"
 import ManaCurve from "../../components/Deck/ManaCurve"
+import { useSession } from "next-auth/react"
 
 const DeckView: React.FC = () => {
   const router = useRouter()
@@ -40,7 +41,11 @@ const DeckView: React.FC = () => {
     { id: (deckId as string) ?? "" },
   ])
 
+  const { mutateAsync: deckVoteMutation } = trpc.useMutation(["deckvote"])
+
   if (!isLoading && !deck) router.push("/")
+
+  const { data: session } = useSession()
 
   const handleCopyDeckCode = async () => {
     navigator.clipboard.writeText(deck!.code)
@@ -70,6 +75,60 @@ const DeckView: React.FC = () => {
     if (deck) return loadDeckFromDeckCode(deck.code)
   }, [deck])
 
+  const voted = deck?.votes.find((v) => v.userId === session?.user.id)
+
+  const handleUpvote = async () => {
+    if (voted && voted.vote > 0) return
+    if (!session || !session.user.id) {
+      const Swal = (await import("sweetalert2")).default
+      const response = await Swal.fire({
+        customClass: {
+          popup: "alert-dialog",
+        },
+        title: "Not Logged In",
+        text: "You must be logged in to vote for a deck",
+        confirmButtonText: "Login",
+        denyButtonText: "Cancel",
+        showDenyButton: true,
+      })
+      if (response.isConfirmed) {
+        router.push("/login?callback=/deck/" + deck!.code)
+      }
+      return
+    }
+    await deckVoteMutation({
+      deckId: deck!.id,
+      userId: session?.user.id,
+      vote: "1",
+    })
+  }
+
+  const handleDownvote = async () => {
+    if (voted && voted.vote < 0) return
+    if (!session || !session.user.id) {
+      const Swal = (await import("sweetalert2")).default
+      const response = await Swal.fire({
+        customClass: {
+          popup: "alert-dialog",
+        },
+        title: "Not Logged In",
+        text: "You must be logged in to vote for a deck",
+        confirmButtonText: "Login",
+        denyButtonText: "Cancel",
+        showDenyButton: true,
+      })
+      if (response.isConfirmed) {
+        router.push("/login?callback=/deck/" + deck!.code)
+      }
+      return
+    }
+    await deckVoteMutation({
+      deckId: deck!.id,
+      userId: session?.user.id,
+      vote: "-1",
+    })
+  }
+
   return (
     <>
       <Head>
@@ -90,9 +149,21 @@ const DeckView: React.FC = () => {
               <div className="flex flex-col col-span-12 ml-5">
                 <div className="col-span-12 gap-1 flex flex-row mb-3 items-center flex-wrap">
                   <div className="flex flex-col items-center justify-center text-center text-primary-cyan">
-                    <FaArrowUp className="hover:scale-110" />
-                    <span className="text-md my-1">0</span>
-                    <FaArrowDown className="hover:scale-110" />
+                    <FaArrowUp
+                      onClick={handleUpvote}
+                      className={`hover:scale-110 cursor-pointer ${
+                        voted && voted.vote > 0 && "text-green-300"
+                      }`}
+                    />
+                    <span className="text-lg font-bold my-1">
+                      {deck?.votes.reduce((a, b) => a + b.vote, 0)}
+                    </span>
+                    <FaArrowDown
+                      onClick={handleDownvote}
+                      className={`hover:scale-110 cursor-pointer ${
+                        voted && voted.vote < 0 && "text-red-300"
+                      }`}
+                    />
                   </div>
                   <h1 className="md:text-4xl text-2xl font-bold ml-5">
                     {deckInfo.deckName}

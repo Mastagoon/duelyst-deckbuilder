@@ -1,4 +1,4 @@
-import { Deck, User } from "@prisma/client"
+import { Deck, DeckVote, User } from "@prisma/client"
 import { BsClockHistory } from "react-icons/bs"
 import Image from "next/image"
 import Link from "next/link"
@@ -9,7 +9,7 @@ import getFactionColor from "../../utils/getFactionColor"
 import timePassedFormat from "../../utils/timePassedFormat"
 
 const DeckDisplay: React.FC<{
-  deck: Deck & { creator: User; _count: { votes: number } }
+  deck: Deck & { creator: User; _count: { votes: number }; votes: DeckVote[] }
 }> = ({ deck }) => {
   return (
     <Link href={`/deck/${deck.id}`}>
@@ -74,10 +74,10 @@ const DeckDisplay: React.FC<{
               {timePassedFormat(deck.createdAt)}
             </span>
           </div>
-          {!!deck._count.votes && (
+          {deck.votes.length > 0 && (
             <div className="text-faint">
               <FaArrowUp className="opacity-60" />
-              <span>{deck._count.votes}</span>
+              <span>{deck?.votes.reduce((acc, cur) => acc + cur.vote, 0)}</span>
             </div>
           )}
         </div>

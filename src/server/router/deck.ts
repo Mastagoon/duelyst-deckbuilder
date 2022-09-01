@@ -27,6 +27,33 @@ export const deckRouter = createRouter()
       }
     },
   })
+  .mutation("vote", {
+    input: z.object({
+      userId: z.string(),
+      deckId: z.string(),
+      vote: z.enum(["-1", "1"]),
+    }),
+    async resolve({ input: { userId, vote, deckId }, ctx }) {
+      const v = await ctx.prisma.deckVote.findFirst({
+        where: { deckId, userId },
+      })
+      console.log(v)
+      if (v)
+        return await ctx.prisma.deckVote.update({
+          where: { id: v.id },
+          data: { vote: Number(vote) },
+        })
+      return await ctx.prisma.deckVote.create({
+        data: { userId, deckId, vote: Number(vote) },
+      })
+      // Prisma bug with multiple unique keys makes this throw an error.
+      // const upvote = await ctx.prisma.deckVote.upsert({
+      // where: { deckId, userId },
+      // update: { vote: Number(vote) },
+      // create: { userId, vote: Number(vote), deckId },
+      // })
+    },
+  })
   .query("getById", {
     input: z.object({
       id: z.string(),
@@ -34,7 +61,11 @@ export const deckRouter = createRouter()
     async resolve({ input, ctx }) {
       return await ctx.prisma.deck.findFirst({
         where: { id: input.id },
-        include: { creator: true, _count: { select: { votes: true } } },
+        include: {
+          creator: true,
+          votes: true,
+          _count: { select: { votes: true } },
+        },
       })
     },
   })
@@ -58,7 +89,7 @@ export const deckRouter = createRouter()
       .nullish(),
     async resolve({ ctx, input }) {
       const TAKE_LIMIT = 100
-      const include = { creator: true, _count: { select: { votes: true } } }
+      const include = { creator: true, votes: true }
       const where =
         input!.faction === "all"
           ? { isPrivate: false }

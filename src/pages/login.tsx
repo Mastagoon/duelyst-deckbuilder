@@ -37,7 +37,7 @@ const LoginPage: React.FC<{ providers: Provider[]; csrfToken: string }> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <PageLayout>
-        <div className="flex flex-col justify-center h-full items-center -translate-y-10">
+        <div className="flex flex-col justify-center h-screen items-center -translate-y-10">
           <Image
             alt="Healing Mystic"
             height={90}
