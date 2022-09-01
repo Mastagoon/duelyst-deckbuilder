@@ -11,7 +11,7 @@ import { generalCards } from "../data/cards"
 import { trpc } from "../utils/trpc"
 
 const DecksPage: NextPage = () => {
-  const [sortByLatest, setSortByLatest] = useState(false)
+  const [sortByLatest, setSortByLatest] = useState(true)
   const [sortFaction, setSortFaction] = useState("all")
   const [query, setQuery] = useState("")
 
@@ -121,7 +121,7 @@ const DecksPage: NextPage = () => {
           </select>
         </nav>
         {(isLoading || isFetchingNextPage) && <Loading />}
-        <div className="flex flex-col px-10 text-white pt-5 h-full">
+        <div className="flex flex-col px-10 text-white pt-5 h-full px-5">
           <div className="">
             <h1 className="md:text-4xl xl:text-6xl text-2xl font-bold">
               Deck Browser

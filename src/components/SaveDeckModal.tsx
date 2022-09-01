@@ -75,7 +75,7 @@ const SaveDeckModal: React.FC<{
         0
       ),
     })
-    router.push(`/deck/${result.id}`)
+    if (result) router.push(`/deck/${result.id}`)
   }
 
   return (

@@ -325,7 +325,11 @@ const DeckBuilderScreen: React.FC = () => {
           </div>
         </div>
       </div>
-      <SaveDeckModal show={showSaveDeckModal} setShow={setShowSaveDeckModal} />
+      <SaveDeckModal
+        show={showSaveDeckModal}
+        setShow={setShowSaveDeckModal}
+        name={localDeckName}
+      />
     </>
   )
 }

@@ -236,7 +236,7 @@ const DeckView: React.FC = () => {
                   ) : (
                     <FaShare />
                   )}
-                  {loading ? "Generating Deck Code..." : "Share Deck"}
+                  {loading ? "Generating Deck Image..." : "Share Deck"}
                 </button>
               </div>
             </div>

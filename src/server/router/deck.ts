@@ -19,7 +19,12 @@ export const deckRouter = createRouter()
       neutralCardCount: z.number(),
     }),
     async resolve({ input, ctx }) {
-      return await ctx.prisma.deck.create({ data: input })
+      console.log(input)
+      try {
+        return await ctx.prisma.deck.create({ data: input })
+      } catch (err) {
+        console.log(err)
+      }
     },
   })
   .query("getById", {
