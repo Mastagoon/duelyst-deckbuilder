@@ -54,6 +54,14 @@
   border: 1px solid rgba(89, 81, 188, 1) !important;
 }
 
+.card-border:hover .card-border-top {
+  border-top: 1px solid rgba(89, 81, 188, 1) !important;
+}
+
+.card-border-top:hover {
+  border-top: 1px solid rgba(89, 81, 188, 1) !important;
+}
+
 *,
 html,
 body {
@@ -84,6 +92,10 @@ body {
 
 a {
   cursor: url(/cursor/select.png), pointer;
+}
+
+input:checked ~ .dot {
+  transform: translateX(100%);
 }
 
 .deck-description-area {

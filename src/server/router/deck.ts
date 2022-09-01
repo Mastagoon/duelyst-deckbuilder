@@ -1,5 +1,6 @@
 import { createRouter } from "./context"
 import { z } from "zod"
+import { Faction } from "../../data/cards"
 
 export const deckRouter = createRouter()
   .mutation("save", {
@@ -26,7 +27,7 @@ export const deckRouter = createRouter()
     async resolve({ input, ctx }) {
       return await ctx.prisma.deck.findFirst({
         where: { id: input.id },
-        include: { creator: true },
+        include: { creator: true, _count: { select: { votes: true } } },
       })
     },
   })
@@ -34,22 +35,48 @@ export const deckRouter = createRouter()
     input: z
       .object({
         cursor: z.string().optional(),
+        order: z.enum(["popular", "latest"]).default("popular"),
+        faction: z
+          .enum([
+            "all",
+            "lyonar",
+            "songhai",
+            "vetruvian",
+            "abyssian",
+            "magmar",
+            "vanar",
+          ])
+          .optional(),
       })
       .nullish(),
     async resolve({ ctx, input }) {
+      console.log(input)
       const TAKE_LIMIT = 20
+      const include = { creator: true, _count: { select: { votes: true } } }
+      const where =
+        input!.faction === "all"
+          ? { isPrivate: false }
+          : { isPrivate: false, faction: Faction[input!.faction!] }
       return input?.cursor
         ? await ctx.prisma.deck.findMany({
             take: TAKE_LIMIT,
             cursor: { id: input?.cursor },
             skip: input?.cursor ? 1 : 0,
-            include: { creator: true },
-            where: { isPrivate: false },
+            include,
+            where,
+            orderBy:
+              input?.order === "popular"
+                ? { votes: { _count: "desc" } }
+                : { createdAt: "desc" },
           })
         : await ctx.prisma.deck.findMany({
             take: TAKE_LIMIT,
-            include: { creator: true },
-            where: { isPrivate: false },
+            include,
+            where,
+            orderBy:
+              input?.order === "popular"
+                ? { votes: { _count: "desc" } }
+                : { createdAt: "desc" },
           })
     },
   })

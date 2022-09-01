@@ -51,7 +51,7 @@ module.exports = {
         "secondary-cyan-bold": "rgba(179, 196, 203, 1)",
         "fading-white": "rgba(255, 255, 255, 0.7)",
         "primary-dark": "rgba(30, 30, 30, 1)",
-        "tester-color": "rgba(0, 0, 35, 1)",
+        "darker-blue": "rgba(0, 0, 35, 1)",
         faint: "rgba(200,200,230,1)",
         lyonar: "#e5c56d",
         songhai: "#db4460",

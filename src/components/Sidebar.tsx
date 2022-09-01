@@ -34,7 +34,7 @@ const Sidebar: React.FC = () => {
   return (
     <>
       {/* Mobile sidebar */}
-      <div className="top-0 w-full bg-secondary-dark-blue flex flex-col lg:hidden relative">
+      <div className="top-0 w-full bg-darker-blue flex flex-col lg:hidden relative">
         {/* Hamburger menu */}
         <div className="flex flex-row w-full items-center justify-between px-4 py-2">
           <button
@@ -83,7 +83,7 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Normal sidebar */}
-      <div className="top-0 bg-tester-color h-screen shadow-lg text-white text-center flex flex-col items-center py-5 hidden lg:block shadow-lg border-r-2 border-secondary-dark-blue text-faint">
+      <div className="top-0 bg-darker-blue h-screen shadow-lg text-white text-center flex flex-col items-center py-5 hidden lg:block shadow-lg border-r-2 border-secondary-dark-blue text-faint">
         {/*Logo*/}
         <Image alt="Logo" src={Logo} />
         <hr className="w-full border-faint p-2 my-3" />

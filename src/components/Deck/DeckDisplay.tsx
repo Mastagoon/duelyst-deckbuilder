@@ -1,33 +1,30 @@
-import { Deck } from "@prisma/client"
+import { Deck, User } from "@prisma/client"
+import { BsClockHistory } from "react-icons/bs"
 import Image from "next/image"
 import Link from "next/link"
-import { FaFire, FaHandRock, FaPaw, FaStar, FaStarHalf } from "react-icons/fa"
+import { FaArrowUp, FaFire, FaPaw } from "react-icons/fa"
 import { GiLunarWand } from "react-icons/gi"
 import { Faction } from "../../data/cards"
 import getFactionColor from "../../utils/getFactionColor"
+import timePassedFormat from "../../utils/timePassedFormat"
 
-const DeckDisplay: React.FC<{ deck: Deck }> = ({ deck }) => {
+const DeckDisplay: React.FC<{
+  deck: Deck & { creator: User; _count: { votes: number } }
+}> = ({ deck }) => {
   return (
     <Link href={`/deck/${deck.id}`}>
       <div
         style={{
           border: `1px solid ${getFactionColor(deck.faction)}`,
         }}
-        className="w-52 card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue h-[270px] select-none bg-no-repeat bg-cover py-2 hover:scale-110 duration-500"
+        className="card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue select-none bg-no-repeat bg-cover py-2 hover:scale-110 duration-500 group h-[350px]"
       >
-        <span className="text-white text-left text-lg font-bold px-2">
+        <span className="text-white text-left text-lg font-bold px-2 truncate">
           {deck.deckName}
         </span>
-        <div className="flex flex-row">
-          <span className="text-faint text-left text-sm px-2">
-            Created By{" "}
-            <Link href={`/user/${deck?.creatorId}`}>
-              <span className="text-primary-cyan hover:opacity-80 cursor-pointer">
-                {deck?.creator.name}
-              </span>
-            </Link>
-          </span>
-        </div>
+        <span className="text-faint text-left text-sm px-2 wrap text-ellipsis">
+          {deck.description}
+        </span>
         <div
           className="border-2 rounded-full p-0 m-auto"
           style={{
@@ -56,15 +53,33 @@ const DeckDisplay: React.FC<{ deck: Deck }> = ({ deck }) => {
             <span className="">{deck.artifactCount}</span>
           </span>
         </div>
-        <div className="flex flex-col w-full shadow-lg justify-between bg-secondary-dark-blue">
-          <div className="flex flex-row justify-center gap-1">
-            {Array.from({ length: Math.ceil(Math.random() * 4) }).map(
-              (_, i) => (
-                <FaStar key={i} />
-              )
-            )}
-            {Math.random() > 0.5 && <FaStarHalf />}
+        <div
+          style={{
+            borderTop: `1px solid ${getFactionColor(deck.faction)}`,
+          }}
+          className="my-2 border-t-[1px] border-faint card-border-top transition-all duration-500"
+        ></div>
+        <div className="flex flex-row justify-between px-2">
+          <div className="flex flex-col">
+            <span className="text-faint text-left text-sm">
+              Created By{" "}
+              <Link href={`/user/${deck?.creatorId}`}>
+                <span className="text-primary-cyan hover:opacity-80 cursor-pointer truncate">
+                  {deck?.creator.name}
+                </span>
+              </Link>
+            </span>
+            <span className="text-faint self-start flex flex-row items-center gap-1">
+              <BsClockHistory />
+              {timePassedFormat(deck.createdAt)}
+            </span>
           </div>
+          {!!deck._count.votes && (
+            <div className="text-faint">
+              <FaArrowUp className="opacity-60" />
+              <span>{deck._count.votes}</span>
+            </div>
+          )}
         </div>
       </div>
     </Link>
