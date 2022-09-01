@@ -139,8 +139,9 @@ const DeckView: React.FC = () => {
                             backgroundColor: getFactionColors(deck!.faction),
                           }}
                         ></div>
-                        {[...Array(deck!.factionCardCount)].map(() => (
+                        {[...Array(deck!.factionCardCount)].map((_, i) => (
                           <div
+                            key={i}
                             style={{
                               backgroundColor: getFactionColors(deck!.faction),
                             }}
@@ -160,8 +161,8 @@ const DeckView: React.FC = () => {
                       />
                       <div className="flex flex-row items-center">
                         <div className="h-3 w-1 bg-white"></div>
-                        {[...Array(deck!.neutralCardCount)].map(() => (
-                          <div className="h-3 w-1 bg-white"></div>
+                        {[...Array(deck!.neutralCardCount)].map((_, i) => (
+                          <div key={i} className="h-3 w-1 bg-white"></div>
                         ))}
                         <span className="mx-2 text-sm">
                           {deck!.neutralCardCount} cards

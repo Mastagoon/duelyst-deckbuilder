@@ -86,7 +86,10 @@ const DecksPage: NextPage = () => {
           </div>
           {/* Deck filter Toggle */}
           <div className="flex items-center justify-center">
-            <label for="toggleB" className="flex items-center cursor-pointer">
+            <label
+              htmlFor="toggleB"
+              className="flex items-center cursor-pointer"
+            >
               <div className="mr-3">Most Popular</div>
               <div className="relative">
                 <input
