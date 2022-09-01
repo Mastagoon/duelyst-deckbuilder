@@ -1,4 +1,5 @@
 import { useDeckContext } from "../context/newDeckContext"
+import Image from "next/image"
 import { generateDeckCode } from "../utils/deckUtils"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import Swal from "sweetalert2"
@@ -239,24 +240,29 @@ const DeckBuilderScreen: React.FC = () => {
           {general ? (
             <>
               <div className="flex flex-col overflow-x-hidden cursor-pointer">
-                <div className="h-14 mb-1">
-                  <div
+                <div className="flex flex-row justify-start h-14 items-center mb-1 rounded-md gap-2 cursor-pointer hover:border-b-2 hover:border-l-2  transition-all min-h-fit relative bg-cover">
+                  <Image
+                    src={"/card/deck_builder_card_general_bg.png"}
+                    className="z-0"
+                    layout="fill"
                     onClick={handleReset}
-                    style={{
-                      backgroundImage: `url(/card/deck_builder_card_general_bg.png)`,
-                      backgroundSize: "100%",
-                      backgroundRepeat: "no-repeat",
-                    }}
+                  />
+                  <div
                     className="flex flex-row justify-start items-center px-1 py-2 my-1 rounded-md gap-2 cursor-pointer transition-all h-14 relative
 "
                   >
                     <span className="text-sm font-bold overflow-hidden whitespace-nowrap cursor-pointer ml-8">
                       {general.name}
                     </span>
+
                     <div
-                      className="absolute right-0 h-20 w-28"
+                      className="absolute"
                       style={{
+                        width: "15%",
+                        right: "-40%",
+                        height: "100%",
                         backgroundSize: "auto auto",
+                        backgroundPosition: "center",
                         backgroundRepeat: "no-repeat",
                         backgroundImage: `url(/card_sprites/${general.id}.png)`,
                         opacity: 0.5,

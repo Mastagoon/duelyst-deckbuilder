@@ -118,7 +118,7 @@ const DecksPage: NextPage = () => {
           </select>
         </nav>
         {(isLoading || isFetchingNextPage) && <Loading />}
-        <div className="flex flex-col px-10 text-white pt-5 h-screen">
+        <div className="flex flex-col px-10 text-white pt-5 h-full">
           <div className="">
             <h1 className="md:text-4xl xl:text-6xl text-2xl font-bold">
               Deck Browser

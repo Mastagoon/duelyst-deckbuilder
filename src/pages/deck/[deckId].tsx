@@ -15,7 +15,7 @@ import {
 } from "react-icons/fa"
 import Loading from "../../components/Loading"
 import PageLayout from "../../components/PageLayout"
-import { getManaCurve, loadDeckFromDeckCode } from "../../utils/deckUtils"
+import { loadDeckFromDeckCode } from "../../utils/deckUtils"
 import { trpc } from "../../utils/trpc"
 import Head from "next/head"
 import DeckCard from "../../components/Deck/DeckCard"
@@ -85,10 +85,10 @@ const DeckView: React.FC = () => {
       <PageLayout>
         {isLoading && <Loading />}
         {deckInfo && (
-          <div className="flex flex-col px-10 text-white pt-5 h-screen grid-rows-[max-content] relative">
-            <div className="flex flex-row justify-between items-center">
+          <div className="flex flex-col  mx-10 text-white pt-5 h-full grid-rows-[max-content] relative">
+            <div className="flex flex-row flex-wrap justify-between items-center">
               <div className="flex flex-col col-span-12 ml-5">
-                <div className="col-span-12 gap-1 flex flex-row mb-3 items-center">
+                <div className="col-span-12 gap-1 flex flex-row mb-3 items-center flex-wrap">
                   <div className="flex flex-col items-center justify-center text-center text-primary-cyan">
                     <FaArrowUp className="hover:scale-110" />
                     <span className="text-md my-1">0</span>
@@ -114,7 +114,7 @@ const DeckView: React.FC = () => {
                   </span>
                 </div>
               </div>
-              <div className="flex flex-row justify-between items-center gap-10">
+              <div className="flex flex-row flex-wrap justify-center lg:justify-between items-center gap-10">
                 {" "}
                 {/* Card Ratio */}
                 <div className="flex flex-col self-start">
@@ -190,18 +190,17 @@ const DeckView: React.FC = () => {
               }}
               className="my-3 border-0"
             />
-            <div className="col-span-12 flex flex-row gap-2 justify-between items-start my-2">
+            <div className="col-span-12 flex flex-row gap-2 justify-center lg:justify-between items-start my-2 flex-wrap">
               {/* description */}
               {deck?.description ? (
-                <div className="break-all w-1/3 text-faint">
+                <div className="break-all lg:w-1/3 text-faint">
                   <h1 className="text-white text-xl">Description:</h1>
                   <p className=""> {deck.description}</p>
                 </div>
               ) : (
                 <div></div>
               )}
-              <div className="flex flex-row justify-end gap-2 items-start">
-                {" "}
+              <div className="flex flex-col lg:flex-row justify-end gap-2 items-start flex-warp">
                 <button
                   onClick={handleEditDeck}
                   className={`text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer capitalize transition-all flex flex-row items-center gap-1 bg-vetruvian`}

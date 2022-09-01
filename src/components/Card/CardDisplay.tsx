@@ -53,7 +53,7 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
             }}
           ></div>
           <div className="flex-1 flex flex-col justify-between">
-            <div className="flex flex-col mt-2 -1">
+            <div className="flex flex-col mt-2 -1 text-center">
               <span className="tracking-wide text-sm font-bold">
                 {card.name.toUpperCase()}
               </span>
@@ -69,7 +69,7 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card }) => {
               )}
             </div>
             {!!card.description && (
-              <div className=" bottom-12 left-1/2 w-full -translate-x-1/2 absolute leading-3 px-4">
+              <div className="text-center bottom-12 left-1/2 w-full -translate-x-1/2 absolute leading-3 px-4">
                 <CardDescription description={card.description} />
               </div>
             )}

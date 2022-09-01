@@ -27,6 +27,7 @@ import { TbSword } from "react-icons/tb"
 import Link from "next/link"
 import Head from "next/head"
 import { GiLunarWand } from "react-icons/gi"
+import CardDisplay from "../../components/Card/CardDisplay"
 
 const CardView: React.FC = () => {
   const [card, setCard] = useState<CardData>()
@@ -76,7 +77,7 @@ const CardView: React.FC = () => {
 
       <PageLayout>
         {card && (
-          <div className="grid grid-cols-12 my-5 text-white">
+          <div className="flex my-5 justify-center items-center text-white">
             <div className="md:col-span-2 hidden md:inline"></div>
             <div className="md:col-span-10 col-span-12 mt-20 flex flex-col text-center md:text-left">
               <h1 className="md:text-4xl text-2xl font-bold uppercase text-white">
@@ -226,27 +227,6 @@ const CardView: React.FC = () => {
                           {KeywordDescription[kw.replace(" ", "_")]}
                         </span>
                       ))}
-                      {!!card.relatedCards.length && (
-                        <>
-                          <hr className="border-secondary-cyan my-1" />
-                          <span className="text-2xl font-bold">
-                            Related Cards
-                          </span>
-                          <div className="flex flex-col">
-                            {card.relatedCards.map((id, i) => (
-                              <Link
-                                className="cursor-pointer hover:scale-110"
-                                key={i}
-                                href={`/card/${id}`}
-                              >
-                                <span className="text-white font-bold text-xl hover:opacity-75 transition-all cursor-pointer">
-                                  {cardDataById[id]?.name ?? id}
-                                </span>
-                              </Link>
-                            ))}
-                          </div>
-                        </>
-                      )}
                     </div>
                   )}
                 </div>
@@ -254,6 +234,29 @@ const CardView: React.FC = () => {
             </div>
           </div>
         )}
+        <div className="flex my-5 justify-center items-center text-white">
+          <div className="md:col-span-10 col-span-12 flex flex-col text-center md:text-left w-1/3 my-3">
+            {!!card?.relatedCards.length && (
+              <div>
+                <hr className="border-secondary-cyan my-1" />
+                <span className="text-2xl font-bold">Related Cards</span>
+                <div className="flex flex-row flex-wrap my-3 relative">
+                  {card.relatedCards.map((id, i) =>
+                    cardDataById[id] ? (
+                      <Link
+                        className="cursor-pointer hover:scale-110 relative"
+                        key={i}
+                        href={`/card/${id}`}
+                      >
+                        <CardDisplay card={cardDataById[id]!} />
+                      </Link>
+                    ) : null
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </PageLayout>
     </>
   )
