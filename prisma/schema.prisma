@@ -12,7 +12,7 @@ generator js {
 
 datasource db {
   provider             = "mysql"
-  url                  = env("TESTING_DATABASE_URL")
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
