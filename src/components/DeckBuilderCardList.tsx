@@ -1,13 +1,11 @@
 import { useDeckContext } from "../context/newDeckContext"
 import Swal from "sweetalert2"
-import Image from "next/image"
-import { CardData, Faction } from "../data/cards"
-import CardDescription from "./Card/CardDescription"
-import ManaGem from "./Card/ManaGem"
+import { CardData, Faction, generalCards } from "../data/cards"
 import { FaLayerGroup, FaSearch } from "react-icons/fa"
 import { useMemo, useState } from "react"
 import DeckBuilderScreen from "./DeckBuilder"
 import { useRouter } from "next/router"
+import DeckBuilderCardDisplay from "./Deck/DeckBuilderCardDisplay"
 
 let debounceTimeout: any
 
@@ -17,6 +15,8 @@ const DeckBuilderCardList: React.FC = ({}) => {
   const deckCode = useMemo(() => router.query.deck, [router.query]) as string
 
   const [query, setQuery] = useState("")
+  const [showOnlyFactionCards, setShowOnlyFactionCards] = useState(false)
+  const [showOnlyNeutralCards, setShowOnlyNeutralCards] = useState(false)
   const [searchMobileMenuActive, setSearchMobileMenuActive] = useState(false)
   const [decklistMobileMenuActive, setDecklistMobileMenuActive] =
     useState(false)
@@ -27,9 +27,9 @@ const DeckBuilderCardList: React.FC = ({}) => {
     spellCount,
     artifactCount,
     general,
-    cards,
-    filteredCards,
     updateFilterText,
+    factionCards,
+    neutralCards,
   } = useDeckContext()
 
   if (deckCode) loadFromDeckCode(deckCode)
@@ -62,6 +62,15 @@ const DeckBuilderCardList: React.FC = ({}) => {
 
   const toggleDeckMenu = () => {
     setDecklistMobileMenuActive(!decklistMobileMenuActive)
+  }
+
+  const handleToggleOnlyFactionCards = () => {
+    setShowOnlyNeutralCards(false)
+    setShowOnlyFactionCards(!showOnlyFactionCards)
+  }
+  const handleToggleOnlyNeutralCards = () => {
+    setShowOnlyFactionCards(false)
+    setShowOnlyNeutralCards(!showOnlyNeutralCards)
   }
 
   return (
@@ -112,135 +121,94 @@ const DeckBuilderCardList: React.FC = ({}) => {
               Choose your general
             </h1>
           )}
-          <div className="col-span-12">
-            <div className="flex flex-row justify-center hidden lg:block">
-              <div className="text-center outline-none focus:outline-none mx-5 my-2">
+          {general ? (
+            <div className="flex flex-col shadow-lg border-2 border-secondary-dark-blue py-2 rounded-md mt-1 px-5 flex flex-row flex-wrap items-center justify-center text-faint gap-3">
+              <div className="col-span-12 flex flex-row w-full justify-center gap-6 text-faint">
+                <h1
+                  onClick={handleToggleOnlyFactionCards}
+                  className={`capitalize text-4xl font-bold hover:text-white cursor-pointer ${
+                    !showOnlyFactionCards ? "text-secondary-cyan" : "text-white"
+                  }`}
+                >
+                  {Faction[general.faction]}
+                </h1>
+                <h1
+                  onClick={handleToggleOnlyNeutralCards}
+                  className={`capitalize text-4xl font-bold hover:text-white cursor-pointer ${
+                    !showOnlyNeutralCards ? "text-secondary-cyan" : "text-white"
+                  }`}
+                >
+                  Neutral
+                </h1>
+              </div>
+
+              <div className="relative outline-none focus:outline-none mx-5 text-faint">
+                <FaSearch className="absolute left-1 top-[-1px] translate-y-1/2 text-faint" />
                 <input
                   value={query}
                   onChange={handleQueryStringChange}
                   placeholder="Search..."
-                  className="bg-[rgba(255,255,255,0.3)] rounded-md text-white border-white border-2 pl-5 min-h-full self-center w-1/3"
+                  className="w-full bg-white rounded-md py-1 pl-6 min-h-full self-center"
                 />
               </div>
             </div>
-          </div>
-        </div>
-        <div className="col-span-12 text-center grid grid-cols-decks justify-items-center gap-y-5 overflow-y-scroll h-full py-3 select-none">
-          {filteredCards.map((card: CardData, i: number) => (
-            <div key={i}>
-              <div
-                onClick={() => handleCardClick(card.id)}
-                style={{
-                  opacity:
-                    (cards.find((c) => c.id === card.id)?.count ?? 0) >= 3
-                      ? 0.3
-                      : 1,
-                  backgroundImage: `url(/card/${
-                    card.cardType.toUpperCase() === "SPELL"
-                      ? "spell"
-                      : card.cardType.toUpperCase() === "ARTIFACT"
-                      ? "item"
-                      : "troop"
-                  }.png)`,
-                }}
-                className="pb-2 card-border cursor-pointer transition-all duration-100 m-5 relative flex flex-col rounded-md min-h-[330px] min-w-[250px] p-1 select-none bg-no-repeat bg-cover active:scale-110"
-              >
-                {card.cardType.toUpperCase() !== "GENERAL" && (
-                  <ManaGem
-                    cost={card.mana}
-                    className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-12 w-12"
-                  />
-                )}
-                <div className="absolute top-[1.1em] right-[1em] flex flex-col gap-2">
-                  <Image
-                    className="overflow-hidden"
-                    alt="Faction"
-                    src={`/icons/factions/${Faction[card.faction]} rune.png`}
-                    height={30}
-                    width={30}
+          ) : (
+            <div className="col-span-12">
+              <div className="flex flex-row justify-center hidden lg:block">
+                <div className="text-center outline-none focus:outline-none mx-5 my-2">
+                  <input
+                    value={query}
+                    onChange={handleQueryStringChange}
+                    placeholder="Search..."
+                    className="bg-[rgba(255,255,255,0.3)] rounded-md text-white border-white border-2 pl-5 min-h-full self-center w-1/3"
                   />
                 </div>
-                {/* Rarity */}
-                {card.cardType.toUpperCase() !== "GENERAL" &&
-                  card.rarity.toUpperCase() !== "TOKEN" && (
-                    <div className="absolute bottom-24 right-1/2 translate-x-1/2">
-                      <Image
-                        className="overflow-hidden"
-                        alt="Rarity"
-                        src={`/icons/rarity/collection_card_rarity_${card.rarity.toLowerCase()}.png`}
-                        height={44}
-                        width={44}
-                      />
-                    </div>
-                  )}
-                <div
-                  className={`flex-1 pixelated ${
-                    card.cardType.toUpperCase() === "SPELL" ||
-                    card.cardType.toUpperCase() === "ARTIFACT"
-                      ? ""
-                      : ""
-                  }`}
-                  style={{
-                    backgroundImage: `url(/card_sprites/${card.id}.gif)`,
-                    backgroundPosition: `${
-                      ["MINION", "GENERAL"].includes(
-                        card.cardType.toUpperCase()
-                      )
-                        ? "center "
-                        : "center 100%"
-                    }`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: `${
-                      ["MINION", "GENERAL"].includes(
-                        card.cardType.toUpperCase()
-                      )
-                        ? "75%"
-                        : "40%"
-                    }`,
-                  }}
-                ></div>
-                <div className="flex-1 flex flex-col justify-between">
-                  <div className="flex flex-col mt-2 -1">
-                    <span className="tracking-wide text-sm font-bold">
-                      {card.name.toUpperCase()}
-                    </span>
-                    {card.tribes.length ? (
-                      <span className="text-primary-cyan text-sm tracking-widest">
-                        {card.tribes.join(",").toUpperCase()}
-                      </span>
-                    ) : (
-                      <span className="tracking-wide mb-3 text-primary-cyan text-sm">
-                        {card.cardType.toUpperCase()}
-                        {card.rarity.toUpperCase() === "TOKEN" && ",TOKEN"}
-                      </span>
-                    )}
-                  </div>
-                  {!!card.description && (
-                    <div className=" bottom-12 left-1/2 w-full -translate-x-1/2 absolute leading-3 px-4">
-                      <CardDescription description={card.description} />
-                    </div>
-                  )}
-                  {/* Absolute */}
-                  <span className="text-xl absolute left-[3.35rem] bottom-[7.2rem]">
-                    {card.attack}
-                  </span>
-                  <span className="text-xl absolute right-[3.57rem] bottom-[7.2rem] translate-x-1/2">
-                    {card.health}
-                  </span>
-                  <div className="absolute bottom-20 left-1/2 -translate-x-1/2"></div>
-                </div>
-                {/*@ts-ignore*/}
-                {cards.find((c) => c.id === card.id)?.count > 0 ? (
-                  <div className="z-2 bg-primary-cyan rounded-sm w-full">
-                    Copies in deck:{" "}
-                    <span>
-                      {cards.find((c) => c.id === card.id)?.count ?? 0}
-                    </span>
-                  </div>
-                ) : null}
               </div>
             </div>
-          ))}
+          )}
+        </div>
+        <div className="col-span-12 text-center grid grid-cols-decks justify-items-center gap-y-5 overflow-y-scroll h-full py-3 select-none">
+          {general ? (
+            <>
+              {showOnlyFactionCards
+                ? factionCards.map((card: CardData, i: number) => (
+                    <div key={i}>
+                      <DeckBuilderCardDisplay
+                        handleCardClick={handleCardClick}
+                        card={card}
+                      />
+                    </div>
+                  ))
+                : showOnlyNeutralCards
+                ? neutralCards.map((card: CardData, i: number) => (
+                    <div key={i}>
+                      <DeckBuilderCardDisplay
+                        handleCardClick={handleCardClick}
+                        card={card}
+                      />
+                    </div>
+                  ))
+                : [...factionCards, ...neutralCards].map(
+                    (card: CardData, i: number) => (
+                      <div key={i}>
+                        <DeckBuilderCardDisplay
+                          handleCardClick={handleCardClick}
+                          card={card}
+                        />
+                      </div>
+                    )
+                  )}
+            </>
+          ) : (
+            generalCards.map((card: CardData, i: number) => (
+              <div key={i}>
+                <DeckBuilderCardDisplay
+                  handleCardClick={handleCardClick}
+                  card={card}
+                />
+              </div>
+            ))
+          )}
         </div>
       </div>
     </>

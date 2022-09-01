@@ -5,12 +5,14 @@ import Image from "next/image"
 import Link from "next/link"
 import navigation from "../data/navigation"
 import { useRouter } from "next/router"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { MdLogin, MdLogout } from "react-icons/md"
+import { FaSearch } from "react-icons/fa"
 
 const Sidebar: React.FC = () => {
   const router = useRouter()
   const mobileMenuRef = useRef<HTMLDivElement>(null)
+  const [query, setQuery] = useState("")
 
   const { data: session } = useSession()
 
@@ -119,6 +121,21 @@ const Sidebar: React.FC = () => {
             </li>
           )}
         </ul>
+        {/*
+				        <hr className="w-full border-faint p-2 my-3" />
+        <div className="flex justify-center">
+          <div className="relative outline-none focus:outline-none text-faint w-full mx-5">
+            <FaSearch className="absolute left-1 top-[-1px] translate-y-1/2 text-faint" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search cards or decks.."
+              className="w-full bg-white rounded-md py-1 pl-6 min-h-full self-center"
+            />
+          </div>
+        </div>
+
+			*/}
       </div>
     </>
   )

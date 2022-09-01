@@ -1,15 +1,14 @@
-import React, { useContext, useDeferredValue, useEffect } from "react"
+import React, { useContext, useDeferredValue, useMemo } from "react"
 import { useState } from "react"
 import {
   CardData,
   Faction,
   generalCards,
-  nonTokens,
+  getFactionCards,
   queryFromCards,
 } from "../data/cards"
 import constants from "../data/constants"
 import { generateDeckCode, loadDeckFromDeckCode } from "../utils/deckUtils"
-import orderCards from "../utils/orderCards"
 
 export type DeckCardEntry = CardData & {
   count: number
@@ -30,7 +29,8 @@ export interface DeckContextType {
   cards: DeckCardEntry[]
   addCardToDeck: (cardId: number) => void
   removeCardFromDeck: (cardId: number) => void
-  filteredCards: CardData[]
+  factionCards: CardData[]
+  neutralCards: CardData[]
   saveDeck: () => string
   minionCount: number
   spellCount: number
@@ -60,8 +60,6 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
   const [general, setGeneral] = useState<CardData>()
   const [deckName, setDeckName] = useState("New Deck")
   const [cards, setCards] = useState<DeckCardEntry[]>([])
-  const [allowedCards, setAllowedCards] = useState<CardData[]>(generalCards)
-  const [filteredCards, setFilteredCards] = useState<CardData[]>(generalCards)
   const [minionCount, setMinionCount] = useState(0)
   const [spellCount, setSpellCount] = useState(0)
   const [artifactCount, setArtifactCount] = useState(0)
@@ -70,42 +68,39 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
 
   const deferredQuery = useDeferredValue(filterText)
 
+  const factionCards = useMemo(() => {
+    if (general) {
+      return getFactionCards(general.faction).filter(
+        (c) =>
+          c.rarity.toLowerCase() !== "token" &&
+          (c.name.toLowerCase().includes(deferredQuery.toLowerCase()) ||
+            c.description?.toLowerCase().includes(deferredQuery.toLowerCase()))
+      )
+    }
+  }, [general, deferredQuery])
+
+  const neutralCards = useMemo(() => {
+    return getFactionCards(Faction.neutral).filter(
+      (c) =>
+        c.rarity.toLowerCase() !== "token" &&
+        (c.name.toLowerCase().includes(deferredQuery.toLowerCase()) ||
+          c.description?.toLowerCase().includes(deferredQuery.toLowerCase()))
+    )
+  }, [deferredQuery])
+
   const reset = () => {
     setGeneral(undefined)
     setCards([])
-    setAllowedCards(generalCards)
     setMinionCount(0)
     setSpellCount(0)
     setArtifactCount(0)
     setDeckTotal(0)
   }
 
-  useEffect(() => {
-    setFilteredCards(queryFromCards(allowedCards, deferredQuery))
-  }, [deferredQuery])
-
   const updateGeneral = (c: CardData) => {
     // check if we have a general
     if (c.cardType.toUpperCase() !== "GENERAL") return
-    // if the new general is from a different faction, remove all the faction cards with it
-    if (c.faction !== general?.faction) {
-      setAllowedCards(
-        orderCards(
-          nonTokens.filter((card) => {
-            return (
-              card.faction === c.faction || card.faction === Faction.neutral
-            )
-          })
-        )
-      )
-      // remove cards from the old faction
-      setCards(
-        cards.filter(
-          (card) =>
-            card.faction === c.faction || card.faction === Faction.neutral
-        )
-      )
-    }
+    console.log("HELLO?")
     // finally, replace old general with new one
     setGeneral(c)
   }
@@ -113,7 +108,9 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
   const addCardToDeck = (cardId: number) => {
     // check if a general is set
     // check if the card is legal
-    const card = allowedCards.find((c) => c.id === cardId)
+    const card = general
+      ? [...(factionCards ?? []), ...neutralCards].find((c) => c.id === cardId)
+      : generalCards.find((g) => g.id === cardId)
     if (!card) return
     if (card.cardType.toUpperCase() === "GENERAL") return updateGeneral(card)
     if (!general) return
@@ -143,10 +140,6 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
     }
     changeDeckCount(card.cardType, 1)
   }
-
-  useEffect(() => {
-    setFilteredCards(allowedCards)
-  }, [allowedCards])
 
   const removeCardFromDeck = (cardId: number) => {
     const card = cards.find((c) => c.id === cardId)
@@ -220,12 +213,13 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
         cards,
         addCardToDeck,
         removeCardFromDeck,
-        filteredCards,
         saveDeck,
         reset,
         loadFromDeckCode,
         deckDescription,
         updateDeckDescription,
+        factionCards: factionCards ?? [],
+        neutralCards,
       }}
     >
       {children}
