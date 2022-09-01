@@ -100,7 +100,6 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
   const updateGeneral = (c: CardData) => {
     // check if we have a general
     if (c.cardType.toUpperCase() !== "GENERAL") return
-    console.log("HELLO?")
     // finally, replace old general with new one
     setGeneral(c)
   }

@@ -115,11 +115,8 @@ export const getManaCurve = (deckCards: DeckCardEntry[]) => {
   // relative mana curve
   const relativeManaCurve = absoluteCurve.map((count, index) => {
     const totalCount = count.faction + count.neutral
-    console.log(totalCount)
-    console.log(count)
     const ratio = totalCount / numCards
     const factionRatio = totalCount ? count.faction / totalCount : 1
-    console.log(factionRatio)
     return {
       mana: index,
       ratio,
