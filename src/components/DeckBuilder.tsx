@@ -2,7 +2,7 @@ import { useDeckContext } from "../context/newDeckContext"
 import { generateDeckCode } from "../utils/deckUtils"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import Swal from "sweetalert2"
-import { FaEdit } from "react-icons/fa"
+import { FaEdit, FaFire, FaPaw } from "react-icons/fa"
 import { useState } from "react"
 import Loading from "./Loading"
 import { trpc } from "../utils/trpc"
@@ -10,6 +10,8 @@ import { useRouter } from "next/router"
 import DeckCard from "./Deck/DeckCard"
 import { useSession } from "next-auth/react"
 import SaveDeckModal from "./SaveDeckModal"
+import ManaCurve from "./Deck/ManaCurve"
+import { GiLunarWand } from "react-icons/gi"
 
 let debounceTimeout: any
 
@@ -18,7 +20,6 @@ const DeckBuilderScreen: React.FC = () => {
     general,
     deckName,
     saveDeck,
-    updateDeckDescription,
     updateDeckName,
     removeCardFromDeck,
     cards,
@@ -174,12 +175,42 @@ const DeckBuilderScreen: React.FC = () => {
               onChange={(e) => handleUpdateDeckName(e.target.value)}
             />
           </div>
+          <div className="my-3">
+            <ManaCurve cards={cards} faction={general?.faction ?? 0} />
+          </div>
           <div className="border-b-[1px] border-faint my-2"></div>
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-col">
-              <span>Minions: {minionCount}</span>
-              <span>Spells: {spellCount}</span>
-              <span>Artifacts: {artifactCount}</span>
+              <span className="flex flex-row items-center gap-3">
+                <FaPaw />
+                <div
+                  className="bg-lyonar h-2"
+                  style={{
+                    width: `${5 * minionCount}px`,
+                  }}
+                ></div>
+                {minionCount}
+              </span>
+              <span className="flex flex-row items-center gap-3">
+                <FaFire />
+                <div
+                  style={{
+                    width: `${5 * spellCount}px`,
+                  }}
+                  className="bg-vanar h-2"
+                ></div>
+                {spellCount}
+              </span>
+              <span className="flex flex-row items-center gap-3">
+                <GiLunarWand />
+                <div
+                  style={{
+                    width: `${5 * artifactCount}px`,
+                  }}
+                  className="bg-vetruvian h-2"
+                ></div>
+                {artifactCount}
+              </span>
             </div>
             <span className="tracking-wide">
               <span
@@ -198,9 +229,8 @@ const DeckBuilderScreen: React.FC = () => {
               /40 Total
             </span>
           </div>
-          <div>Mana Curve placeholder</div>
         </div>
-        <div className="border-b-[1px] text-faint"></div>
+        <div className="border-b-[1px] text-faint my-3"></div>
         <div
           className={`flex flex-col text-center overflow-y-scroll h-full px-1 ${
             !general && "items-center justify-center"

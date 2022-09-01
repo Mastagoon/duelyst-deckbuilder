@@ -25,6 +25,7 @@ import { GiLunarWand } from "react-icons/gi"
 import ShareDeckOverlay from "../../components/Deck/ShareDeckOverlay"
 import timePassedFormat from "../../utils/timePassedFormat"
 import { Faction } from "../../data/cards"
+import ManaCurve from "../../components/Deck/ManaCurve"
 
 const DeckView: React.FC = () => {
   const router = useRouter()
@@ -177,38 +178,7 @@ const DeckView: React.FC = () => {
                     <div className="flex-1 border-faint border-t-[1px]"></div>
                   </div>
                   <div className="flex flex-row ">
-                    {getManaCurve(deckInfo.cards).map((c, i) => {
-                      return (
-                        <div
-                          key={i}
-                          className="flex flex-col w-6 justify-end text-center"
-                        >
-                          {c.count > 0 && c.count}
-                          <div
-                            className="mx-1"
-                            style={{
-                              backgroundColor: getFactionColors(
-                                deck?.faction ?? 0
-                              ),
-                              height: `${Math.round(40 * c.ratio)}px`,
-                            }}
-                          ></div>
-                          <div className="bg-white w-full h-[1px] mb-1"></div>
-                          <div
-                            className="mx-auto flex items-center justify-center text-xs text-black "
-                            style={{
-                              height: "20px",
-                              width: "20px",
-                              backgroundImage: `url(/card/icon_mana.png)`,
-                              backgroundSize: "100%",
-                              backgroundRepeat: "no-repeat",
-                            }}
-                          >
-                            {i}
-                          </div>
-                        </div>
-                      )
-                    })}
+                    <ManaCurve cards={deckInfo.cards} faction={deck!.faction} />
                   </div>
                 </div>
               </div>

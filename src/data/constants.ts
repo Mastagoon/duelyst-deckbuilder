@@ -19,6 +19,7 @@ const constants = {
     epic: "#bf20e1",
     legendary: "#e39f28",
   },
+  MANA_CURVE_HEIGHT: 90,
   MAX_COPIES_IN_DECK: 3,
 }
 

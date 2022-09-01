@@ -1,5 +1,5 @@
 import { DeckCardEntry, DeckData } from "../context/newDeckContext"
-import { allCards, CardData, generalCards } from "../data/cards"
+import { allCards, CardData, Faction, generalCards } from "../data/cards"
 
 export const generateDeckCode = (
   general: CardData,
@@ -93,19 +93,38 @@ export const loadDeckFromDeckCode = (
   }
 }
 
+type ManaCurveEntry = {
+  neutral: number
+  faction: number
+}
+
 export const getManaCurve = (deckCards: DeckCardEntry[]) => {
-  const absoluteManaCurve = new Array(10).fill(0)
+  const absoluteCurve: ManaCurveEntry[] = []
+  for (let i = 0; i < 10; i++) {
+    absoluteCurve.push({ neutral: 0, faction: 0 })
+  }
+  let numCards = 0
   for (const card of deckCards) {
-    const mana = card.mana
-    if (mana < 10) absoluteManaCurve[mana] += card.count
-    else absoluteManaCurve[9] += card.count
+    let mana = card.mana
+    if (mana > 9) mana = 9
+    if (card.faction === Faction.neutral)
+      absoluteCurve[mana]!.neutral += card.count
+    else absoluteCurve[mana]!.faction += card.count
+    numCards += card.count
   }
   // relative mana curve
-  const relativeManaCurve = absoluteManaCurve.map((count, index) => {
+  const relativeManaCurve = absoluteCurve.map((count, index) => {
+    const totalCount = count.faction + count.neutral
+    console.log(totalCount)
+    console.log(count)
+    const ratio = totalCount / numCards
+    const factionRatio = totalCount ? count.faction / totalCount : 1
+    console.log(factionRatio)
     return {
       mana: index,
-      ratio: count / deckCards.length,
-      count,
+      ratio,
+      count: totalCount,
+      factionRatio,
     }
   })
   return relativeManaCurve
