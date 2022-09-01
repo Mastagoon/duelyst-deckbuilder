@@ -52,7 +52,7 @@ export const deckRouter = createRouter()
       })
       .nullish(),
     async resolve({ ctx, input }) {
-      const TAKE_LIMIT = 21
+      const TAKE_LIMIT = 100
       const include = { creator: true, _count: { select: { votes: true } } }
       const where =
         input!.faction === "all"

@@ -6,7 +6,7 @@ const PageLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div className="xl:fixed xl:w-[286px]">
         <Sidebar />
       </div>
-      <div className="flex-1 overflow-y-scroll xl:ml-[286px]">{children}</div>
+      <div className="flex-1 xl:ml-[286px]">{children}</div>
     </div>
   )
 }
