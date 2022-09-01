@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa"
 import Head from "next/head"
 import { Deck } from "@prisma/client"
 import { NextPage } from "next"
-import { useEffect, useRef, useState } from "react"
+import { useDeferredValue, useEffect, useRef, useState } from "react"
 import DeckDisplay from "../components/Deck/DeckDisplay"
 import Loading from "../components/Loading"
 import PageLayout from "../components/PageLayout"
@@ -13,6 +13,10 @@ import { trpc } from "../utils/trpc"
 const DecksPage: NextPage = () => {
   const [sortByLatest, setSortByLatest] = useState(false)
   const [sortFaction, setSortFaction] = useState("all")
+  const [query, setQuery] = useState("")
+
+  const deferredQuery = useDeferredValue(query)
+
   let lastScroll: number = 0
   // for some reason my tsserver is angry with useInfiniteQuery
   // It seems the typing for trpc's implementation of this straight up does not work.
@@ -74,6 +78,8 @@ const DecksPage: NextPage = () => {
           <div className="relative outline-none focus:outline-none mx-5 text-faint">
             <FaSearch className="absolute left-1 top-[-1px] translate-y-1/2 text-faint" />
             <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="Search decks..."
               className="w-full bg-white rounded-md py-1 pl-6 min-h-full self-center"
             />
@@ -128,6 +134,12 @@ const DecksPage: NextPage = () => {
                   (g) => g.id === deck.generalId
                 )
                 if (!general) return
+                if (
+                  !deck.deckName
+                    .toLowerCase()
+                    .includes(deferredQuery.toLowerCase())
+                )
+                  return
                 return <DeckDisplay key={i} deck={deck} />
               })
             )}
