@@ -389,6 +389,27 @@
     "cardType": "Minion"
   },
   {
+    "name": "Magma",
+    "id": 474,
+    "cardSet": "core",
+    "faction": 5,
+    "tribes": [],
+    "rarity": "token",
+    "relatedCards": [],
+    "resource": {
+      "breathing": "resources/card_gifs/f5MagmaBreathing.gif",
+      "idle": "resources/card_gifs/f5MagmaIdle.gif",
+      "walk": "resources/card_gifs/f5MagmaRun.gif",
+      "attack": "resources/card_gifs/f5MagmaAttack.gif",
+      "damage": "resources/card_gifs/f5MagmaDamage.gif",
+      "death": "resources/card_gifs/f5MagmaDeath.gif"
+    },
+    "mana": 0,
+    "attack": 1,
+    "health": 1,
+    "cardType": "Minion"
+  },
+  {
     "name": "Starhorn the Seeker",
     "id": 476,
     "cardSet": "core",
@@ -464,6 +485,50 @@
     "cardType": "General"
   },
   {
+    "name": "Frost Well",
+    "id": 589,
+    "cardSet": "core",
+    "faction": 6,
+    "tribes": [],
+    "rarity": "token",
+    "description": "Provoke\nWall",
+    "relatedCards": [],
+    "resource": {
+      "breathing": "resources/card_gifs/f6GravityWellBreathing.gif",
+      "idle": "resources/card_gifs/f6GravityWellIdle.gif",
+      "walk": "resources/card_gifs/f6GravityWellIdle.gif",
+      "attack": "resources/card_gifs/f6GravityWellDamage.gif",
+      "damage": "resources/card_gifs/f6GravityWellDamage.gif",
+      "death": "resources/card_gifs/f6GravityWellDeath.gif"
+    },
+    "mana": 0,
+    "attack": 0,
+    "health": 1,
+    "cardType": "Minion"
+  },
+  {
+    "name": "Ice Barrier",
+    "id": 591,
+    "cardSet": "core",
+    "faction": 6,
+    "tribes": ["Vespyr"],
+    "rarity": "token",
+    "description": "Wall\nWhen a nearby minion damages this, Stun that minion.",
+    "relatedCards": [],
+    "resource": {
+      "breathing": "resources/card_gifs/f6BonechillBarrierBreathing.gif",
+      "idle": "resources/card_gifs/f6BonechillBarrierIdle.gif",
+      "walk": "resources/card_gifs/f6BonechillBarrierIdle.gif",
+      "attack": "resources/card_gifs/f6BonechillBarrierAttack.gif",
+      "damage": "resources/card_gifs/f6BonechillBarrierDamage.gif",
+      "death": "resources/card_gifs/f6BonechillBarrierDeath.gif"
+    },
+    "mana": 0,
+    "attack": 0,
+    "health": 2,
+    "cardType": "Minion"
+  },
+  {
     "name": "Kara Winterblade",
     "id": 593,
     "cardSet": "core",
@@ -531,8 +596,8 @@
       "death": "resources/card_gifs/neutralMechaz0rSuperDeath.gif"
     },
     "mana": 0,
-    "attack": 7,
-    "health": 7,
+    "attack": 8,
+    "health": 8,
     "cardType": "Minion"
   },
   {
@@ -627,6 +692,22 @@
     "resource": {
       "idle": "resources/card_gifs/iconD2SiphonEnergyIdle.gif",
       "active": "resources/card_gifs/iconD2SiphonEnergyActive.gif"
+    },
+    "mana": 0,
+    "cardType": "Spell"
+  },
+  {
+    "name": "Rasha's Curse",
+    "id": 20452,
+    "cardSet": "core",
+    "faction": 3,
+    "tribes": [],
+    "rarity": "epic",
+    "description": "Destroy a random artifact equipped to the enemy General. Summon a Wind Dervish nearby them.",
+    "relatedCards": [],
+    "resource": {
+      "idle": "resources/card_gifs/iconD2RashasCurseIdle.gif",
+      "active": "resources/card_gifs/iconD2RashasCurseActive.gif"
     },
     "mana": 0,
     "cardType": "Spell"
@@ -847,27 +928,6 @@
     "cardType": "Minion"
   },
   {
-    "name": "Magma",
-    "id": 474,
-    "cardSet": "core",
-    "faction": 5,
-    "tribes": [],
-    "rarity": "token",
-    "relatedCards": [],
-    "resource": {
-      "breathing": "resources/card_gifs/f5MagmaBreathing.gif",
-      "idle": "resources/card_gifs/f5MagmaIdle.gif",
-      "walk": "resources/card_gifs/f5MagmaRun.gif",
-      "attack": "resources/card_gifs/f5MagmaAttack.gif",
-      "damage": "resources/card_gifs/f5MagmaDamage.gif",
-      "death": "resources/card_gifs/f5MagmaDeath.gif"
-    },
-    "mana": 1,
-    "attack": 1,
-    "health": 1,
-    "cardType": "Minion"
-  },
-  {
     "name": "Snow Chaser",
     "id": 576,
     "cardSet": "core",
@@ -933,28 +993,6 @@
     "cardType": "Minion"
   },
   {
-    "name": "Frost Well",
-    "id": 589,
-    "cardSet": "core",
-    "faction": 6,
-    "tribes": [],
-    "rarity": "token",
-    "description": "Provoke\nWall",
-    "relatedCards": [],
-    "resource": {
-      "breathing": "resources/card_gifs/f6GravityWellBreathing.gif",
-      "idle": "resources/card_gifs/f6GravityWellIdle.gif",
-      "walk": "resources/card_gifs/f6GravityWellIdle.gif",
-      "attack": "resources/card_gifs/f6GravityWellDamage.gif",
-      "damage": "resources/card_gifs/f6GravityWellDamage.gif",
-      "death": "resources/card_gifs/f6GravityWellDeath.gif"
-    },
-    "mana": 1,
-    "attack": 0,
-    "health": 1,
-    "cardType": "Minion"
-  },
-  {
     "name": "Frigid Spines",
     "id": 590,
     "cardSet": "core",
@@ -974,28 +1012,6 @@
     "mana": 1,
     "attack": 3,
     "health": 3,
-    "cardType": "Minion"
-  },
-  {
-    "name": "Ice Barrier",
-    "id": 591,
-    "cardSet": "core",
-    "faction": 6,
-    "tribes": ["Vespyr"],
-    "rarity": "token",
-    "description": "Wall\nWhen a nearby minion damages this, Stun that minion.",
-    "relatedCards": [],
-    "resource": {
-      "breathing": "resources/card_gifs/f6BonechillBarrierBreathing.gif",
-      "idle": "resources/card_gifs/f6BonechillBarrierIdle.gif",
-      "walk": "resources/card_gifs/f6BonechillBarrierIdle.gif",
-      "attack": "resources/card_gifs/f6BonechillBarrierAttack.gif",
-      "damage": "resources/card_gifs/f6BonechillBarrierDamage.gif",
-      "death": "resources/card_gifs/f6BonechillBarrierDeath.gif"
-    },
-    "mana": 1,
-    "attack": 0,
-    "health": 2,
     "cardType": "Minion"
   },
   {
@@ -1030,12 +1046,12 @@
     "description": "This gains Health equal to the cost of the next artifact you equip.",
     "relatedCards": [],
     "resource": {
-      "breathing": "resources/card_gifs/neutralBeastCavernBreathing.gif",
-      "idle": "resources/card_gifs/neutralBeastCavernIdle.gif",
-      "walk": "resources/card_gifs/neutralBeastCavernRun.gif",
-      "attack": "resources/card_gifs/neutralBeastCavernAttack.gif",
-      "damage": "resources/card_gifs/neutralBeastCavernHit.gif",
-      "death": "resources/card_gifs/neutralBeastCavernDeath.gif"
+      "breathing": "resources/card_gifs/neutralD2KomodoScavengerBreathing.gif",
+      "idle": "resources/card_gifs/neutralD2KomodoScavengerIdle.gif",
+      "walk": "resources/card_gifs/neutralD2KomodoScavengerRun.gif",
+      "attack": "resources/card_gifs/neutralD2KomodoScavengerAttack.gif",
+      "damage": "resources/card_gifs/neutralD2KomodoScavengerHit.gif",
+      "death": "resources/card_gifs/neutralD2KomodoScavengerDeath.gif"
     },
     "mana": 1,
     "attack": 2,
@@ -1668,7 +1684,7 @@
     "faction": 1,
     "tribes": [],
     "rarity": "epic",
-    "description": "Airdrop\nOpening Gambit: This turn, your minions have Airdrop when played.",
+    "description": "Airdrop\nOpening Gambit: This turn, allied minions have Airdrop when played.",
     "relatedCards": [],
     "resource": {
       "breathing": "resources/card_gifs/f1SunstoneTemplarBreathing.gif",
@@ -2667,7 +2683,7 @@
     },
     "mana": 2,
     "attack": 2,
-    "health": 1,
+    "health": 2,
     "cardType": "Minion"
   },
   {
@@ -2967,7 +2983,7 @@
     "faction": 4,
     "tribes": [],
     "rarity": "basic",
-    "description": "Teleport an enemy minion to any space and deal 1 damage to it.",
+    "description": "Deal 1 damage to an enemy minion and teleport it to any space.",
     "relatedCards": [],
     "resource": {
       "idle": "resources/card_gifs/iconD2DaemonicLureIdle.gif",
@@ -3649,6 +3665,49 @@
     "cardType": "Minion"
   },
   {
+    "name": "Whyte Wyrm",
+    "id": 587,
+    "cardSet": "core",
+    "faction": 6,
+    "tribes": [],
+    "rarity": "token",
+    "description": "Flying",
+    "relatedCards": [],
+    "resource": {
+      "breathing": "resources/card_gifs/f6WhiteWyvernBreathing.gif",
+      "idle": "resources/card_gifs/f6WhiteWyvernIdle.gif",
+      "walk": "resources/card_gifs/f6WhiteWyvernRun.gif",
+      "attack": "resources/card_gifs/f6WhiteWyvernAttack.gif",
+      "damage": "resources/card_gifs/f6WhiteWyvernDamage.gif",
+      "death": "resources/card_gifs/f6WhiteWyvernDeath.gif"
+    },
+    "mana": 3,
+    "attack": 4,
+    "health": 4,
+    "cardType": "Minion"
+  },
+  {
+    "name": "Seismic Elemental",
+    "id": 588,
+    "cardSet": "core",
+    "faction": 6,
+    "tribes": [],
+    "rarity": "token",
+    "relatedCards": [],
+    "resource": {
+      "breathing": "resources/card_gifs/f6SeismicElementalBreathing.gif",
+      "idle": "resources/card_gifs/f6SeismicElementalIdle.gif",
+      "walk": "resources/card_gifs/f6SeismicElementalRun.gif",
+      "attack": "resources/card_gifs/f6SeismicElementalAttack.gif",
+      "damage": "resources/card_gifs/f6SeismicElementalDamage.gif",
+      "death": "resources/card_gifs/f6SeismicElementalDeath.gif"
+    },
+    "mana": 3,
+    "attack": 5,
+    "health": 5,
+    "cardType": "Minion"
+  },
+  {
     "name": "Saberspine Tiger",
     "id": 11162,
     "cardSet": "core",
@@ -3775,8 +3834,8 @@
       "death": "resources/card_gifs/neutralGolemBloodshardDeath.gif"
     },
     "mana": 3,
-    "attack": 3,
-    "health": 4,
+    "attack": 5,
+    "health": 3,
     "cardType": "Minion"
   },
   {
@@ -3907,8 +3966,8 @@
       "death": "resources/card_gifs/neutralShieldOracleDeath.gif"
     },
     "mana": 3,
-    "attack": 1,
-    "health": 4,
+    "attack": 0,
+    "health": 5,
     "cardType": "Minion"
   },
   {
@@ -5066,49 +5125,6 @@
     "cardType": "Minion"
   },
   {
-    "name": "Whyte Wyrm",
-    "id": 587,
-    "cardSet": "core",
-    "faction": 6,
-    "tribes": [],
-    "rarity": "token",
-    "description": "Flying",
-    "relatedCards": [],
-    "resource": {
-      "breathing": "resources/card_gifs/f6WhiteWyvernBreathing.gif",
-      "idle": "resources/card_gifs/f6WhiteWyvernIdle.gif",
-      "walk": "resources/card_gifs/f6WhiteWyvernRun.gif",
-      "attack": "resources/card_gifs/f6WhiteWyvernAttack.gif",
-      "damage": "resources/card_gifs/f6WhiteWyvernDamage.gif",
-      "death": "resources/card_gifs/f6WhiteWyvernDeath.gif"
-    },
-    "mana": 4,
-    "attack": 4,
-    "health": 4,
-    "cardType": "Minion"
-  },
-  {
-    "name": "Seismic Elemental",
-    "id": 588,
-    "cardSet": "core",
-    "faction": 6,
-    "tribes": [],
-    "rarity": "token",
-    "relatedCards": [],
-    "resource": {
-      "breathing": "resources/card_gifs/f6SeismicElementalBreathing.gif",
-      "idle": "resources/card_gifs/f6SeismicElementalIdle.gif",
-      "walk": "resources/card_gifs/f6SeismicElementalRun.gif",
-      "attack": "resources/card_gifs/f6SeismicElementalAttack.gif",
-      "damage": "resources/card_gifs/f6SeismicElementalDamage.gif",
-      "death": "resources/card_gifs/f6SeismicElementalDeath.gif"
-    },
-    "mana": 4,
-    "attack": 5,
-    "health": 5,
-    "cardType": "Minion"
-  },
-  {
     "name": "Owlbeast Sage",
     "id": 11180,
     "cardSet": "core",
@@ -5346,7 +5362,7 @@
       "death": "resources/card_gifs/neutralDilotasDeath.gif"
     },
     "mana": 4,
-    "attack": 5,
+    "attack": 6,
     "health": 2,
     "cardType": "Minion"
   },
@@ -5434,7 +5450,7 @@
     },
     "mana": 4,
     "attack": 3,
-    "health": 5,
+    "health": 6,
     "cardType": "Minion"
   },
   {
@@ -5981,7 +5997,7 @@
       "death": "resources/card_gifs/f4BlackSolusDeath.gif"
     },
     "mana": 5,
-    "attack": 4,
+    "attack": 5,
     "health": 7,
     "cardType": "Minion"
   },
@@ -6333,7 +6349,7 @@
     },
     "mana": 5,
     "attack": 3,
-    "health": 5,
+    "health": 6,
     "cardType": "Minion"
   },
   {
@@ -6676,7 +6692,7 @@
     },
     "mana": 6,
     "attack": 7,
-    "health": 6,
+    "health": 7,
     "cardType": "Minion"
   },
   {
@@ -6720,7 +6736,7 @@
     },
     "mana": 6,
     "attack": 2,
-    "health": 9,
+    "health": 10,
     "cardType": "Minion"
   },
   {
@@ -7102,8 +7118,8 @@
       "death": "resources/card_gifs/neutralSpiritscribeDeath.gif"
     },
     "mana": 7,
-    "attack": 6,
-    "health": 6,
+    "attack": 7,
+    "health": 7,
     "cardType": "Minion"
   },
   {
@@ -7124,8 +7140,8 @@
       "death": "resources/card_gifs/neutralAstralCrusaderDeath.gif"
     },
     "mana": 7,
-    "attack": 5,
-    "health": 10,
+    "attack": 6,
+    "health": 12,
     "cardType": "Minion"
   },
   {
@@ -7221,7 +7237,7 @@
     "faction": 100,
     "tribes": [],
     "rarity": "legendary",
-    "description": "Airdrop, Flying\nOpening Gambit: Summon allied minions that were destroyed since your last turn on random spaces.",
+    "description": "Airdrop, Flying\nOpening Gambit: Summon other allied minions that were destroyed since your last turn on random spaces.",
     "relatedCards": [],
     "resource": {
       "breathing": "resources/card_gifs/neutralZuraelBreathing.gif",
