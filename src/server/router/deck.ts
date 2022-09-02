@@ -202,11 +202,12 @@ export const deckRouter = createRouter()
             where,
             orderBy: { createdAt: "desc" },
           })
-      decks.sort((a, b) => {
-        const aVotes = a.votes.reduce((acc, v) => acc + v.vote, 0)
-        const bVotes = b.votes.reduce((acc, v) => acc + v.vote, 0)
-        return bVotes - aVotes
-      })
+      if (input?.order === "popular")
+        decks.sort((a, b) => {
+          const aVotes = a.votes.reduce((acc, v) => acc + v.vote, 0)
+          const bVotes = b.votes.reduce((acc, v) => acc + v.vote, 0)
+          return bVotes - aVotes
+        })
       return decks.map((d) => ({
         ...d,
         totalVotes: d.votes.reduce((acc, v) => acc + v.vote, 0),
