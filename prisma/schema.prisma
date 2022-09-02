@@ -77,7 +77,7 @@ model Deck {
   deckName      String     @default("New Deck")
   generalId     Int
   code          String		 @db.VarChar(1000)
-  description   String?		 @db.VarChar(150)
+  description   String?		 @db.VarChar(250)
   deckType      String?
   isPrivate     Boolean    @default(false)
   isFeatured     Boolean    @default(false)

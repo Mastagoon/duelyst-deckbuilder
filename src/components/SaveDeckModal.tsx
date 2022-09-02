@@ -41,7 +41,7 @@ const SaveDeckModal: React.FC<{
       })
     }
 
-    if (localDescription.length >= 150)
+    if (localDescription.length >= 250)
       return Swal.fire({
         customClass: {
           popup: "alert-dialog",
