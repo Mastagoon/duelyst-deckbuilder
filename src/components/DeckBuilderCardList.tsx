@@ -12,8 +12,6 @@ let debounceTimeout: any
 const DeckBuilderCardList: React.FC = ({}) => {
   const router = useRouter()
 
-  const deckCode = useMemo(() => router.query.deck, [router.query]) as string
-
   const [query, setQuery] = useState("")
   const [showOnlyFactionCards, setShowOnlyFactionCards] = useState(false)
   const [showOnlyNeutralCards, setShowOnlyNeutralCards] = useState(false)
@@ -32,7 +30,12 @@ const DeckBuilderCardList: React.FC = ({}) => {
     neutralCards,
   } = useDeckContext()
 
-  if (deckCode) loadFromDeckCode(deckCode)
+  useMemo(() => {
+    const code = router.query.deck as string
+    if (code) {
+      loadFromDeckCode(code)
+    }
+  }, [router.query])
 
   const handleQueryStringChange = (e: any) => {
     clearTimeout(debounceTimeout)

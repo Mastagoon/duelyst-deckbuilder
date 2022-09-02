@@ -7,7 +7,7 @@ import navigation from "../data/navigation"
 import { useRouter } from "next/router"
 import { useRef, useState } from "react"
 import { MdLogin, MdLogout } from "react-icons/md"
-import { FaSearch } from "react-icons/fa"
+import { FaSearch, FaUserAlt } from "react-icons/fa"
 
 const Sidebar: React.FC = () => {
   const router = useRouter()
@@ -91,6 +91,20 @@ const Sidebar: React.FC = () => {
         <hr className="w-full border-faint p-2 my-3" />
         {/*Menu*/}
         <ul className="text-start flex flex-col gap-5 w-full">
+          {session && session.user.id && (
+            <Link href={`/user/${session?.user.id}`}>
+              <li
+                className={`flex flex-row items-center gap-4 text-2xl font-bold cursor-pointer transition-all  px-10 ${
+                  router.pathname.startsWith("/user")
+                    ? "text-primary-light-blue border-l-2 border-primary-light-blue"
+                    : "hover:text-primary-light-blue hover:border-l-2 border-primary-light-blue"
+                }`}
+              >
+                <FaUserAlt />
+                <div>Profile</div>
+              </li>
+            </Link>
+          )}
           {navigation.map((n, i) => (
             <Link key={i} href={n.path}>
               <li

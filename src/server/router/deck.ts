@@ -1,6 +1,8 @@
 import { createRouter } from "./context"
+import * as trpc from "@trpc/server"
 import { z } from "zod"
 import { Faction } from "../../data/cards"
+import { Deck } from "@prisma/client"
 
 export const deckRouter = createRouter()
   .mutation("save", {
@@ -19,12 +21,34 @@ export const deckRouter = createRouter()
       neutralCardCount: z.number(),
     }),
     async resolve({ input, ctx }) {
-      console.log(input)
       try {
         return await ctx.prisma.deck.create({ data: input })
       } catch (err) {
         console.log(err)
       }
+    },
+  })
+  .mutation("update", {
+    input: z.object({
+      id: z.string(),
+      code: z.string(),
+      generalId: z.number(),
+      deckName: z.string().optional(),
+      description: z.string().nullish(),
+      minionCount: z.number().default(0),
+      spellCount: z.number().default(0),
+      artifactCount: z.number().default(0),
+      faction: z.number(),
+      creatorId: z.string(),
+      isPrivate: z.boolean().default(false),
+      factionCardCount: z.number(),
+      neutralCardCount: z.number(),
+    }),
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.deck.update({
+        where: { id: input.id },
+        data: input,
+      })
     },
   })
   .mutation("vote", {
@@ -52,6 +76,52 @@ export const deckRouter = createRouter()
       // update: { vote: Number(vote) },
       // create: { userId, vote: Number(vote), deckId },
       // })
+    },
+  })
+  .mutation("import", {
+    input: z.object({
+      deckId: z.string(),
+    }),
+    async resolve({ input: { deckId }, ctx }) {
+      const userId = ctx.session?.user.id
+      if (!userId) throw new trpc.TRPCError({ code: "UNAUTHORIZED" })
+      const deck: Deck | null = await ctx.prisma.deck.findFirst({
+        where: { id: deckId },
+      })
+      if (!deck) throw new trpc.TRPCError({ code: "NOT_FOUND" })
+      if (deck.creatorId === userId)
+        throw new trpc.TRPCError({ code: "BAD_REQUEST" })
+      // create a new deck for the user
+      const {
+        deckName,
+        description,
+        deckType,
+        minionCount,
+        spellCount,
+        artifactCount,
+        faction,
+        neutralCardCount,
+        factionCardCount,
+        code,
+        generalId,
+      } = deck
+      return await ctx.prisma.deck.create({
+        data: {
+          generalId,
+          deckName,
+          description,
+          deckType,
+          minionCount,
+          spellCount,
+          artifactCount,
+          factionCardCount,
+          faction,
+          neutralCardCount,
+          code,
+          creatorId: userId,
+          isPrivate: true,
+        },
+      })
     },
   })
   .query("getById", {

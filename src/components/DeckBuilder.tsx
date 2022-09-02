@@ -4,7 +4,7 @@ import { generateDeckCode } from "../utils/deckUtils"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import Swal from "sweetalert2"
 import { FaEdit, FaFire, FaPaw } from "react-icons/fa"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Loading from "./Loading"
 import { trpc } from "../utils/trpc"
 import { useRouter } from "next/router"
@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react"
 import SaveDeckModal from "./SaveDeckModal"
 import ManaCurve from "./Deck/ManaCurve"
 import { GiLunarWand } from "react-icons/gi"
+import { BiImport } from "react-icons/bi"
 
 let debounceTimeout: any
 
@@ -41,6 +42,10 @@ const DeckBuilderScreen: React.FC = () => {
     duration: 150,
     easing: "ease-in-out",
   })
+
+  useEffect(() => {
+    setLocalDeckName(deckName)
+  }, [deckName])
 
   const router = useRouter()
 
@@ -286,7 +291,11 @@ const DeckBuilderScreen: React.FC = () => {
               <div className="self-center">
                 Choose a general to construct a deck
               </div>
-              <div className="block font-bold tracking-widest">OR</div>
+              <div className="flex flex-row items-center gap-2 my-3">
+                <div className="flex-1 border-b-[1px] border-faint"></div>
+                <div className="block font-bold tracking-widest">OR</div>
+                <div className="flex-1 border-b-[1px] border-faint"></div>
+              </div>
               <input
                 className="bg-transparent text-center mx-auto border-b-[1px] border-faint overflow-hidden w-full outline-none cursor-pointer"
                 placeholder="Enter Deck Code..."
@@ -297,8 +306,9 @@ const DeckBuilderScreen: React.FC = () => {
               <button
                 onClick={handleImportDeckCode}
                 disabled={!deckCode}
-                className="bg-vetruvian text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer my-2 disabled:opacity-50"
+                className="bg-vetruvian text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer my-2 disabled:opacity-50 flex items-center gap-1 mx-auto"
               >
+                <BiImport className="text-[#f1f1f1]" />
                 Import
               </button>
             </div>
@@ -309,7 +319,7 @@ const DeckBuilderScreen: React.FC = () => {
             <button
               disabled={!general}
               onClick={handleCopyCode}
-              className={`text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer uppercase transition-all ${
+              className={`text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer capitalize transition-all ${
                 copied ? "bg-green-600" : "disabled:opacity-50 bg-vetruvian"
               }`}
             >
@@ -318,7 +328,7 @@ const DeckBuilderScreen: React.FC = () => {
             <button
               onClick={handleSaveDeck}
               disabled={minionCount + spellCount + artifactCount !== 39}
-              className="bg-vetruvian text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer uppercase disabled:opacity-50"
+              className="bg-vetruvian text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer capitalize disabled:opacity-50"
             >
               Save Deck
             </button>

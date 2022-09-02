@@ -3,16 +3,10 @@ import Image from "next/image"
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import { BsClockHistory } from "react-icons/bs"
-import {
-  FaArrowDown,
-  FaArrowUp,
-  FaClipboard,
-  FaFire,
-  FaKhanda,
-  FaPaw,
-  FaPen,
-  FaShare,
-} from "react-icons/fa"
+import { FiEdit } from "react-icons/fi"
+import { FaArrowDown, FaArrowUp, FaFire, FaKhanda, FaPaw } from "react-icons/fa"
+import { AiOutlineShareAlt } from "react-icons/ai"
+import { BiExport } from "react-icons/bi"
 import Loading from "../../components/Loading"
 import PageLayout from "../../components/PageLayout"
 import { loadDeckFromDeckCode } from "../../utils/deckUtils"
@@ -56,7 +50,7 @@ const DeckView: React.FC = () => {
   }
 
   const handleEditDeck = () => {
-    router.push(`/deck-builder/${deck!.code}`)
+    router.push(`/deck-builder?deck=${deck!.code}`)
   }
 
   const handleShareDeck = async () => {
@@ -143,7 +137,7 @@ const DeckView: React.FC = () => {
       </Head>
       <PageLayout>
         {isLoading && <Loading />}
-        {deckInfo && (
+        {deckInfo && deck && (
           <div className="flex flex-col  mx-10 text-white pt-5 h-full grid-rows-[max-content] relative">
             <div className="flex flex-row flex-wrap justify-between items-center">
               <div className="flex flex-col col-span-12 ml-5">
@@ -156,7 +150,7 @@ const DeckView: React.FC = () => {
                       }`}
                     />
                     <span className="text-lg font-bold my-1">
-                      {deck?.votes.reduce((a, b) => a + b.vote, 0)}
+                      {deck.votes.reduce((a, b) => a + b.vote, 0)}
                     </span>
                     <FaArrowDown
                       onClick={handleDownvote}
@@ -165,15 +159,15 @@ const DeckView: React.FC = () => {
                       }`}
                     />
                   </div>
-                  <h1 className="md:text-4xl text-2xl font-bold ml-5">
-                    {deckInfo.deckName}
+                  <h1 className="md:text-4xl text-2xl font-bold ml-5 text-white">
+                    {deck!.deckName}
                   </h1>
                 </div>
                 <span className="text-faint ml-5 flex flex-row gap-1 items-center">
                   Created by{" "}
-                  <Link href={`/user/${deck?.creatorId}`}>
+                  <Link href={`/user/${deck.creatorId}`}>
                     <span className="text-primary-cyan hover:opacity-80 cursor-pointer">
-                      {deck?.creator.name}
+                      {deck.creator.name}
                     </span>
                   </Link>
                 </span>
@@ -277,8 +271,8 @@ const DeckView: React.FC = () => {
                   onClick={handleEditDeck}
                   className={`text-white rounded-sm px-4 py-1 hover:opacity-80 cursor-pointer capitalize transition-all flex flex-row items-center gap-1 bg-vetruvian`}
                 >
-                  <FaPen />
-                  Edit Deck
+                  <FiEdit className="text-[#f1f1f1]" />
+                  Import Deck
                 </button>
                 <button
                   disabled={copied}
@@ -292,7 +286,7 @@ const DeckView: React.FC = () => {
                   ) : (
                     <>
                       {" "}
-                      <FaClipboard />
+                      <BiExport className="text-[#f1f1f1]" />
                       Copy Deck Code
                     </>
                   )}
@@ -305,7 +299,7 @@ const DeckView: React.FC = () => {
                   {loading ? (
                     <div className="h-4 w-4 animate-pulse animate-bounce rounded-full border-white border-2"></div>
                   ) : (
-                    <FaShare />
+                    <AiOutlineShareAlt className="text-[#f1f1f1]" />
                   )}
                   {loading ? "Generating Deck Image..." : "Share Deck"}
                 </button>

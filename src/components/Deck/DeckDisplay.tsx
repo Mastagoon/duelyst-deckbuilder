@@ -1,16 +1,29 @@
 import { Deck, DeckVote, User } from "@prisma/client"
-import { BsClockHistory } from "react-icons/bs"
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import Image from "next/image"
 import Link from "next/link"
-import { FaArrowUp, FaFire, FaPaw } from "react-icons/fa"
+import { FaArrowUp, FaFire, FaLock, FaPaw, FaUnlock } from "react-icons/fa"
 import { GiLunarWand } from "react-icons/gi"
 import { Faction } from "../../data/cards"
 import getFactionColor from "../../utils/getFactionColor"
 import timePassedFormat from "../../utils/timePassedFormat"
+import { BsClockHistory } from "react-icons/bs"
+import { useSession } from "next-auth/react"
+import { trpc } from "../../utils/trpc"
 
 const DeckDisplay: React.FC<{
-  deck: Deck & { creator: User; _count: { votes: number }; votes: DeckVote[] }
+  deck: Deck & { creator: User; votes: DeckVote[] }
 }> = ({ deck }) => {
+  const { data: session } = useSession()
+
+  const { mutate: mutateUpdateDeck } = trpc.useMutation("deckupdate")
+
+  const handleToggleVisiblity = (e: any) => {
+    e.preventDefault()
+    mutateUpdateDeck({ ...deck, isPrivate: !deck.isPrivate })
+    deck.isPrivate = !deck.isPrivate
+  }
+
   return (
     <Link href={`/deck/${deck.id}`}>
       <div
@@ -19,8 +32,20 @@ const DeckDisplay: React.FC<{
         }}
         className="card-border cursor-pointer transition-all m-5 relative flex flex-col rounded-md bg-primary-dark-blue select-none bg-no-repeat bg-cover py-2 hover:scale-110 duration-500 group h-[350px] w-[250px]"
       >
-        <span className="text-white text-left text-lg font-bold px-2 truncate">
+        <span className="text-white text-left text-lg font-bold px-2 truncate flex flex-row justify-between items-center">
           {deck.deckName}
+          {session?.user?.id === deck.creatorId &&
+            (deck.isPrivate ? (
+              <AiOutlineEyeInvisible
+                onClick={handleToggleVisiblity}
+                className="text-faint hover:scale-150 transition-all hover:text-vetruvian"
+              />
+            ) : (
+              <AiOutlineEye
+                onClick={handleToggleVisiblity}
+                className="text-faint hover:scale-150 transition-all hover:text-vetruvian"
+              />
+            ))}
         </span>
         <p className="text-faint text-left text-sm px-2 truncate break-all">
           {deck.description}
