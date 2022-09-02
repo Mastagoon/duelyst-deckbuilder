@@ -26,7 +26,7 @@ const SaveDeckModal: React.FC<{
   ])
 
   const handleSave = async () => {
-    if (!session || !session.user.id || !general) return
+    if (!general) return
     const Swal = (await import("sweetalert2")).default
     if (!localDeckName || localDeckName.length > 30) {
       return Swal.fire({
@@ -56,7 +56,7 @@ const SaveDeckModal: React.FC<{
     const code = saveDeck()
     if (!code) return
     const result = await saveDeckMutation({
-      creatorId: session.user.id,
+      creatorId: session?.user.id ?? null,
       generalId: general.id,
       description: localDescription,
       deckName: localDeckName,
@@ -103,17 +103,19 @@ const SaveDeckModal: React.FC<{
         cols={50}
         rows={10}
       ></textarea>
-      <div className="flex flex-row items-end justify-start gap-2">
-        <label className="cursor-pointer" htmlFor="isPrivate">
-          Save as a private deck?
-        </label>
-        <input
-          checked={isPrivate}
-          onChange={(e) => setIsPrivate(!isPrivate)}
-          type="checkbox"
-          className="rounded-md self-center cursor-pointer "
-        />
-      </div>
+      {session && session.user.id && (
+        <div className="flex flex-row items-end justify-start gap-2">
+          <label className="cursor-pointer" htmlFor="isPrivate">
+            Save as a private deck?
+          </label>
+          <input
+            checked={isPrivate}
+            onChange={(e) => setIsPrivate(!isPrivate)}
+            type="checkbox"
+            className="rounded-md self-center cursor-pointer "
+          />
+        </div>
+      )}
       <div className="border-t-[1px] border-t-faint my-3 flex flex-col"></div>
       <div className="flex flex-row justify-center">
         <button

@@ -34,7 +34,8 @@ const DeckDisplay: React.FC<{
       >
         <span className="text-white text-left text-lg font-bold px-2 truncate flex flex-row justify-between items-center">
           {deck.deckName}
-          {session?.user?.id === deck.creatorId &&
+          {session &&
+            session.user?.id === deck.creatorId &&
             (deck.isPrivate ? (
               <AiOutlineEyeInvisible
                 onClick={handleToggleVisiblity}
@@ -90,7 +91,7 @@ const DeckDisplay: React.FC<{
               Created By{" "}
               <Link href={`/user/${deck?.creatorId}`}>
                 <span className="text-primary-cyan hover:opacity-80 cursor-pointer truncate">
-                  {deck?.creator.name}
+                  {deck?.creator?.name ?? "Guest"}
                 </span>
               </Link>
             </span>

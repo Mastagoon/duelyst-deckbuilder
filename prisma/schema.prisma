@@ -87,8 +87,8 @@ model Deck {
   faction       Int
 	factionCardCount Int		 @default(15)
 	neutralCardCount Int		 @default(15)
-  creatorId     String
-  creator       User       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId     String?
+  creator       User?       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   votes         DeckVote[]
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt

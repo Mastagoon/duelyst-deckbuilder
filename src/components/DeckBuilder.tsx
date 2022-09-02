@@ -124,19 +124,16 @@ const DeckBuilderScreen: React.FC = () => {
           popup: "alert-dialog",
         },
         title: "Not Logged In",
-        text: "You must be logged in to save decks.",
+        text: "If you login, you can save the deckto your account",
         confirmButtonText: "Login",
-        denyButtonText: "Copy Deck Code",
+        denyButtonText: "Save as guest",
+        denyButtonColor: "#000055",
         showDenyButton: true,
       })
-      if (response.isDenied) {
-        const code = saveDeck()
-        navigator.clipboard.writeText(code)
-      }
       if (response.isConfirmed) {
-        router.push("/login")
+        return router.push("/login")
       }
-      return
+      if (response.isDismissed) return
     }
     // check deck cards
     const cardCount = minionCount + spellCount + artifactCount

@@ -167,7 +167,7 @@ const DeckView: React.FC = () => {
                   Created by{" "}
                   <Link href={`/user/${deck.creatorId}`}>
                     <span className="text-primary-cyan hover:opacity-80 cursor-pointer">
-                      {deck.creator?.name}
+                      {deck.creator?.name ?? "Guest"}
                     </span>
                   </Link>
                 </span>
