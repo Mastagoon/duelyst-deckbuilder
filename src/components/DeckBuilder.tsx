@@ -4,7 +4,7 @@ import { generateDeckCode } from "../utils/deckUtils"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import Swal from "sweetalert2"
 import { FaEdit, FaFire, FaPaw } from "react-icons/fa"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Loading from "./Loading"
 import { trpc } from "../utils/trpc"
 import { useRouter } from "next/router"
@@ -31,12 +31,22 @@ const DeckBuilderScreen: React.FC = () => {
     reset,
     artifactCount,
   } = useDeckContext()
+
+  const router = useRouter()
+
   const [localDeckName, setLocalDeckName] = useState(deckName)
   const [deckCode, setDeckCode] = useState("")
   const [loading, setLoading] = useState(false)
   const [copied, setCopied] = useState(false)
   const [showSaveDeckModal, setShowSaveDeckModal] = useState(false)
   const { data: session } = useSession()
+
+  useMemo(() => {
+    const code = router.query.deck as string
+    if (code) {
+      loadFromDeckCode(code)
+    }
+  }, [router.query])
 
   const [parent] = useAutoAnimate<HTMLDivElement>({
     duration: 150,
@@ -46,8 +56,6 @@ const DeckBuilderScreen: React.FC = () => {
   useEffect(() => {
     setLocalDeckName(deckName)
   }, [deckName])
-
-  const router = useRouter()
 
   const { mutateAsync: saveDeckMutation, isLoading } = trpc.useMutation([
     "decksave",

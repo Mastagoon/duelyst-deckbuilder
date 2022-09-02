@@ -2,7 +2,7 @@ import { useDeckContext } from "../context/newDeckContext"
 import Swal from "sweetalert2"
 import { CardData, Faction, generalCards } from "../data/cards"
 import { FaLayerGroup, FaSearch } from "react-icons/fa"
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import DeckBuilderScreen from "./DeckBuilder"
 import { useRouter } from "next/router"
 import DeckBuilderCardDisplay from "./Deck/DeckBuilderCardDisplay"
@@ -19,7 +19,6 @@ const DeckBuilderCardList: React.FC = ({}) => {
   const [decklistMobileMenuActive, setDecklistMobileMenuActive] =
     useState(false)
   const {
-    loadFromDeckCode,
     addCardToDeck,
     minionCount,
     spellCount,
@@ -29,13 +28,6 @@ const DeckBuilderCardList: React.FC = ({}) => {
     factionCards,
     neutralCards,
   } = useDeckContext()
-
-  useMemo(() => {
-    const code = router.query.deck as string
-    if (code) {
-      loadFromDeckCode(code)
-    }
-  }, [router.query])
 
   const handleQueryStringChange = (e: any) => {
     clearTimeout(debounceTimeout)
