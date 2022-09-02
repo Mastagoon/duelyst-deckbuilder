@@ -80,6 +80,7 @@ model Deck {
   description   String?		 @db.VarChar(150)
   deckType      String?
   isPrivate     Boolean    @default(false)
+  isFeatured     Boolean    @default(false)
   minionCount   Int
   artifactCount Int
   spellCount    Int

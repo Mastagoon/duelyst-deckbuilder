@@ -129,8 +129,26 @@ export const deckRouter = createRouter()
       id: z.string(),
     }),
     async resolve({ input, ctx }) {
-      return await ctx.prisma.deck.findFirst({
+      const deck = await ctx.prisma.deck.findFirst({
         where: { id: input.id },
+        include: {
+          creator: true,
+          votes: true,
+        },
+      })
+      // return await ctx.prisma.deck.findFirst({
+      // where: { id: input.id },
+      // include: {
+      // creator: true,
+      // votes: true,
+      // _count: { select: { votes: true } },
+      // },
+    },
+  })
+  .query("getFeaturedDecks", {
+    async resolve({ ctx }) {
+      return await ctx.prisma.deck.findMany({
+        // where: { isFeatured: true },
         include: {
           creator: true,
           votes: true,

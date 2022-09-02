@@ -65,15 +65,15 @@ const DeckDisplay: React.FC<{
           />
         </div>
         <div className="flex flex-row justify-around w-full bg-secondary-dark-blue shadow-lg px-2 py-1">
-          <span className="text-faint relative">
+          <span className="text-faint relative flex flex-col items-center">
             <FaPaw size={30} />
             <span className="">{deck.minionCount}</span>
           </span>
-          <span className="text-faint relative">
+          <span className="text-faint relative flex flex-col items-center">
             <FaFire size={30} />
             <span className="">{deck.spellCount}</span>
           </span>
-          <span className="text-faint relative">
+          <span className="text-faint relative flex flex-col items-center">
             <GiLunarWand size={30} />
             <span className="">{deck.artifactCount}</span>
           </span>

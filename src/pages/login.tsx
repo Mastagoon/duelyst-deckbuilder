@@ -67,12 +67,13 @@ const LoginPage: React.FC<{ providers: Provider[]; csrfToken: string }> = ({
                 </button>
               </div>
             ))}
-            <div className="flex flex-row gap-2 items-center text-faint">
-              <div className="border-b-[1px] border-faint flex-1"></div>
-              <span className="text-xl">or</span>
-              <div className="border-b-[1px] border-faint flex-1"></div>
-            </div>
-            <form method="post" action="/api/auth/signin/email">
+            {/* 
+<div className="flex flex-row gap-2 items-center text-faint">
+<div className="border-b-[1px] border-faint flex-1"></div>
+<span className="text-xl">or</span>
+<div className="border-b-[1px] border-faint flex-1"></div>
+</div>
+						            <form method="post" action="/api/auth/signin/email">
               <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
               <div className="flex flex-row justify-center items-center rounded-md my-2 cursor-pointer bg-[#e1e1e1] ">
                 <div className="ml-4">
@@ -91,20 +92,21 @@ const LoginPage: React.FC<{ providers: Provider[]; csrfToken: string }> = ({
                 Sign in with Email
               </button>
             </form>
-            <hr className="my-3" />
-            <div className="flex flex-col gap-2">
-              <Link href="/reset-password">
-                <span className="cursor-pointer text-vetruvian">
-                  Forgot your password?
-                </span>
-              </Link>
-              <span className="text-faint">
-                Donapos&;t have an account?{" "}
-                <Link href="/register">
-                  <span className="text-vetruvian cursor-pointer">Sign Up</span>
-                </Link>
-              </span>
-            </div>
+<hr className="my-3" />
+<div className="flex flex-col gap-2">
+<Link href="/reset-password">
+<span className="cursor-pointer text-vetruvian">
+Forgot your password?
+</span>
+</Link>
+<span className="text-faint">
+Donapos&;t have an account?{" "}
+<Link href="/register">
+<span className="text-vetruvian cursor-pointer">Sign Up</span>
+</Link>
+</span>
+</div>
+*/}
           </div>
         </div>
       </PageLayout>
