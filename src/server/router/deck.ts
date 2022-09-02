@@ -2,7 +2,7 @@ import { createRouter } from "./context"
 import * as trpc from "@trpc/server"
 import { z } from "zod"
 import { Faction } from "../../data/cards"
-import { Deck } from "@prisma/client"
+import { Deck, DeckVote } from "@prisma/client"
 
 export const deckRouter = createRouter()
   .mutation("save", {
@@ -129,32 +129,32 @@ export const deckRouter = createRouter()
       id: z.string(),
     }),
     async resolve({ input, ctx }) {
-      const deck = await ctx.prisma.deck.findFirst({
+      const deck = await ctx.prisma.deck.findFirstOrThrow({
         where: { id: input.id },
         include: {
           creator: true,
-          votes: true,
+          votes: {
+            select: { vote: true, userId: true },
+          },
         },
       })
-      // return await ctx.prisma.deck.findFirst({
-      // where: { id: input.id },
-      // include: {
-      // creator: true,
-      // votes: true,
-      // _count: { select: { votes: true } },
-      // },
+      const totalVotes = deck?.votes.reduce((acc, v) => acc + v.vote, 0) || 0
+      return { ...deck, totalVotes }
     },
   })
   .query("getFeaturedDecks", {
     async resolve({ ctx }) {
-      return await ctx.prisma.deck.findMany({
-        // where: { isFeatured: true },
+      const decks = await ctx.prisma.deck.findMany({
+        where: { isFeatured: true, isPrivate: false },
         include: {
           creator: true,
-          votes: true,
-          _count: { select: { votes: true } },
+          votes: { select: { vote: true } },
         },
       })
+      return decks.map((deck) => ({
+        ...deck,
+        totalVotes: deck.votes.reduce((acc, v) => acc + v.vote, 0),
+      }))
     },
   })
   .query("infiniteDecks", {
@@ -177,31 +177,39 @@ export const deckRouter = createRouter()
       .nullish(),
     async resolve({ ctx, input }) {
       const TAKE_LIMIT = 100
-      const include = { creator: true, votes: true }
+      const include = {
+        creator: true,
+        votes: {
+          select: { vote: true, userId: true },
+        },
+      }
       const where =
         input!.faction === "all"
           ? { isPrivate: false }
           : { isPrivate: false, faction: Faction[input!.faction!] }
-      return input?.cursor
+      const decks = input?.cursor
         ? await ctx.prisma.deck.findMany({
             take: TAKE_LIMIT,
             cursor: { id: input?.cursor },
             skip: input?.cursor ? 1 : 0,
             include,
             where,
-            orderBy:
-              input?.order === "popular"
-                ? { votes: { _count: "desc" } }
-                : { createdAt: "desc" },
+            orderBy: { createdAt: "desc" },
           })
         : await ctx.prisma.deck.findMany({
             take: TAKE_LIMIT,
             include,
             where,
-            orderBy:
-              input?.order === "popular"
-                ? { votes: { _count: "desc" } }
-                : { createdAt: "desc" },
+            orderBy: { createdAt: "desc" },
           })
+      decks.sort((a, b) => {
+        const aVotes = a.votes.reduce((acc, v) => acc + v.vote, 0)
+        const bVotes = b.votes.reduce((acc, v) => acc + v.vote, 0)
+        return bVotes - aVotes
+      })
+      return decks.map((d) => ({
+        ...d,
+        totalVotes: d.votes.reduce((acc, v) => acc + v.vote, 0),
+      }))
     },
   })

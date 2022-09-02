@@ -8,7 +8,7 @@ export const userRouter = createRouter()
     }),
     async resolve({ input, ctx }) {
       const isCurrentUser = ctx.session?.user.id === input.id
-      return await ctx.prisma.user.findFirst({
+      const user = await ctx.prisma.user.findFirstOrThrow({
         where: { id: input.id },
         include: {
           decks: {
@@ -22,6 +22,14 @@ export const userRouter = createRouter()
           },
         },
       })
+      return {
+        ...user,
+        decks: user.decks.map((deck) => {
+          const totalVotes =
+            deck?.votes.reduce((acc, v) => acc + v.vote, 0) || 0
+          return { ...deck, totalVotes }
+        }),
+      }
     },
   })
   .query("me", {

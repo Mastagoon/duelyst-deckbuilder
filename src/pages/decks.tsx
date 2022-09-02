@@ -3,19 +3,27 @@ import { FaSearch } from "react-icons/fa"
 import Head from "next/head"
 import { Deck } from "@prisma/client"
 import { NextPage } from "next"
-import { useDeferredValue, useEffect, useRef, useState } from "react"
+import { useDeferredValue, useEffect, useRef, useState, useMemo } from "react"
 import DeckDisplay from "../components/Deck/DeckDisplay"
 import Loading from "../components/Loading"
 import PageLayout from "../components/PageLayout"
-import { generalCards } from "../data/cards"
 import { trpc } from "../utils/trpc"
+import { useRouter } from "next/router"
 
 const DecksPage: NextPage = () => {
   const [sortByLatest, setSortByLatest] = useState(true)
   const [sortFaction, setSortFaction] = useState("all")
   const [query, setQuery] = useState("")
+  const [featured, setFeatured] = useState(false)
 
   const deferredQuery = useDeferredValue(query)
+
+  const router = useRouter()
+
+  useMemo(() => {
+    if (router.query.featured === "true") setFeatured(true)
+    else setFeatured(false)
+  }, [router.query])
 
   let lastScroll: number = 0
   // for some reason my tsserver is angry with useInfiniteQuery
@@ -31,6 +39,7 @@ const DecksPage: NextPage = () => {
           lastPage[lastPage.length - 1]?.id,
       }
     )
+  const { data: featuredDecks } = trpc.useQuery(["deckgetFeaturedDecks"])
 
   const utils = trpc.useContext()
 
@@ -84,6 +93,12 @@ const DecksPage: NextPage = () => {
               className="w-full bg-[#f1f1f1] rounded-md py-1 pl-6 min-h-full self-center"
             />
           </div>
+          <button
+            onClick={() => setFeatured(!featured)}
+            className="bg-vetruvian rounded-sm px-5 py-1 text-white cursor-pointer"
+          >
+            {featured ? "Browse" : "Featured"}
+          </button>
           {/* Deck filter Toggle */}
           <div className="flex items-center justify-center">
             <label
@@ -124,28 +139,35 @@ const DecksPage: NextPage = () => {
         <div className="flex flex-col px-10 text-white pt-5 h-full px-5">
           <div className="">
             <h1 className="md:text-4xl xl:text-6xl text-2xl font-bold">
-              Deck Browser
+              {featured ? "Featured Decks" : "Deck Browser"}
             </h1>
+            <span className="text-faint">
+              {featured
+                ? "Featured decks are selected by veteran players from the Duelyst II Community."
+                : "Browse through the latest decks from the Duelyst II community."}
+            </span>
           </div>
           <div
             ref={deckPageRef}
             className="text-center grid grid-cols-decks grid-rows-decks justify-items-center overflow-y-scroll h-full py-3 "
           >
-            {data?.pages.map((p: any) =>
-              p.map((deck: Deck, i: number) => {
-                const general = generalCards.find(
-                  (g) => g.id === deck.generalId
-                )
-                if (!general) return
-                if (
-                  !deck.deckName
+            {featured
+              ? featuredDecks?.map((deck) =>
+                  deck.deckName
                     .toLowerCase()
-                    .includes(deferredQuery.toLowerCase())
+                    .includes(deferredQuery.toLowerCase()) ? (
+                    <DeckDisplay key={deck.id} deck={deck} />
+                  ) : null
                 )
-                  return
-                return <DeckDisplay key={i} deck={deck} />
-              })
-            )}
+              : data?.pages.map((p: any) =>
+                  p.map((deck: Deck, i: number) =>
+                    deck.deckName
+                      .toLowerCase()
+                      .includes(deferredQuery.toLowerCase()) ? (
+                      <DeckDisplay key={deck.id} deck={deck} />
+                    ) : null
+                  )
+                )}
           </div>
         </div>
       </PageLayout>

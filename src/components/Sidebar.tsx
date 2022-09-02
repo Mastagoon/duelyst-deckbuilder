@@ -1,5 +1,10 @@
 import Logo from "../../public/icons/Logo.png"
-import { GiCardDraw, GiCardExchange, GiTinker } from "react-icons/gi"
+import {
+  GiCardDraw,
+  GiCardExchange,
+  GiTheaterCurtains,
+  GiTinker,
+} from "react-icons/gi"
 import { useSession, signOut } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
@@ -7,17 +12,18 @@ import navigation from "../data/navigation"
 import { useRouter } from "next/router"
 import { useRef, useState } from "react"
 import { MdLogin, MdLogout } from "react-icons/md"
-import { FaSearch, FaUserAlt } from "react-icons/fa"
+import { FaUserAlt } from "react-icons/fa"
 
 const Sidebar: React.FC = () => {
   const router = useRouter()
   const mobileMenuRef = useRef<HTMLDivElement>(null)
-  const [query, setQuery] = useState("")
 
   const { data: session } = useSession()
 
   const getNavIcon = (nav: string) => {
     switch (nav) {
+      case "/decks?featured=true":
+        return <GiTheaterCurtains />
       case "/decks":
         return <GiCardDraw />
       case "/deck-builder":

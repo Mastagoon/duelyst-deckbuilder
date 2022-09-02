@@ -42,7 +42,7 @@ const DeckView: React.FC = () => {
   const { data: session } = useSession()
 
   const handleCopyDeckCode = async () => {
-    navigator.clipboard.writeText(deck!.code)
+    navigator.clipboard.writeText(deck!.code!)
     setCopied(true)
     setTimeout(() => {
       setCopied(false)
@@ -66,13 +66,13 @@ const DeckView: React.FC = () => {
   }
 
   const deckInfo = useMemo(() => {
-    if (deck) return loadDeckFromDeckCode(deck.code)
+    if (deck) return loadDeckFromDeckCode(deck.code ?? "")
   }, [deck])
 
-  const voted = deck?.votes.find((v) => v.userId === session?.user.id)
+  const voted = deck?.votes?.find((v) => v.userId === session?.user.id)
 
   const handleUpvote = async () => {
-    if (voted && voted.vote > 0) return
+    if (!deck || (voted && voted.vote > 0)) return
     if (!session || !session.user.id) {
       const Swal = (await import("sweetalert2")).default
       const response = await Swal.fire({
@@ -86,12 +86,12 @@ const DeckView: React.FC = () => {
         showDenyButton: true,
       })
       if (response.isConfirmed) {
-        router.push("/login?callback=/deck/" + deck!.code)
+        router.push("/login?callback=/deck/" + deck.code)
       }
       return
     }
     await deckVoteMutation({
-      deckId: deck!.id,
+      deckId: deck.id ?? "",
       userId: session?.user.id,
       vote: "1",
     })
@@ -117,7 +117,7 @@ const DeckView: React.FC = () => {
       return
     }
     await deckVoteMutation({
-      deckId: deck!.id,
+      deckId: deck!.id ?? "",
       userId: session?.user.id,
       vote: "-1",
     })
@@ -150,7 +150,7 @@ const DeckView: React.FC = () => {
                       }`}
                     />
                     <span className="text-lg font-bold my-1">
-                      {deck.votes.reduce((a, b) => a + b.vote, 0)}
+                      {deck.votes?.reduce((a, b) => a + b.vote, 0)}
                     </span>
                     <FaArrowDown
                       onClick={handleDownvote}
@@ -167,7 +167,7 @@ const DeckView: React.FC = () => {
                   Created by{" "}
                   <Link href={`/user/${deck.creatorId}`}>
                     <span className="text-primary-cyan hover:opacity-80 cursor-pointer">
-                      {deck.creator.name}
+                      {deck.creator?.name}
                     </span>
                   </Link>
                 </span>
@@ -175,7 +175,7 @@ const DeckView: React.FC = () => {
                   <BsClockHistory />
                   Last updated:
                   <span className="text-white">
-                    {timePassedFormat(deck!.updatedAt)}
+                    {timePassedFormat(deck.updatedAt!)}
                   </span>
                 </div>
               </div>
@@ -201,14 +201,14 @@ const DeckView: React.FC = () => {
                         <div
                           className="h-3 w-1"
                           style={{
-                            backgroundColor: getFactionColors(deck!.faction),
+                            backgroundColor: getFactionColors(deck.faction!),
                           }}
                         ></div>
                         {[...Array(deck!.factionCardCount)].map((_, i) => (
                           <div
                             key={i}
                             style={{
-                              backgroundColor: getFactionColors(deck!.faction),
+                              backgroundColor: getFactionColors(deck.faction!),
                             }}
                             className={`h-3 w-1`}
                           ></div>
@@ -244,7 +244,10 @@ const DeckView: React.FC = () => {
                     <div className="flex-1 border-faint border-t-[1px]"></div>
                   </div>
                   <div className="flex flex-row ">
-                    <ManaCurve cards={deckInfo.cards} faction={deck!.faction} />
+                    <ManaCurve
+                      cards={deckInfo.cards}
+                      faction={deck!.faction ?? 0}
+                    />
                   </div>
                 </div>
               </div>
@@ -259,7 +262,7 @@ const DeckView: React.FC = () => {
             <div className="col-span-12 flex flex-row gap-2 justify-center lg:justify-between items-start my-2 flex-wrap">
               {/* description */}
               {deck?.description ? (
-                <div className="break-all lg:w-1/3 text-faint">
+                <div className="break-word lg:w-1/3 text-faint">
                   <h1 className="text-white text-xl">Description:</h1>
                   <p className=""> {deck.description}</p>
                 </div>
