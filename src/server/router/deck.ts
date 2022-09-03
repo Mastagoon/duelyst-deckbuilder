@@ -234,7 +234,9 @@ export const deckRouter = createRouter()
         decks.sort((a, b) => {
           const aVotes = a.votes.reduce((acc, v) => acc + v.vote, 0)
           const bVotes = b.votes.reduce((acc, v) => acc + v.vote, 0)
-          return bVotes - aVotes
+          return bVotes === aVotes
+            ? b._count.views - a._count.views
+            : bVotes - aVotes
         })
       return decks.map((d) => ({
         ...d,

@@ -40,9 +40,9 @@ const LoginPage: React.FC<{ providers: Provider[]; csrfToken: string }> = ({
         <div className="flex flex-col justify-center h-screen items-center -translate-y-10">
           <Image
             alt="Healing Mystic"
-            height={90}
-            width={90}
-            src={`/card_sprites/11245.png`}
+            height={180}
+            width={180}
+            src={`/card_sprites/11245.gif`}
           />
           <div className="text-white w-1/4 text-center">
             <span className="text-3xl font-bold">Sign In</span>

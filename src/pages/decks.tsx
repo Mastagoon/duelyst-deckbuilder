@@ -11,7 +11,7 @@ import { trpc } from "../utils/trpc"
 import { useRouter } from "next/router"
 
 const DecksPage: NextPage = () => {
-  const [sortByLatest, setSortByLatest] = useState(true)
+  const [sortByLatest, setSortByLatest] = useState(false)
   const [sortFaction, setSortFaction] = useState("all")
   const [query, setQuery] = useState("")
   const [featured, setFeatured] = useState(false)
