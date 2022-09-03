@@ -1,7 +1,26 @@
 import { createRouter } from "./context"
+import { TRPCError } from "@trpc/server"
 import { z } from "zod"
 
 export const userRouter = createRouter()
+  .mutation("update", {
+    input: z.object({
+      name: z.string().optional(),
+      base64Avatar: z.string().optional(),
+    }),
+    async resolve({ ctx, input: { base64Avatar, name } }) {
+      const userId = ctx.session?.user.id
+      if (!userId) throw new TRPCError({ code: "UNAUTHORIZED" })
+      if (!base64Avatar && !name) throw new TRPCError({ code: "BAD_REQUEST" })
+      return await ctx.prisma.user.update({
+        where: { id: userId },
+        data: {
+          ...(base64Avatar && { avatar: base64Avatar }),
+          ...(name && { name }),
+        },
+      })
+    },
+  })
   .query("getById", {
     input: z.object({
       id: z.string(),
