@@ -1,8 +1,8 @@
-import { Deck, DeckVote, User } from "@prisma/client"
+import { Deck, User } from "@prisma/client"
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import Image from "next/image"
 import Link from "next/link"
-import { FaArrowUp, FaFire, FaPaw } from "react-icons/fa"
+import { FaArrowUp, FaEye, FaFire, FaPaw } from "react-icons/fa"
 import { GiLunarWand } from "react-icons/gi"
 import { Faction } from "../../data/cards"
 import getFactionColor from "../../utils/getFactionColor"
@@ -12,7 +12,7 @@ import { useSession } from "next-auth/react"
 import { trpc } from "../../utils/trpc"
 
 const DeckDisplay: React.FC<{
-  deck: Deck & { creator: User; totalVotes: number }
+  deck: Deck & { creator: User; totalVotes: number; _count: { views: number } }
 }> = ({ deck }) => {
   const { data: session } = useSession()
 
@@ -106,12 +106,18 @@ const DeckDisplay: React.FC<{
               {timePassedFormat(deck.createdAt)}
             </span>
           </div>
-          {!!deck.totalVotes && (
-            <div className="text-faint">
-              <FaArrowUp className="opacity-60" />
-              <span>{deck.totalVotes}</span>
+          <div className="flex flex-col">
+            {!!deck.totalVotes && (
+              <div className="text-faint flex flex-row items-center gap-1">
+                <FaArrowUp className="opacity-60" />
+                <span>{deck.totalVotes}</span>
+              </div>
+            )}
+            <div className="text-faint flex flex-row items-center gap-1">
+              <AiOutlineEye />
+              {1 + deck._count.views}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </Link>

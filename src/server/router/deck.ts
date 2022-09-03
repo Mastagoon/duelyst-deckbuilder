@@ -51,6 +51,26 @@ export const deckRouter = createRouter()
       })
     },
   })
+  .mutation("view", {
+    input: z.object({
+      deckId: z.string(),
+    }),
+    async resolve({ ctx, input: { deckId } }) {
+      const { req } = ctx
+      if (!req) return null
+      let ip
+      if (req.headers["x-forwarded-for"]) {
+        ip = (req.headers["x-forwarded-for"] as string)?.split(",")[0]
+      } else if (req.headers["x-real-ip"]) {
+        ip = req.headers["x-real-ip"]
+      } else {
+        ip = req.socket.remoteAddress
+      }
+      ip = ip as string
+      if (!ip) return null
+      return await ctx.prisma.deckView.create({ data: { deckId, ip } })
+    },
+  })
   .mutation("vote", {
     input: z.object({
       userId: z.string(),
@@ -61,7 +81,6 @@ export const deckRouter = createRouter()
       const v = await ctx.prisma.deckVote.findFirst({
         where: { deckId, userId },
       })
-      console.log(v)
       if (v)
         return await ctx.prisma.deckVote.update({
           where: { id: v.id },
@@ -132,6 +151,9 @@ export const deckRouter = createRouter()
       const deck = await ctx.prisma.deck.findFirstOrThrow({
         where: { id: input.id },
         include: {
+          _count: {
+            select: { views: true },
+          },
           creator: true,
           votes: {
             select: { vote: true, userId: true },
@@ -147,6 +169,9 @@ export const deckRouter = createRouter()
       const decks = await ctx.prisma.deck.findMany({
         where: { isFeatured: true, isPrivate: false },
         include: {
+          _count: {
+            select: { views: true },
+          },
           creator: true,
           votes: { select: { vote: true } },
         },
@@ -179,6 +204,9 @@ export const deckRouter = createRouter()
       const TAKE_LIMIT = 100
       const include = {
         creator: true,
+        _count: {
+          select: { views: true },
+        },
         votes: {
           select: { vote: true, userId: true },
         },

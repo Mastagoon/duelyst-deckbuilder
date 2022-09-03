@@ -90,10 +90,23 @@ model Deck {
   creatorId     String?
   creator       User?       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   votes         DeckVote[]
+	views				  DeckView[]
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
 
   @@index([creatorId])
+}
+
+model DeckView {
+	id			String			@id @default(cuid())
+	deckId	String
+	deck		Deck				@relation(fields: [deckId], references: [id], onDelete: Cascade)
+	ip			String
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+	@@index([deckId])
+	@@unique([deckId, ip])
 }
 
 model DeckVote {

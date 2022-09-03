@@ -1,11 +1,11 @@
 import { useRouter } from "next/router"
 import Image from "next/image"
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { BsClockHistory } from "react-icons/bs"
 import { FiEdit } from "react-icons/fi"
 import { FaArrowDown, FaArrowUp, FaFire, FaKhanda, FaPaw } from "react-icons/fa"
-import { AiOutlineShareAlt } from "react-icons/ai"
+import { AiOutlineEye, AiOutlineShareAlt } from "react-icons/ai"
 import { BiExport } from "react-icons/bi"
 import Loading from "../../components/Loading"
 import PageLayout from "../../components/PageLayout"
@@ -36,6 +36,7 @@ const DeckView: React.FC = () => {
   ])
 
   const { mutateAsync: deckVoteMutation } = trpc.useMutation(["deckvote"])
+  const { mutate: deckViewMutation } = trpc.useMutation(["deckview"])
 
   if (!isLoading && !deck) router.push("/")
 
@@ -123,6 +124,10 @@ const DeckView: React.FC = () => {
     })
   }
 
+  useEffect(() => {
+    if (deckId) deckViewMutation({ deckId: deckId as string })
+  }, [deckId])
+
   return (
     <>
       <Head>
@@ -183,6 +188,11 @@ const DeckView: React.FC = () => {
                   <span className="text-white">
                     {timePassedFormat(deck.updatedAt!)}
                   </span>
+                </div>
+                <div className="flex flex-row items-center text-faint gap-1 ml-5">
+                  <AiOutlineEye />
+                  <span className="text-white">{deck._count.views + 1}</span>
+                  Views
                 </div>
               </div>
               <div className="flex flex-row flex-wrap justify-center lg:justify-between items-center gap-10">
