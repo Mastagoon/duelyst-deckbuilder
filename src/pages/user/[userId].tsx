@@ -43,7 +43,7 @@ const UserProfilePage: NextPage = () => {
             </div>
             <hr className="mx-16 text-faint border-faint" />
             <h1 className="font-bold text-faint mx-16 my-3 text-center">
-              {myProfile ? "Your" : `${user.name}'s'`} Recent Decks
+              {myProfile ? "Your" : `${user.name}'s`} Recent Decks
             </h1>
             <div className="flex flex-row flex-wrap justify-center">
               {user.decks.map((deck, i) => (
