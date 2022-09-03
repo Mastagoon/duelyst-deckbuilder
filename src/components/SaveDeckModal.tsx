@@ -15,8 +15,15 @@ const SaveDeckModal: React.FC<{
 }> = ({ show, setShow, name, setName }) => {
   const [isPrivate, setIsPrivate] = useState(false)
   const [localDescription, setLocalDescription] = useState("")
-  const { saveDeck, general, minionCount, spellCount, artifactCount, cards } =
-    useDeckContext()
+  const {
+    updateDeckName,
+    saveDeck,
+    general,
+    minionCount,
+    spellCount,
+    artifactCount,
+    cards,
+  } = useDeckContext()
 
   const { data: session } = useSession()
   const router = useRouter()
@@ -53,6 +60,7 @@ const SaveDeckModal: React.FC<{
         showConfirmButton: false,
       })
 
+    updateDeckName(name)
     const code = saveDeck()
     if (!code) return
     const result = await saveDeckMutation({
