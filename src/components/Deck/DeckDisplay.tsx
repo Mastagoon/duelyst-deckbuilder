@@ -65,17 +65,22 @@ const DeckDisplay: React.FC<{
             width={65}
           />
         </div>
-        <div className="flex flex-row justify-around w-full bg-secondary-dark-blue shadow-lg px-2 py-1">
+        <div
+          style={{
+            borderTop: `1px solid ${getFactionColor(deck.faction)}`,
+          }}
+          className="flex flex-row justify-around w-full bg-secondary-dark-blue shadow-lg px-2 py-3 transition-all duration-500 card-border-top"
+        >
           <span className="text-faint relative flex flex-col items-center">
-            <FaPaw size={30} />
+            <FaPaw size={25} />
             <span className="">{deck.minionCount}</span>
           </span>
           <span className="text-faint relative flex flex-col items-center">
-            <FaFire size={30} />
+            <FaFire size={25} />
             <span className="">{deck.spellCount}</span>
           </span>
           <span className="text-faint relative flex flex-col items-center">
-            <GiLunarWand size={30} />
+            <GiLunarWand size={25} />
             <span className="">{deck.artifactCount}</span>
           </span>
         </div>
@@ -83,7 +88,7 @@ const DeckDisplay: React.FC<{
           style={{
             borderTop: `1px solid ${getFactionColor(deck.faction)}`,
           }}
-          className="my-2 border-t-[1px] border-faint card-border-top transition-all duration-500"
+          className="py-2 border-t-[1px] border-faint card-border-top transition-all duration-500"
         ></div>
         <div className="flex flex-row justify-between px-2">
           <div className="flex flex-col">
