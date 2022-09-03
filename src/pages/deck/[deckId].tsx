@@ -165,11 +165,17 @@ const DeckView: React.FC = () => {
                 </div>
                 <span className="text-faint ml-5 flex flex-row gap-1 items-center">
                   Created by{" "}
-                  <Link href={`/user/${deck.creatorId}`}>
+                  {deck.creatorId ? (
+                    <Link href={`/user/${deck.creatorId}`}>
+                      <span className="text-primary-cyan hover:opacity-80 cursor-pointer">
+                        {deck.creator?.name ?? "Guest"}
+                      </span>
+                    </Link>
+                  ) : (
                     <span className="text-primary-cyan hover:opacity-80 cursor-pointer">
                       {deck.creator?.name ?? "Guest"}
                     </span>
-                  </Link>
+                  )}
                 </span>
                 <div className="flex flex-row items-center text-faint gap-1 ml-5">
                   <BsClockHistory />

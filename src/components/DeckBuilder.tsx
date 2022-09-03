@@ -21,7 +21,6 @@ const DeckBuilderScreen: React.FC = () => {
   const {
     general,
     deckName,
-    saveDeck,
     updateDeckName,
     removeCardFromDeck,
     cards,
@@ -78,7 +77,6 @@ const DeckBuilderScreen: React.FC = () => {
       })
       return
     }
-    setLocalDeckName(deckName)
     setDeckCode("")
     setLoading(false)
     return Swal.fire({
@@ -344,6 +342,7 @@ const DeckBuilderScreen: React.FC = () => {
         show={showSaveDeckModal}
         setShow={setShowSaveDeckModal}
         name={localDeckName}
+        setName={setLocalDeckName}
       />
     </>
   )

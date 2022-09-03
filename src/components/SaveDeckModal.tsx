@@ -10,11 +10,11 @@ import Loading from "./Loading"
 const SaveDeckModal: React.FC<{
   show: boolean
   setShow: (b: boolean) => void
-  name?: string
-}> = ({ show, setShow, name = "New Deck" }) => {
+  name: string
+  setName: (name: string) => void
+}> = ({ show, setShow, name, setName }) => {
   const [isPrivate, setIsPrivate] = useState(false)
   const [localDescription, setLocalDescription] = useState("")
-  const [localDeckName, setLocalDeckName] = useState(name)
   const { saveDeck, general, minionCount, spellCount, artifactCount, cards } =
     useDeckContext()
 
@@ -28,7 +28,7 @@ const SaveDeckModal: React.FC<{
   const handleSave = async () => {
     if (!general) return
     const Swal = (await import("sweetalert2")).default
-    if (!localDeckName || localDeckName.length > 30) {
+    if (!name || name.length > 30) {
       return Swal.fire({
         customClass: {
           popup: "alert-dialog",
@@ -59,7 +59,7 @@ const SaveDeckModal: React.FC<{
       creatorId: session?.user.id ?? null,
       generalId: general.id,
       description: localDescription,
-      deckName: localDeckName,
+      deckName: name,
       code,
       minionCount,
       faction: general.faction,
@@ -86,8 +86,9 @@ const SaveDeckModal: React.FC<{
       </label>
       <input
         name="deckName"
-        onChange={(e) => setLocalDeckName(e.target.value)}
-        value={localDeckName}
+        maxLength={20}
+        onChange={(e) => setName(e.target.value)}
+        value={name}
         placeholder="Deck Name"
         className="w-full border-[1px] border-faint bg-transparent rounded-md py-1 px-2 min-h-full self-center text-white my-2"
       />

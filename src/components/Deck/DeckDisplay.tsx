@@ -89,11 +89,17 @@ const DeckDisplay: React.FC<{
           <div className="flex flex-col">
             <span className="text-faint text-left text-sm">
               Created By{" "}
-              <Link href={`/user/${deck?.creatorId}`}>
+              {deck.creatorId ? (
+                <Link href={`/user/${deck?.creatorId}`}>
+                  <span className="text-primary-cyan hover:opacity-80 cursor-pointer truncate">
+                    {deck?.creator?.name ?? "Guest"}
+                  </span>
+                </Link>
+              ) : (
                 <span className="text-primary-cyan hover:opacity-80 cursor-pointer truncate">
                   {deck?.creator?.name ?? "Guest"}
                 </span>
-              </Link>
+              )}
             </span>
             <span className="text-faint self-start flex flex-row items-center gap-1">
               <BsClockHistory />
