@@ -15,6 +15,9 @@ export const userRouter = createRouter()
             orderBy: { createdAt: "desc" },
             include: {
               votes: true,
+              _count: {
+                select: { views: true },
+              },
             },
             where: {
               isPrivate: isCurrentUser ? undefined : false,
