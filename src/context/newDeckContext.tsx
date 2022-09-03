@@ -72,9 +72,10 @@ export const NewDeckProvider: React.FC<DeckContextProps> = ({ children }) => {
     if (general) {
       return getFactionCards(general.faction).filter(
         (c) =>
-          c.rarity.toLowerCase() !== "token" &&
-          (c.name.toLowerCase().includes(deferredQuery.toLowerCase()) ||
-            c.description?.toLowerCase().includes(deferredQuery.toLowerCase()))
+          (c.rarity.toLowerCase() !== "token" &&
+            c.id !== 20424 &&
+            c.name.toLowerCase().includes(deferredQuery.toLowerCase())) ||
+          c.description?.toLowerCase().includes(deferredQuery.toLowerCase())
       )
     }
   }, [general, deferredQuery])
