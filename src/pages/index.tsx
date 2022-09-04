@@ -1,14 +1,11 @@
 import type { NextPage } from "next"
-import Head from "next/head"
+import MetaData from "../components/MetaData"
 import Sidebar from "../components/Sidebar"
 
 const Home: NextPage = () => {
   return (
     <>
-      <Head>
-        <title>Duelyst II Deckbuilder</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <MetaData />
       <Sidebar />
     </>
   )

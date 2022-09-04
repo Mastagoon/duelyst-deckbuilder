@@ -1,6 +1,5 @@
 import { NextPage } from "next"
 import { useSession } from "next-auth/react"
-import Head from "next/head"
 import { useRouter } from "next/router"
 import Loading from "../../components/Loading"
 import PageLayout from "../../components/PageLayout"
@@ -8,11 +7,12 @@ import { trpc } from "../../utils/trpc"
 import DeckDisplay from "../../components/Deck/DeckDisplay"
 import { useEffect, useRef, useState } from "react"
 import { FaEdit, FaSave } from "react-icons/fa"
+import MetaData from "../../components/MetaData"
 
 const UserProfilePage: NextPage = () => {
   const [userName, setUsername] = useState<string>()
   const [editUsername, setEditUsername] = useState(false)
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -53,10 +53,7 @@ const UserProfilePage: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>User {user?.name ?? ""}</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <MetaData title={user?.name ?? ""} />
       <PageLayout>
         {isLoading && <Loading />}
         {!!user && (

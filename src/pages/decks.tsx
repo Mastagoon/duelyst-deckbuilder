@@ -1,6 +1,5 @@
 //@ts-nocheck
 import { FaSearch } from "react-icons/fa"
-import Head from "next/head"
 import { Deck } from "@prisma/client"
 import { NextPage } from "next"
 import { useDeferredValue, useEffect, useRef, useState, useMemo } from "react"
@@ -9,6 +8,7 @@ import Loading from "../components/Loading"
 import PageLayout from "../components/PageLayout"
 import { trpc } from "../utils/trpc"
 import { useRouter } from "next/router"
+import MetaData from "../components/MetaData"
 
 const DecksPage: NextPage = () => {
   const [sortByLatest, setSortByLatest] = useState(false)
@@ -78,10 +78,7 @@ const DecksPage: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>Duelyst II Deckbuilder | Deck Browser</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <MetaData title="Browse Decks" />
       <PageLayout>
         <nav className="w-full bg-darker-blue border-b-secondary-dark-blue border-b-2 text-faint flex flex-row py-2 items-center justify-between px-20">
           <div className="relative outline-none focus:outline-none mx-5 text-faint">

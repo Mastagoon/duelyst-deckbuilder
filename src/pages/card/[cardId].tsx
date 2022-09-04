@@ -20,14 +20,13 @@ import {
   FaFire,
   FaKhanda,
   FaPaw,
-  FaRegHandRock,
 } from "react-icons/fa"
 import { BsFillHexagonFill, BsHeartFill } from "react-icons/bs"
 import { TbSword } from "react-icons/tb"
 import Link from "next/link"
-import Head from "next/head"
 import { GiLunarWand } from "react-icons/gi"
 import CardDisplay from "../../components/Card/CardDisplay"
+import MetaData from "../../components/MetaData"
 
 const CardView: React.FC = () => {
   const [card, setCard] = useState<CardData>()
@@ -70,11 +69,7 @@ const CardView: React.FC = () => {
 
   return (
     <>
-      <Head>
-        <title>Duelyst II Deckbuilder | {card?.name ?? "Unknown Card"}</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
+      <MetaData title={card?.name ?? "Card View"} />
       <PageLayout>
         {card && (
           <div className="flex my-5 justify-center items-center text-white">

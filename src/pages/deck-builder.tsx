@@ -1,17 +1,13 @@
-import Head from "next/head"
 import DeckBuilderCardList from "../components/DeckBuilderCardList"
 import DeckBuilderScreen from "../components/DeckBuilder"
 import PageLayout from "../components/PageLayout"
 import { NewDeckProvider } from "../context/newDeckContext"
+import MetaData from "../components/MetaData"
 
 const DeckBuilder: React.FC = () => {
   return (
     <NewDeckProvider>
-      <Head>
-        <title>Duelyst II Deckbuilder </title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
+      <MetaData title="Browse Decks" />
       <PageLayout>
         <div className="grid grid-cols-12">
           <div className="lg:col-span-9 col-span-12">

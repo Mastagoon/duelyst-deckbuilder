@@ -2,11 +2,10 @@ import PageLayout from "../components/PageLayout"
 import Head from "next/head"
 import Image from "next/image"
 import { FaDiscord, FaGoogle } from "react-icons/fa"
-import { MdEmail } from "react-icons/md"
 import { getCsrfToken, getProviders, getSession, signIn } from "next-auth/react"
 import { Provider } from "next-auth/providers"
 import { GetServerSideProps } from "next"
-import Link from "next/link"
+import MetaData from "../components/MetaData"
 
 const getProviderLogo = (provider: string) => {
   switch (provider) {
@@ -28,14 +27,10 @@ const getProviderColor = (provider: string) => {
 
 const LoginPage: React.FC<{ providers: Provider[]; csrfToken: string }> = ({
   providers,
-  csrfToken,
 }) => {
   return (
     <>
-      <Head>
-        <title>Duelyst II Deckbuilder | Login</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <MetaData title="Login" />
       <PageLayout>
         <div className="flex flex-col justify-center h-screen items-center -translate-y-10">
           <Image

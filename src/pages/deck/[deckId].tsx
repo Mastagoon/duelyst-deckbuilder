@@ -19,6 +19,7 @@ import DeckVoting from "../../components/Deck/DeckVoting"
 import DeckCardRatio from "../../components/Deck/DeckCardRatio"
 import CopyDeckCode from "../../components/Deck/CopyDeckCode"
 import DeckCardInfo from "../../components/Deck/DeckCardInfo"
+import MetaData from "../../components/MetaData"
 
 const DeckView: React.FC = () => {
   const router = useRouter()
@@ -65,16 +66,7 @@ const DeckView: React.FC = () => {
 
   return (
     <>
-      <Head>
-        <title>{deck?.deckName ?? "Unknown"}</title>
-        <link rel="icon" href="/favicon.ico" />
-        <meta property="og:site_name" content="Duelyst Deckbuilder" />
-        <meta property="og:title" content={`${deck?.deckName}`} />
-        <meta
-          property="og:image"
-          content={`/card_sprites/${deck?.generalId}.png`}
-        />
-      </Head>
+      <MetaData />
       <PageLayout>
         {isLoading && <Loading />}
         {deckInfo && deck && (
