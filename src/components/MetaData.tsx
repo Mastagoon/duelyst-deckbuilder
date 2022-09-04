@@ -1,7 +1,8 @@
 import Head from "next/head"
 
-const MetaData: React.FC<{ title?: string }> = ({
+const MetaData: React.FC<{ title?: string; description?: string }> = ({
   title = "Duelyst II Deckbuilder",
+  description = "Duelyst II Deckbuilder & Browser",
 }) => {
   return (
     <Head>
@@ -9,10 +10,7 @@ const MetaData: React.FC<{ title?: string }> = ({
       <link rel="icon" href="/favicon.ico" />
       <meta property="og:site_name" content="Duelyst II Deckbuilder" />
       <meta property="og:title" content={title} />
-      <meta
-        property="og:description"
-        content="Duelyst II Deckbuilder & Browser"
-      />
+      <meta property="og:description" content={description} />
     </Head>
   )
 }

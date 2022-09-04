@@ -60,6 +60,7 @@ const DeckView: React.FC<{
     <>
       <MetaData
         title={`${deck.deckName} | ${Faction[deck.faction]?.toUpperCase()}`}
+        description={deck.description}
       />
       <PageLayout>
         {deckInfo && deck && (
