@@ -58,7 +58,9 @@ const DeckView: React.FC<{
 
   return (
     <>
-      <MetaData title={`${deck.deckName} | ${Faction[deck.faction]}`} />
+      <MetaData
+        title={`${deck.deckName} | ${Faction[deck.faction]?.toUpperCase()}`}
+      />
       <PageLayout>
         {deckInfo && deck && (
           <div className="flex flex-col  mx-10 text-white pt-5 h-full grid-rows-[max-content] relative">
@@ -196,9 +198,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (!deckId) return { props: {} }
   // get deck info
   const client = await createSsrClient()
-  console.log("BEFORE")
   const deck = await client.query("deckgetById", { id: deckId as string })
-  // client.mutation("deckview", { deckId: deckId as string })
+  client.mutation("deckview", { deckId: deckId as string })
   return {
     props: {
       deck: JSON.parse(JSON.stringify(deck)),

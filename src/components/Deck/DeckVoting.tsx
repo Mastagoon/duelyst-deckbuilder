@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FaArrowDown, FaArrowUp } from "react-icons/fa"
 import { trpc } from "../../utils/trpc"
 
@@ -13,6 +13,12 @@ const DeckVoting: React.FC<{
   const router = useRouter()
   const { data: session } = useSession()
   const [isPositive, setIsPositive] = useState(vote > 0)
+  const [isNegative, setIsNegative] = useState(vote < 0)
+
+  useEffect(() => {
+    if (vote > 0) setIsPositive(true)
+    if (vote < 0) setIsNegative(true)
+  }, [vote])
 
   const handleUpvote = async () => {
     if (!deckId || vote > 0) return
@@ -34,6 +40,7 @@ const DeckVoting: React.FC<{
       return
     }
     setIsPositive(true)
+    setIsNegative(false)
     await deckVoteMutation({
       deckId,
       userId: session?.user.id,
@@ -60,6 +67,7 @@ const DeckVoting: React.FC<{
       }
       return
     }
+    setIsNegative(true)
     setIsPositive(false)
     await deckVoteMutation({
       deckId: deckId,
@@ -80,7 +88,7 @@ const DeckVoting: React.FC<{
       <FaArrowDown
         onClick={handleDownvote}
         className={`hover:scale-110 cursor-pointer ${
-          !isPositive && "text-red-300"
+          isNegative && "text-red-300"
         }`}
       />
     </div>
