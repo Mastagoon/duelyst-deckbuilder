@@ -68,7 +68,11 @@ export const deckRouter = createRouter()
       }
       ip = ip as string
       if (!ip) return null
-      return await ctx.prisma.deckView.create({ data: { deckId, ip } })
+      try {
+        return await ctx.prisma.deckView.create({ data: { deckId, ip } })
+      } catch (err) {
+        return null
+      }
     },
   })
   .mutation("vote", {
@@ -86,9 +90,13 @@ export const deckRouter = createRouter()
           where: { id: v.id },
           data: { vote: Number(vote) },
         })
-      return await ctx.prisma.deckVote.create({
-        data: { userId, deckId, vote: Number(vote) },
-      })
+      try {
+        return await ctx.prisma.deckVote.create({
+          data: { userId, deckId, vote: Number(vote) },
+        })
+      } catch (err) {
+        return null
+      }
       // Prisma bug with multiple unique keys makes this throw an error.
       // const upvote = await ctx.prisma.deckVote.upsert({
       // where: { deckId, userId },
