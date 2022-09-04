@@ -11,7 +11,7 @@ import { useRouter } from "next/router"
 import MetaData from "../components/MetaData"
 
 const DecksPage: NextPage = () => {
-  const [sortByLatest, setSortByLatest] = useState(false)
+  const [sortByLatest, setSortByLatest] = useState(true)
   const [sortFaction, setSortFaction] = useState("all")
   const [query, setQuery] = useState("")
   const [featured, setFeatured] = useState(false)
