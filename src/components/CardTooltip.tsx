@@ -79,9 +79,14 @@ const CardTooltip: React.FC<{
       </div>
       {/* related cards */}
       {!nested &&
-        c.relatedCards.map((r) =>
+        c.relatedCards.map((r, i) =>
           cardDataById[r] ? (
-            <CardTooltip c={cardDataById[r]!} show={true} nested={true} />
+            <CardTooltip
+              key={i}
+              c={cardDataById[r]!}
+              show={true}
+              nested={true}
+            />
           ) : null
         )}
     </div>
