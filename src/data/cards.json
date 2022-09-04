@@ -697,22 +697,6 @@
     "cardType": "Spell"
   },
   {
-    "name": "Rasha's Curse",
-    "id": 20452,
-    "cardSet": "core",
-    "faction": 3,
-    "tribes": [],
-    "rarity": "epic",
-    "description": "Destroy a random artifact equipped to the enemy General. Summon a Wind Dervish nearby them.",
-    "relatedCards": [],
-    "resource": {
-      "idle": "resources/card_gifs/iconD2RashasCurseIdle.gif",
-      "active": "resources/card_gifs/iconD2RashasCurseActive.gif"
-    },
-    "mana": 0,
-    "cardType": "Spell"
-  },
-  {
     "name": "Fountain of Youth",
     "id": 20455,
     "cardSet": "core",
