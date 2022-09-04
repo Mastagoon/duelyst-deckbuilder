@@ -200,6 +200,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const client = await createSsrClient()
   const deck = await client.query("deckgetById", { id: deckId as string })
   client.mutation("deckview", { deckId: deckId as string })
+  ctx.res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=1, stale-while-revalidate=59"
+  )
   return {
     props: {
       deck: JSON.parse(JSON.stringify(deck)),
