@@ -68,7 +68,11 @@ export const deckRouter = createRouter()
       }
       ip = ip as string
       if (!ip) return null
-      return await ctx.prisma.deckView.create({ data: { deckId, ip } })
+      try {
+        return await ctx.prisma.deckView.create({ data: { deckId, ip } })
+      } catch (err) {
+        return null
+      }
     },
   })
   .mutation("vote", {
