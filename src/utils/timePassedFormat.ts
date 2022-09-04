@@ -1,5 +1,6 @@
 const timePassedFormat = (date: Date) => {
   const now = new Date()
+  date = new Date(date)
   const diffInMinutes = Math.floor(
     (now.getTime() - date.getTime()) / (1000 * 60)
   )

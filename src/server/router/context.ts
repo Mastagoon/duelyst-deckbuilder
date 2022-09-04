@@ -10,7 +10,9 @@ export const createContext = async (
 ) => {
   const req = opts?.req
   const res = opts?.res
-  const session = await unstable_getServerSession(req!, res!, nextAuthOptions)
+  const session = req
+    ? await unstable_getServerSession(req, res!, nextAuthOptions)
+    : null
 
   return {
     req,

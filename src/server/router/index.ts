@@ -1,5 +1,5 @@
 // src/server/router/index.ts
-import { createRouter } from "./context"
+import { createContext, createRouter } from "./context"
 import superjson from "superjson"
 import { exampleRouter } from "./example"
 import { deckRouter } from "./deck"
@@ -13,3 +13,6 @@ export const appRouter = createRouter()
 
 // export type definition of API
 export type AppRouter = typeof appRouter
+
+export const createSsrClient = async () =>
+  appRouter.createCaller(await createContext())

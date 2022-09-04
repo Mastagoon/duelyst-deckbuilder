@@ -1,14 +1,11 @@
 import { useRouter } from "next/router"
 import Link from "next/link"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { BsClockHistory } from "react-icons/bs"
 import { FiEdit } from "react-icons/fi"
 import { AiOutlineEye, AiOutlineShareAlt } from "react-icons/ai"
-import Loading from "../../components/Loading"
 import PageLayout from "../../components/PageLayout"
 import { loadDeckFromDeckCode } from "../../utils/deckUtils"
-import { trpc } from "../../utils/trpc"
-import Head from "next/head"
 import getFactionColors from "../../utils/getFactionColor"
 import constants from "../../data/constants"
 import ShareDeckOverlay from "../../components/Deck/ShareDeckOverlay"
@@ -20,21 +17,20 @@ import DeckCardRatio from "../../components/Deck/DeckCardRatio"
 import CopyDeckCode from "../../components/Deck/CopyDeckCode"
 import DeckCardInfo from "../../components/Deck/DeckCardInfo"
 import MetaData from "../../components/MetaData"
+import { GetServerSideProps } from "next"
+import { createSsrClient } from "../../server/router"
+import { Deck, DeckVote, User } from "@prisma/client"
+import { Faction } from "../../data/cards"
 
-const DeckView: React.FC = () => {
+const DeckView: React.FC<{
+  deck: Deck & { votes: DeckVote[]; creator: User; _count: { views: number } }
+}> = ({ deck }) => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [deckImage, setDeckImage] = useState<string>("")
   const [showShareDeckOverlay, setShowShareDeckOverlay] = useState(false)
 
-  const { deckId } = router.query
-  const { data: deck, isLoading } = trpc.useQuery([
-    "deckgetById",
-    { id: (deckId as string) ?? "" },
-  ])
-  const { mutate: deckViewMutation } = trpc.useMutation(["deckview"])
-
-  if (!isLoading && !deck) router.push("/")
+  if (!deck) router.push("/")
 
   const { data: session } = useSession()
 
@@ -60,15 +56,10 @@ const DeckView: React.FC = () => {
 
   const voted = deck?.votes?.find((v) => v.userId === session?.user.id)
 
-  useEffect(() => {
-    if (deckId) deckViewMutation({ deckId: deckId as string })
-  }, [deckId])
-
   return (
     <>
-      <MetaData />
+      <MetaData title={`${deck.deckName} | ${Faction[deck.faction]}`} />
       <PageLayout>
-        {isLoading && <Loading />}
         {deckInfo && deck && (
           <div className="flex flex-col  mx-10 text-white pt-5 h-full grid-rows-[max-content] relative">
             <div className="flex flex-row flex-wrap justify-between items-center">
@@ -104,7 +95,7 @@ const DeckView: React.FC = () => {
                   <BsClockHistory />
                   Last updated:
                   <span className="text-white">
-                    {timePassedFormat(deck.updatedAt!)}
+                    {timePassedFormat(deck.updatedAt as Date)}
                   </span>
                 </div>
                 <div className="flex flex-row items-center text-faint gap-1 ml-5">
@@ -198,6 +189,21 @@ const DeckView: React.FC = () => {
       </PageLayout>
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { deckId } = ctx.query
+  if (!deckId) return { props: {} }
+  // get deck info
+  const client = await createSsrClient()
+  console.log("BEFORE")
+  const deck = await client.query("deckgetById", { id: deckId as string })
+  // client.mutation("deckview", { deckId: deckId as string })
+  return {
+    props: {
+      deck: JSON.parse(JSON.stringify(deck)),
+    },
+  }
 }
 
 export default DeckView
