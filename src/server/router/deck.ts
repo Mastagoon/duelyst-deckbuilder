@@ -54,20 +54,9 @@ export const deckRouter = createRouter()
   .mutation("view", {
     input: z.object({
       deckId: z.string(),
+      ip: z.string(),
     }),
-    async resolve({ ctx, input: { deckId } }) {
-      const { req } = ctx
-      if (!req) return null
-      let ip
-      if (req.headers["x-forwarded-for"]) {
-        ip = (req.headers["x-forwarded-for"] as string)?.split(",")[0]
-      } else if (req.headers["x-real-ip"]) {
-        ip = req.headers["x-real-ip"]
-      } else {
-        ip = req.socket.remoteAddress
-      }
-      ip = ip as string
-      if (!ip) return null
+    async resolve({ ctx, input: { deckId, ip } }) {
       try {
         return await ctx.prisma.deckView.create({ data: { deckId, ip } })
       } catch (err) {

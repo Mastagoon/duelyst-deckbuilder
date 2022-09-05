@@ -200,7 +200,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // get deck info
   const client = await createSsrClient()
   const deck = await client.query("deckgetById", { id: deckId as string })
-  client.mutation("deckview", { deckId: deckId as string })
+  const { req } = ctx
+  let ip
+  if (req.headers["x-forwarded-for"]) {
+    ip = (req.headers["x-forwarded-for"] as string)?.split(",")[0]
+  } else if (req.headers["x-real-ip"]) {
+    ip = req.headers["x-real-ip"]
+  } else {
+    ip = req.socket.remoteAddress
+  }
+  client.mutation("deckview", {
+    deckId: deckId as string,
+    ip: ip as string,
+  })
   ctx.res.setHeader(
     "Cache-Control",
     "public, s-maxage=1, stale-while-revalidate=59"
