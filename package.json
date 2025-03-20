@@ -18,7 +18,6 @@
     "@trpc/next": "^9.27.0",
     "@trpc/react": "^9.27.0",
     "@trpc/server": "^9.27.0",
-    "giframe": "^0.2.0",
     "lodash": "^4.17.21",
     "next": "12.2.3",
     "next-auth": "^4.10.3",
