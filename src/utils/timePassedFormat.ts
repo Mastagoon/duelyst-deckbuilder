@@ -16,7 +16,7 @@ const timePassedFormat = (date: Date) => {
   const diffInMonths = Math.floor(diffInDays / 30)
   if (diffInMonths < 12)
     return `${diffInMonths} month${diffInMonths > 1 ? "s" : ""} ago`
-  const diffInYears = Math.floor(diffInMonths)
+  const diffInYears = Math.floor(diffInMonths / 12)
   return `${diffInYears} year${diffInYears > 1 ? "s" : ""} ago`
 }
 
